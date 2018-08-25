@@ -64,14 +64,14 @@ Add additional notes about how to deploy this on a live system
 
 ## Authors
 
-* **Evan Knox** - *Initial work, and architecture* - [PurpleBooth](https://github.com/evan01)
-* **David Knox** - *Project Design* - [PurpleBooth](https://github.com/evan01)
+* **Evan Knox** - *Initial work, and architecture* - [evan01](https://github.com/evan01)
+* **David Knox** - *Project Design* - [SparkyDK](https://github.com/SparkyDK)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/SparkyDK/CuffProject/graphs/contributors) who participated in this project.
 
-<!--## License-->
+## License
 
-<!--This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details-->
+This project is licensed under the GNU License - see the [LICENSE.md](LICENSE.md) file for details
 
 <!--## Acknowledgments-->
 
