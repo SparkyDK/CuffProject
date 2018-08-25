@@ -2,7 +2,7 @@ import time
 import threading
 from collections import deque
 import math
-import System
+from app import System
 
 #from threading import Timer
 

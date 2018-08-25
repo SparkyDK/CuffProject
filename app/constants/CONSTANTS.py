@@ -1,0 +1,7 @@
+
+# Files
+PRESSURE_READER_FILE_NAME = 'TEST_Pressure_Values.txt'
+PRESSURE_TYPES = ["PMAX","PAINH","PAINL","PATM"]
+
+#Parameters
+MAX_NUM_PARAMETERS = 8
