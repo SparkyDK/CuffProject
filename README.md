@@ -1,2 +1,2 @@
 # CuffProject
-This is a collaborative effort between PG , JS, DK and NS
+# This is a collaborative effort between PG , JS, DK and NS
