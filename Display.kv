@@ -1,0 +1,163 @@
+# File name: Graphics_User_Interface.py
+#:kivy 1.8.0
+
+<Display>
+	Label:
+		Image:
+			source: 'screen.png'
+			pos: root.x, root.y
+			size: root.width, root.height
+			allow_stretch: True
+			keep_ratio: False
+	Button:
+		id: abort
+		text: "RELEASE/\nRESET"
+		pos_hint: {'x':0.04, 'y': 0.07}
+		font_size: 40
+		bold: True
+		color: 1,1,1,1
+		size_hint: 0.295, 0.36
+		background_color: 1,0,0,0
+		on_release: root.abort_function()
+	Button:
+		id: newpressure
+		text: "171"
+		font_size: 45
+		color: 0,0,0,1
+		pos_hint: {'x':0.31, 'y': 0.07}
+		background_color: 0,0,0,0
+		size_hint: 0.295, 0.36
+	Button:
+		id: up
+		pos_hint: {'x':0.5825, 'y': 0.2825}
+		size_hint: 0.17, 0.15
+		background_color: 1,1,1,0
+		on_release: root.newpressure_function("up")
+	Button:
+		id: down
+		pos_hint: {'x':0.5825, 'y': 0.0675}
+		color: 1,1,1,1
+		size_hint: 0.17, 0.15
+		background_color: 1,1,1,0
+		on_release: root.newpressure_function("down")
+	Button:
+		id: enter
+		text: "ENTER"
+		pos_hint: {'x':0.79, 'y': 0.0675}
+		font_size: 35
+		bold: True
+		color: 1,1,1,1
+		size_hint: 0.17, 0.36
+		background_color: 1,0,0,0
+		on_release: 
+			root.enter_function()
+			root.state_update()
+	Button:
+		id: go
+		text: "GO"
+		font_size: 30
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.04, 'y': 0.496}
+		size_hint: 0.1275, 0.2525
+		on_release: root.count()
+	Button:
+		id: stop
+		text: "STOP"
+		font_size: 30
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.2069, 'y': 0.496}
+		size_hint: 0.1275, 0.2525
+		on_release: root.stop_function()
+	Button:
+		id: current pressure
+		text: "170"
+		font_size: 65
+		bold: True
+		color: 0,0,0,1
+		size_hint: 0.5, 0.5
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.5275, 'y':0.375}
+	Button:
+		id: schedule1
+		text: "360"
+		font_size: 20
+		size_hint: 0.1, 0.1
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.05, 'y':0.825}
+	Button:
+		id: schedule2
+		text: "120"
+		font_size: 20
+		size_hint: 0.1, 0.1
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.1625, 'y':0.825}
+	Button:
+		id: schedule3
+		text: "360"
+		font_size: 20
+		size_hint: 0.1, 0.1
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.28, 'y':0.825}
+	Button:
+		id: schedule4
+		text: "120"
+		font_size: 20
+		size_hint: 0.1, 0.1
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.3975, 'y':0.825}
+	Button:
+		id: schedule5
+		text: "360"
+		font_size: 20
+		size_hint: 0.1, 0.1
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.5075, 'y':0.825}
+	Button:
+		id: schedule6
+		text: "120"
+		font_size: 20
+		size_hint: 0.1, 0.1
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.623, 'y':0.825}
+	Button:
+		id: schedule7
+		text: "360"
+		font_size: 20
+		size_hint: 0.1, 0.1
+		color: 0,0,0,1
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.7375, 'y':0.825}
+	Button:
+		id: schedule8
+		text: "120"
+		font_size: 20
+		size_hint: 0.1, 0.1
+		background_color: 0,0,0,0
+		color: 0,0,0,1
+		pos_hint: {'x':0.85, 'y':0.825}
+	Button:
+		id: pain
+		text: "PAIN"
+		font_size: 20
+		color: 0,0,0,1
+		size_hint: 0.07, 0.07
+		bold: True
+		background_color: 0,0,0,0
+		pos_hint: {'x':0.4, 'y':0.62}
+	Button:
+		id: nopain
+		text: "  NO\nPAIN"
+		font_size: 18
+		color: 0,0,0,1
+		size_hint: 0.07, 0.09
+		bold: True
+		background_color: 1,0,0,0
+		pos_hint: {'x':0.4, 'y':0.5375}
