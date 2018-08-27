@@ -8,6 +8,9 @@ class PressureReader:
             else:
                 actions_list = [line.split("_") for line in lines]
                 actions = dict(line.strip().split("_") for line in lines)
+                if (len(actions) != MAX_NUM_PARAMETERS):
+                    print(len(actions), " parameters were provided, instead of ", MAX_NUM_PARAMETERS,
+                          " of them!")
                 if(set(PRESSURE_TYPES) >= set(actions.keys())):
                     if (actions['PMAX'] > actions['PAINL'] and actions['PAINL'] < actions['PAINH'] and actions['PAINH'] < actions['PMAX']):
                         return actions

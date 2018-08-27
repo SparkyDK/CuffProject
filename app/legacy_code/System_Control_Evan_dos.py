@@ -865,16 +865,16 @@ if __name__ == "__main__":
     start_time = time.time()
     time.clock()
 
-    #main_args = dict( Pain=False,  GO=False, old_GO=False,  PAUSE=False, STOP=False, old_STOP=False,  ABORT=True, old_ABORT=True, schedule_started=False,  schedule_index=1,  Global_cnt=0 )
-    main_args = dict( old_GO=0,  PAUSE=False, old_STOP=0, old_ABORT=1, schedule_started=False,  old_schedule_started=False,  schedule_index=0,  Global_cnt=0,  P=Patm,  elapsed_time=0,  old_elapsed_time=0,  pain_time=start_time, old_pain=0)
-
-    # Execute the state mathine for the first time
+    #main_ar    # Execute the state mathine for the first time
     control_args = {'GO' : 0, 'STOP': 0,  'PAIN': 0,  'P': Patm,  'RUNNING': 0,  'PAUSE':0}
     try:
         c.Execute( control_args )
     except KeyboardInterrupt:
-        print ("\nDone")    
-    
+        print ("\nDone")
+gs = dict( Pain=False,  GO=False, old_GO=False,  PAUSE=False, STOP=False, old_STOP=False,  ABORT=True, old_ABORT=True, schedule_started=False,  schedule_index=1,  Global_cnt=0 )
+    main_args = dict( old_GO=0,  PAUSE=False, old_STOP=0, old_ABORT=1, schedule_started=False,  old_schedule_started=False,  schedule_index=0,  Global_cnt=0,  P=Patm,  elapsed_time=0,  old_elapsed_time=0,  pain_time=start_time, old_pain=0)
+
+
     # print "pain_schedule",  pain_schedule
     # print "time_schedule",  time_schedule
     
