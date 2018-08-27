@@ -2,8 +2,10 @@ from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES
 from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
 from app.pain_schedule import pain_schedule
+from app.GUI import GUI
 from app.System import System
 
+import time
 from collections import deque
 import math
 
@@ -44,13 +46,28 @@ start_time = time.time()
 time.clock()
 elapsed_time = 0
 
-GUI = DisplayApp()
-GUI.run()
+gui = Display()
+gui.run()
+
+
+def Read_Cuff_Pressure():
+    # Do the A/D conversion and read the converted value
+    pass
+    pressure_value = 50
+    converted_value = Convert_to_mm_Hg(pressure_value)
+    return (converted_value)
+
+def Convert_to_mm_Hg(self, digital_value):
+    self.digital_value = digital_value
+    # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
+    return (3*digital_value)
+
+
 
 while (True == True):
 
     # Keep a state history
-    returned_state = sm.FSM.GetCurState()
+    returned_state = gui.FSM.GetCurState()
     # pop out the highest-index entry from the state history
     past_states.popleft()
     # Add the newest state value to the lowest-index entry of the state history
@@ -79,6 +96,7 @@ while (True == True):
         old_control_args = control_args
         control_args = airctrl.FSM.ControlDecisions(current_counter, control_args, user_args)
         airctrl.FSM.Execute()
+
     except KeyboardInterrupt:
         print ("\nDone")
 

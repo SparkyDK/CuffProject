@@ -1,3 +1,5 @@
+from app.FSM import FSM
+
 Char = type("Char", (object,), {})
 
 

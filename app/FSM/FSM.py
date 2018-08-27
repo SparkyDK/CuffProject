@@ -26,10 +26,11 @@ class FSM(object):
         self.trans = self.transitions[toTrans]
 
     def ControlDecisions(self, current_counter, control_args, user_args):
-        self.args = args
+        self.user_args = user_args
+        self.control_args = control_args
+        self.current_counter = current_counter
 
-
-        return (control_args)
+        return (self.control_args)
 
     def Execute(self, args):
         self.args = args

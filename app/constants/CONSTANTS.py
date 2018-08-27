@@ -9,3 +9,5 @@ HISTORY_LENGTH = 5
 #Parameters
 MAX_NUM_SCHEDULES = 8
 MAX_NUM_PARAMETERS = 4
+
+# Conversion lookup table
