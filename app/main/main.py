@@ -7,16 +7,18 @@ from app.GUI import GUI
 from collections import deque
 import math
 
-import_schedule = [[0.0, 0.0] * MAX_NUM_SCHEDULES]
+import_schedule = []
+for i in range(0, MAX_NUM_SCHEDULES): import_schedule.append([])
+print("TEST:", import_schedule)
 
 # Returns the user-provided pressure parameter values as a dictionary with keys of PMAX, PAINL, PAINH, PATM
 pressure_parameters = PressureReader().read(filename="./tests/input_files/Pressure_Values.txt")
-print (pressure_parameters)
+print ("pressure_parameters", pressure_parameters)
 
 # Returns an array of tuples, with the desired action of Pain/Nil and the duration of each of those actions
 import_schedule = ScheduleReader().read( filename="./tests/input_files/Schedule.txt", file_schedule=import_schedule )
 max_num_schedules = len(schedule)
-print (import_schedule)
+print ("main read import_schedule:", import_schedule)
 
 DEBUG = True
 Global_cnt = 0

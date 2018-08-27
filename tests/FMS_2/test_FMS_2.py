@@ -27,7 +27,7 @@ class FSM2_TESTCASE(unittest.TestCase):
         self.assertTrue(fsm.is_stopped)
 
     def test_start_experiment(self):
-        schedule = ScheduleReader.
+        # schedule = ScheduleReader.
         e = ExperimentDataModel(state="idle")
         fsm = PainAdministratorStateMachine(e)
         fsm.start_test()
