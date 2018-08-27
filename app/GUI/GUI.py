@@ -34,6 +34,7 @@ state = 0
 class Display(FloatLayout):  # intro <display> and tells actions/functions
     def __init__(self, **kwargs):
         super(Display, self).__init__(**kwargs)
+        print (kwargs)
         # self.txt = 170
 
     def update(self, current_counter, control_args, user_args):
@@ -86,9 +87,9 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
 class DisplayApp(App):  # defines app and returns display
 
-    desired_pressure = Patm
-    desired_tolerance = 10  # this will be the +/- tolerance around the desired pressure value
+    #desired_pressure = Patm
 
+    desired_pressure = 0
     ENTER = 0
     STOP = 0
     GO = 0
@@ -102,7 +103,7 @@ def build(self):
     return DisplayApp.disp
 
 
-if __name__ == "__main__":
-    gui = DisplayApp()
-    gui.run()
+#if __name__ == "__main__":
+#    gui = DisplayApp()
+#    gui.run()
 # DisplayApp().run()
