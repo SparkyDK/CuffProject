@@ -17,7 +17,8 @@ class PressureReader:
                 for key, value in actions.items():
                     # Make sure that the actions in the file are exactly the ones expected
                     if key in PRESSURE_TYPES:
-                        print ("key=", key, "and value=", value)
+                        #print ("key=", key, "and value=", value)
+                        pass
                     else:
                         print ("No pressure type match for: ", key)
                         self.invalid_key=True
@@ -30,13 +31,13 @@ class PressureReader:
                     painh = int(actions['PAINVALUE'] + actions['PAINTOLERANCE'])
                     print ("Calculated upper pain threshold=", painh, " and lower threshold=", painl)
                     if (int(actions['PMAX']) > painh and painl < painh and int(actions['PATM']) < painl):
-                        print ("Read the pressure parametric values:", actions)
+                        #print ("Read the pressure parametric values:", actions)
                         return actions
                     else:
-                        print ("Not sure what happened here with pressure values")
+                        print ("Not sure what happened here with the pressure values")
                         raise ValueError(self.getErrorMessage(lines))
                 else:
-                    print("Not sure what happened")
+                    print("Not sure what happened here, but input file has issues")
                     raise ValueError(self.getErrorMessage(lines))
 
     def getErrorMessage(self, lines):

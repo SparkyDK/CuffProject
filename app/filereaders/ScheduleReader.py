@@ -1,6 +1,6 @@
 from app.constants.CONSTANTS import MAX_NUM_SCHEDULES
 class ScheduleReader:
-    print("Created an instance of ScheduleReader")
+    #print("Created an instance of ScheduleReader")
     def read(self, filename, file_schedule):
         self.file_schedule = file_schedule
         self.filename = filename
@@ -8,7 +8,7 @@ class ScheduleReader:
         with open(filename, 'r') as file:
             lines = [line.rstrip() for line in file.readlines()]
             num_lines = len(lines)
-            print("File ", filename, " has ", num_lines, "lines:", lines)
+            #print("File ", filename, " has ", num_lines, "lines:", lines)
             if (num_lines > MAX_NUM_SCHEDULES):
                 # Check that there are no more than the allowed number of schedules (no blank lines are allowed in the file either)
                 raise ValueError("Only a total of ", MAX_NUM_SCHEDULES,

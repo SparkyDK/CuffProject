@@ -11,7 +11,7 @@ class ScheduleReaderTest(unittest.TestCase):
         #print("TEST2:", import_schedule)
         #print ("Here is the input:", import_schedule)
         self.import_schedule = ScheduleReader().read(filename="./tests/input_files/Schedule.txt", file_schedule=self.import_schedule )
-        print ("Test reader read:", self.import_schedule)
+        #print ("Test reader read:", self.import_schedule)
         self.assertEqual([['NILL', 361], ['PAIN', 362], ['NILL', 363], ['PAIN', 364], ['NILL', 365],
                           ['PAIN', 366], ['NILL', 367], ['PAIN', 368]], self.import_schedule)
 
