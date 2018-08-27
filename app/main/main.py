@@ -9,7 +9,7 @@ import time
 from collections import deque
 import math
 
-import_schedule = []
+
 
 def Read_Cuff_Pressure():
     # Do the A/D conversion and read the converted value
@@ -24,8 +24,8 @@ def Convert_to_mm_Hg(self, digital_value):
     return (3*digital_value)
 
 
-for i in range(0, MAX_NUM_SCHEDULES): import_schedule.append([])
-print("TEST:", import_schedule)
+imported_schedule = []for i in range(0, MAX_NUM_SCHEDULES): imported_schedule.append([])
+print("TEST:", imported_schedule)
 
 # Returns the user-provided pressure parameter values as a dictionary with keys of PMAX, PAINL, PAINH, PATM
 pressure_parameters = PressureReader().read(filename="./tests/input_files/Pressure_Values.txt")
