@@ -1,20 +1,19 @@
+from app.constants.CONSTANTS import MAX_NUM_SCHEDULES
+from app.main.main import pain_schedule
 class ScheduleReader:
-    def read(self):
-        filename = 'Schedule.txt'
+    def read(self, time_schedule, filename):
         with open(filename, 'r') as f:
             f.seek(0)
             lines = f.readlines()
             num_lines = len(lines)
-            print "\nRead file", filename, ": ", lines
-            # print "\ndetected ",  num_lines,  " lines of schedule"
-            if (num_lines > Max_num_schedules):
+            if (num_lines > MAX_NUM_SCHEDULES):
                 # Check that there are no more than the allowed number of schedules (no blank lines are allowed in the file either)
-                raise ValueError("Only a total of ", Max_num_schedules,
+                raise ValueError("Only a total of ", MAX_NUM_SCHEDULES,
                                  " schedule statement lines are allowed in the file [", num_lines,
                                  " lines were detected]")
                 sys.exit('Error!: Too many schedules')
 
-            for i in range(0, Max_num_schedules):
+            for i in range(0, MAX_NUM_SCHEDULES):
                 action, value = (lines[i].strip()).split("_", 1)
                 value = int(value)
                 # Before adding action, check to ensure it is either PAIN or NIL (no other labels supported)
@@ -34,7 +33,7 @@ class ScheduleReader:
                                      value, "] was detected")
                     sys.exit('Error!: Interval value not in range [0,999]')
 
-            print "\nPain and time schedules:"
+            print ("\nPain and time schedules:")
             print (pain_schedule)
             print (time_schedule)
         # for i in range (0,7):

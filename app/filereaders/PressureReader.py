@@ -10,7 +10,7 @@ class PressureReader:
                 actions = dict(line.strip().split("_") for line in lines)
                 if(set(PRESSURE_TYPES) >= set(actions.keys())):
                     if (actions['PMAX'] > actions['PAINL'] and actions['PAINL'] < actions['PAINH'] and actions['PAINH'] < actions['PMAX']):
-                        return actions_list
+                        return actions
                     else:
                         raise ValueError(self.getErrorMessage(lines))
                 else:
