@@ -12,12 +12,24 @@ class PressureReader:
                 if (len(actions) != MAX_NUM_PARAMETERS):
                     print(len(actions), " parameters were provided, instead of ", MAX_NUM_PARAMETERS,
                           " of them!")
-                print ("PRESSURE_TYPES: ", set(PRESSURE_TYPES) )
-                print ("actions.keys: ", actions.keys() )
-                if(set(PRESSURE_TYPES) >= set(actions.keys())):
-                    painl = actions['PAINVALUE'] - actions['PAINTOLERANCE']
-                    painh = actions['PAINVALUE'] + actions['PAINTOLERANCE']
-                    if (actions['PMAX'] > painh and painl < painh and actions['PATM'] < painl):
+                    raise ValueError(self.getErrorMessage(lines))
+                self.invalid_key=False
+                for key, value in actions.items():
+                    # Make sure that the actions in the file are exactly the ones expected
+                    if (key in PRESSURE_TYPES):
+                        print ("key=", key, "and value=", value)
+                    else:
+                        print ("No pressure type match for: ", key)
+                        self.invalid_key=True
+                        raise ValueError(self.getErrorMessage(lines))
+                    actions[key] = int(value)
+
+                if (self.invalid_key == False):
+                #if (set(PRESSURE_TYPES) >= set(actions.keys())):
+                    painl = int(actions['PAINVALUE'] - actions['PAINTOLERANCE'])
+                    painh = int(actions['PAINVALUE'] + actions['PAINTOLERANCE'])
+                    print ("Calculated upper pain threshold=", painh, " and lower threshold=", painl)
+                    if (int(actions['PMAX']) > painh and painl < painh and int(actions['PATM']) < painl):
                         print ("Read the pressure parametric values:", actions)
                         return actions
                     else:
