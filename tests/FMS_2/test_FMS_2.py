@@ -1,37 +1,17 @@
 import unittest
-from app.FSM_2.FSM_2 import PainAdministratorStateMachine, ExperimentDataModel
-from app.filereaders.ScheduleReader import ScheduleReader
+from app.FSM_2.FSM_2 import PainAdministrator
+from app.filereaders.ScheduleReader2 import ScheduleReader2
 from app.filereaders.PressureReader import PressureReader
+
 
 class FSM2_TESTCASE(unittest.TestCase):
 
-    def test_normal_fsm_transitions(self):
-        e = ExperimentDataModel(state="idle")
-        fsm = PainAdministratorStateMachine(e)
-        self.assertTrue(fsm.is_idle)
-
-        fsm.start_test()
-        self.assertTrue(fsm.is_pain)
-
-        fsm.release_pain()
-        self.assertTrue(fsm.nothing)
-
-    def test_stop_everything(self):
-        e = ExperimentDataModel(state="idle")
-        fsm = PainAdministratorStateMachine(e)
-
-        fsm.start_test()
-        self.assertTrue(fsm.is_pain)
-
-        fsm.stop_everything()
-        self.assertTrue(fsm.is_stopped)
-
     def test_start_experiment(self):
-        schedule = ScheduleReader.
-        e = ExperimentDataModel(state="idle")
-        fsm = PainAdministratorStateMachine(e)
-        fsm.start_test()
-
+        schedule = ScheduleReader2().read("app/input_files/Schedule.txt")
+        pressure_values = PressureReader().read("app/input_files/Pressure_Values.txt")
+        pA = PainAdministrator(schedule, pressure_values)
+        pA.start_experiment()
+        self.assertTrue(pA.fsm.isolate_vent)
 
 if __name__ == '__main__':
     unittest.main()

@@ -1,5 +1,6 @@
 from app.constants.CONSTANTS import MAX_NUM_SCHEDULES
-from app.main.main import pain_schedule, time_schedule
+
+
 class ScheduleReader:
     def read(self, time_schedule, pain_schedule, filename):
         with open(filename, 'r') as f:
@@ -33,9 +34,9 @@ class ScheduleReader:
                                      value, "] was detected")
                     sys.exit('Error!: Interval value not in range [0,999]')
 
-            print ("\nPain and time schedules:")
-            print (pain_schedule)
-            print (time_schedule)
+            print("\nPain and time schedules:")
+            print(pain_schedule)
+            print(time_schedule)
         # for i in range (0,7):
         # action, value = (lines[i].strip('\n')).split("_",1)
         # pain_schedule.append(action)

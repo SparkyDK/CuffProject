@@ -1,6 +1,6 @@
-from app.constants.CONSTANTS import MAX_NUM_SCHEDULES, MAX_NUM_PARAMETERS
-from app.filereaders.ScheduleReader import ScheduleReader
+from app.constants.CONSTANTS import MAX_NUM_SCHEDULES
 from app.filereaders.PressureReader import PressureReader
+from app.filereaders.ScheduleReader import ScheduleReader
 
 DEBUG = True
 Global_cnt = 0
@@ -13,13 +13,13 @@ pain_schedule = []
 # Amount of time for each pain schedule entry
 time_schedule = []
 
-#default pressure values
-Pmax = 0 #max pressure
-Pup = 0 #upper pressure limit
-Plow = 0 #lower pressure limit
-Patm = 0 #atmospheric pressure
-P = 0 #current pressure
-Pnew = 0 #new pressure value)
+# default pressure values
+Pmax = 0  # max pressure
+Pup = 0  # upper pressure limit
+Plow = 0  # lower pressure limit
+Patm = 0  # atmospheric pressure
+P = 0  # current pressure
+Pnew = 0  # new pressure value)
 
 schedule = ScheduleReader().read(time_schedule, filename="./tests/input_files/Schedule.txt")
 pressure_parameters = PressureReader().read(filename="./tests/input_files/Pressure_Values.txt")
@@ -30,6 +30,3 @@ Max_num_Parameters = len(pressure_parameters)
 # Could use the constant instead!  Safer to keep the dictionary as the master for the parameters
 
 User_input = dict(STOP=1, ABORT=1, ENTER=0, GO=0, New_Pressure=pressure_parameters(Patm))
-
-
-
