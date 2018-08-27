@@ -12,7 +12,9 @@ class PressureReader:
                     print(len(actions), " parameters were provided, instead of ", MAX_NUM_PARAMETERS,
                           " of them!")
                 if(set(PRESSURE_TYPES) >= set(actions.keys())):
-                    if (actions['PMAX'] > actions['PAINL'] and actions['PAINL'] < actions['PAINH'] and actions['PAINH'] < actions['PMAX']):
+                    painl = actions['PAINVALUE'] - actions['PAINTOLERANCE']
+                    painh = actions['PAINVALUE'] + actions['PAINTOLERANCE']
+                    if (actions['PMAX'] > painh and painl < painh and actions['PATM'] < painl):
                         return actions
                     else:
                         raise ValueError(self.getErrorMessage(lines))

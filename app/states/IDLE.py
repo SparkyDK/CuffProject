@@ -4,6 +4,9 @@ class IDLE(State):
     def __init__(self, FSM):
         super(IDLE, self).__init__(FSM)
     def Enter(self):
+        # Close all of the relays
+        isolate()
+        # Don't sleep here, because in this state most of the time
         pass
     def Execute(self,  args):
         self.args = args
@@ -25,11 +28,14 @@ class IDLE(State):
         else:
         # No pain required
             if (self.Running == 1):
-            # No pain required in this schedule phase.  Save solenoid wear and tear when truly idle by checking against atmospheric pressure
-                if (self.P > Patm ):
-                # Continue to vent to keep P below Patm
+            # No pain required in this schedule phase.
+                 if (self.P > Patm ):
+                 # Adjust relays to vent to keep P below Patm
                     self.FSM.ToTransition("toVENT")
-            else:
+                    else:
+                    # Save solenoid wear and tear when idle by leaving them closed and staying in this state
+                    pass
+        else:
             # Don't let the user adjust the pain threshold if running a schedule.
             # Stay in IDLE, unless a new entry is being entered by the user or if pressure creeps above atmospheric
                 if (self.P > Patm):
@@ -42,4 +48,8 @@ class IDLE(State):
                 # Stay in IDLE
                     pass
     def Exit(self):
-            print ("Exiting Idle")
+        # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
+        # sleep (0.1)
+        isolate()  # close all of the relays
+        sleep(0.1)  # Give the relays time to close, although they usually will have had lots of time to do this
+        print ("Exiting Idle")
