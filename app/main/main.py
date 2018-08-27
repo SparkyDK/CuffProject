@@ -1,14 +1,13 @@
-from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES
-from app.filereaders.ScheduleReader import ScheduleReader
-from app.filereaders.PressureReader import PressureReader
-from app.pain_schedule import pain_schedule
-from app.GUI import GUI
-from app.System import System
-
+import math
 import time
 from collections import deque
-import math
 
+from app.GUI import GUI
+from app.System import System
+from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES
+from app.filereaders.PressureReader import PressureReader
+from app.filereaders.ScheduleReader import ScheduleReader
+from app.pain_schedule import pain_schedule
 
 
 def Read_Cuff_Pressure():
@@ -18,33 +17,35 @@ def Read_Cuff_Pressure():
     converted_value = Convert_to_mm_Hg(pressure_value)
     return (converted_value)
 
+
 def Convert_to_mm_Hg(self, digital_value):
     self.digital_value = digital_value
     # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
-    return (3*digital_value)
+    return (3 * digital_value)
 
 
-imported_schedule = []for i in range(0, MAX_NUM_SCHEDULES): imported_schedule.append([])
+imported_schedule = []
+for i in range(0, MAX_NUM_SCHEDULES): imported_schedule.append([])
 print("TEST:", imported_schedule)
 
 # Returns the user-provided pressure parameter values as a dictionary with keys of PMAX, PAINL, PAINH, PATM
 pressure_parameters = PressureReader().read(filename="./tests/input_files/Pressure_Values.txt")
-print ("pressure_parameters", pressure_parameters)
+print("pressure_parameters", pressure_parameters)
 
 # Returns an array of tuples, with the desired action of Pain/Nil and the duration of each of those actions
-import_schedule = ScheduleReader().read( filename="./tests/input_files/Schedule.txt", file_schedule=import_schedule )
+import_schedule = ScheduleReader().read(filename="./tests/input_files/Schedule.txt", file_schedule=import_schedule)
 max_num_schedules = len(import_schedule)
-print ("main read import_schedule:", import_schedule)
+print("main read import_schedule:", import_schedule)
 
 DEBUG = True
 Global_cnt = 0
 state_history = [None] * HISTORY_LENGTH
-past_states = deque(state_history , HISTORY_LENGTH)
+past_states = deque(state_history, HISTORY_LENGTH)
 pain_required = False
 current_counter = [] * max_num_schedules
-control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED':0, 'PAUSE':0, 'FORCE':0}
-user_args = {'GO' : 0, 'STOP': 0, 'ABORT': 0, 'UP':0, 'DOWN':0,\
-             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE':0}
+control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0}
+user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0, \
+             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
 current_pressure = None
 
 try:
@@ -75,7 +76,7 @@ while (True == True):
     # localtime = time.asctime(time.localtime(time.time()) )
     old_elapsed_time = elapsed_time
     elapsed_time = time.time() - start_time
-    if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
+    if (math.floor(elapsed_time) != math.floor(old_elapsed_time)):
         # Only process the pain schedule every time a second ticks
         control_args = pain_schedule.update(current_counter, control_args, user_args)
 
@@ -97,9 +98,4 @@ while (True == True):
         airctrl.FSM.Execute()
 
     except KeyboardInterrupt:
-        print ("\nDone")
-
-
-
-
-
+        print("\nDone")

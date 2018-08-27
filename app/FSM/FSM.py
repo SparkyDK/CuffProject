@@ -37,11 +37,11 @@ class FSM(object):
         # print "(FSM) args are:",  args
         if (self.trans):
             # State transition required (to_xxxx state defined)
-            self.curState.Exit()    # Perform the exit operations of the existing/previous state
-            self.trans.Execute()    # Execute the statements associated with the transition to_xxxx state, if any
-            self.SetState(self.trans.toState)   # Update the current state to the new destination state
-            self.curState.Enter()   # Execute the statements associated with entry into this new state
-            self.trans = None       # Not a new transition anymore
+            self.curState.Exit()  # Perform the exit operations of the existing/previous state
+            self.trans.Execute()  # Execute the statements associated with the transition to_xxxx state, if any
+            self.SetState(self.trans.toState)  # Update the current state to the new destination state
+            self.curState.Enter()  # Execute the statements associated with entry into this new state
+            self.trans = None  # Not a new transition anymore
 
         # Execute the statements associated with the specific state that we are now in
         self.curState.Execute(self.args)
