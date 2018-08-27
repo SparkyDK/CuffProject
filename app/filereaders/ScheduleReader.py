@@ -1,7 +1,7 @@
 from app.constants.CONSTANTS import MAX_NUM_SCHEDULES
-from app.main.main import pain_schedule
+from app.main.main import pain_schedule, time_schedule
 class ScheduleReader:
-    def read(self, time_schedule, filename):
+    def read(self, time_schedule, pain_schedule, filename):
         with open(filename, 'r') as f:
             f.seek(0)
             lines = f.readlines()
