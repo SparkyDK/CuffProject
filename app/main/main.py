@@ -10,6 +10,20 @@ from collections import deque
 import math
 
 import_schedule = []
+
+def Read_Cuff_Pressure():
+    # Do the A/D conversion and read the converted value
+    pass
+    pressure_value = 50
+    converted_value = Convert_to_mm_Hg(pressure_value)
+    return (converted_value)
+
+def Convert_to_mm_Hg(self, digital_value):
+    self.digital_value = digital_value
+    # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
+    return (3*digital_value)
+
+
 for i in range(0, MAX_NUM_SCHEDULES): import_schedule.append([])
 print("TEST:", import_schedule)
 
@@ -48,21 +62,6 @@ elapsed_time = 0
 
 gui = Display()
 gui.run()
-
-
-def Read_Cuff_Pressure():
-    # Do the A/D conversion and read the converted value
-    pass
-    pressure_value = 50
-    converted_value = Convert_to_mm_Hg(pressure_value)
-    return (converted_value)
-
-def Convert_to_mm_Hg(self, digital_value):
-    self.digital_value = digital_value
-    # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
-    return (3*digital_value)
-
-
 
 while (True == True):
 
