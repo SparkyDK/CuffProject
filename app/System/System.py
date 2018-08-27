@@ -33,3 +33,7 @@ class System(Char):
         # self.FSM.Execute(args)
 
         self.FSM.Execute(self.args)
+
+    def isolate(self):
+        # function that closes all of the relay valves
+        pass
