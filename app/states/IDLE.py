@@ -1,13 +1,12 @@
-
-
-
+from app.CONSTANTS import ISOLATE_VENT_STATE
 class IDLE:
-    def __init__(self, FSM):
-        # super(IDLE, self).__init__(FSM)
-        print("instantiating the idle state")
 
-    def Enter(self):
-        print("inside of the idle state")
+    def execute(self, args):
+        print("entering the idle state")
+        return ISOLATE_VENT_STATE,{'value': 1234} #Can be anything
+
+    def exit(self):
+        print("inside the exit function of the idle state")
         # Close all of the relays
         # isolate()
         # Don't sleep here, because in this state most of the time
@@ -53,9 +52,7 @@ class IDLE:
     #         # Stay in IDLE
     #         pass
 
-
-def Exit(self):
-    print("inside the exit function of the idle state")
+    # exit
     # # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
     # # sleep (0.1)
     # isolate()  # close all of the relays
