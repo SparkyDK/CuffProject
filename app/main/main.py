@@ -4,7 +4,7 @@ from collections import deque
 
 from app.GUI import GUI
 from app.System import System
-from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES
+from CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES
 from app.filereaders.PressureReader import PressureReader
 from app.filereaders.ScheduleReader import ScheduleReader
 from app.pain_schedule import pain_schedule

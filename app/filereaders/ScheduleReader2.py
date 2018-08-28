@@ -1,4 +1,4 @@
-from app.constants.CONSTANTS import MAX_NUM_SCHEDULES, SCHEDULE_TYPES
+from CONSTANTS import MAX_NUM_SCHEDULES, SCHEDULE_TYPES
 
 
 class ScheduleReader2:
