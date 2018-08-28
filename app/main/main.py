@@ -11,13 +11,11 @@ import math
 
 def Read_Cuff_Pressure():
     # Do the A/D conversion and read the converted value
-    pass
     pressure_value = 50
-    converted_value = Convert_to_mm_Hg(pressure_value)
+    converted_value = Convert_to_mm_Hg(digital_value=pressure_value)
     return (converted_value)
 
-def Convert_to_mm_Hg(self, digital_value):
-    self.digital_value = digital_value
+def Convert_to_mm_Hg(digital_value):
     # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
     return (3*digital_value)
 
@@ -37,12 +35,12 @@ print ("main read import_schedule:", import_schedule)
 DEBUG = True
 Global_cnt = 0
 state_history = [None] * HISTORY_LENGTH
-past_states = deque(state_history , HISTORY_LENGTH)
+past_states = deque(state_history, HISTORY_LENGTH)
 pain_required = False
 current_counter = [] * max_num_schedules
-control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED':0, 'PAUSE':0, 'FORCE':0}
-user_args = {'GO' : 0, 'STOP': 0, 'ABORT': 0, 'UP':0, 'DOWN':0,\
-             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE':0}
+control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0}
+user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN':0,
+             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
 current_pressure = None
 
 try:
