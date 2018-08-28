@@ -64,12 +64,12 @@ time.clock()
 elapsed_time = 0
 
 gui = Display()
-gui.start()
+gui.__init__()
 
 while (True == True):
 
     # Keep a state history
-    returned_state = gui.FSM.GetCurState()
+    returned_state = airctrl.FSM.GetCurState()
     # pop out the highest-index entry from the state history
     past_states.popleft()
     # Add the newest state value to the lowest-index entry of the state history
@@ -86,6 +86,7 @@ while (True == True):
     elapsed_time = time.time() - start_time
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
         # Only process the pain schedule every time a second ticks
+        print (control_args)
         control_args = pain_schedule.update(current_counter, control_args, user_args)
 
     # Read the current air pressure in the patient's cuff
@@ -94,7 +95,7 @@ while (True == True):
     # Poll for user input and update the GUI based on the control arguments
     # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
     old_user_args = user_args
-    user_args = GUI.Display.update(current_counter, control_args, user_args)
+    user_args = gui.update(current_counter, control_args, user_args)
 
     # Update or override the control signals: {'PAIN','STARTED','SCHEDULE_INDEX','PAUSE','FORCE'}
     # Execute the state machine that implements the control decisions with updated control signals and pressure value
@@ -103,7 +104,7 @@ while (True == True):
         control_args, current_counter = airctrl.FSM.ControlDecisions(current_counter, imported_schedule,
                                                                      control_args, user_args,
                                                                      pressure_parameters, painh, painl)
-        airctrl.FSM.Execute()
+        airctrl.FSM.Execute(control_args)
 
     except KeyboardInterrupt:
         print("\nDone")

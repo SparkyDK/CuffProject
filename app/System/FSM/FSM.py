@@ -1,4 +1,5 @@
 from app.constants.CONSTANTS import MAX_NUM_SCHEDULES
+
 class FSM(object):
     def __init__(self, character):
         self.char = character
