@@ -1,5 +1,4 @@
-import State
-
+from app.System.states.State import State
 
 class IDLE(State):
     def __init__(self, FSM):
@@ -12,17 +11,15 @@ class IDLE(State):
         pass
 
     def Execute(self, args):
+        # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
+        #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
+        #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
         self.args = args
         # print "\n* IDLE * \twith args=",  self.args
-        self.Pain = self.args['PAIN']
-        self.Running = self.args['RUNNING']
-        self.P = self.args['P']
-        # while (P<Pup and P>Plow):
-        #    print ("In Idle")
-        if (self.Pain == 1):
+        if (self.args['PRESSURE'] == 1):
             if (self.Running == 1):
                 # Running a schedule
-                if (self.P < Plow):
+                if (self.args['PRESSURE'] < self.args['PAINL']):
                     # Pressure not high enough
                     self.FSM.ToTransition("toLOAD_RESERVOIR")
             else:
@@ -30,23 +27,21 @@ class IDLE(State):
                 self.FSM.ToTransition("toVENT")
         else:
             # No pain required
-            if (self.Running == 1):
+            if (self.args['STARTED'] == 1):
                 # No pain required in this schedule phase.
-                if (self.P > Patm):
+                if (self.args['PRESSURE'] > self.args['PATM']):
                     # Adjust relays to vent to keep P below Patm
                     self.FSM.ToTransition("toVENT")
-                    else:
-                    # Save solenoid wear and tear when idle by leaving them closed and staying in this state
+                else:
+                # Save solenoid wear and tear when idle by leaving them closed and staying in this state
                     pass
-        else:
-        # Don't let the user adjust the pain threshold if running a schedule.
-        # Stay in IDLE, unless a new entry is being entered by the user or if pressure creeps above atmospheric
-        if (self.P > Patm):
+            else:
+                # Don't let the user adjust the pain threshold if running a schedule.
+                # Stay in IDLE, unless a new entry is being entered by the user or if pressure creeps above atmospheric
+                pass
+        if (self.args['PRESSURE'] > self.args['PATM']):
             # Keep pressure at atmospheric pressure anyway, even if not running a schedule
             self.FSM.ToTransition("toVENT")
-        elif (Pnew == 1):
-            # Allow user to update pain pressure threshold
-            self.FSM.ToTransition("toNEW_ENTRY")
         else:
             # Stay in IDLE
             pass

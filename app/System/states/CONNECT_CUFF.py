@@ -1,5 +1,4 @@
-import State
-
+from app.System.states.State import State
 
 class CONNECT_CUFF(State):
     def __init__(self, FSM):
@@ -11,29 +10,26 @@ class CONNECT_CUFF(State):
 
     def Execute(self, args):
         self.args = args
-        self.P = self.args['P']
-        self.Pain = self.args['PAIN']
-        print
-        "\n* CONNECT_CUFF * \twith args:", self.args
-        if (self.Pain == 1):
-            if (self.P < Plow):
+        print ("\n* CONNECT_CUFF * \twith args:", self.args)
+        if (self.args['PAIN'] == 1):
+            if (self.args['PRESSURE'] < Plow):
                 # Need to add air
                 print
                 "Still need to add more air with P=", self.P, "Plow=", Plow, " and Pup=", Pup
                 self.FSM.ToTransition("toLOAD_RESERVOIR")
-            elif (self.P >= Plow and self.P <= Pup):
+            elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 # In the zone
-                print
-                "In the zone with P=", self.P
+                print ("In the zone with P=", self.args['PRESSURE'])
                 self.FSM.ToTransition("toIDLE")
-            elif (self.P >= Plow and self.P > Pup):
+            elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] > self.args['PAINH']):
                 # Overshot the maximum pain pressure value
                 print
                 "Overshot pressure maximum with P=", self.P, "Plow=", Plow, " and Pup=", Pup
                 self.FSM.ToTransition("toRELEASE")
             else:
                 print("Error!  Something strange going on with the pressure thresholds")
-                print("Current Pressure=", self.P, " and Plow=", Plow, " and Pup=", Pup)
+                print("Current Pressure=", self.args['PRESSURE'])
+                print(" and Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
         else:
             # No pain required
             self.FSM.ToTransition("toVENT")

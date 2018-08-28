@@ -1,5 +1,4 @@
-import State
-
+from app.System.states.State import State
 
 class ISOLATE_VENT(State):
     def __init__(self, FSM):

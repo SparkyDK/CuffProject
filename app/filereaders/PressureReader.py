@@ -31,6 +31,8 @@ class PressureReader:
                     # if (set(PRESSURE_TYPES) >= set(actions.keys())):
                     painl = int(actions['PAINVALUE'] - actions['PAINTOLERANCE'])
                     painh = int(actions['PAINVALUE'] + actions['PAINTOLERANCE'])
+                    #actions['PAINL'] = painl
+                    #actions['PAINH'] = painh
                     print("Calculated upper pain threshold=", painh, " and lower threshold=", painl)
                     if (int(actions['PMAX']) > painh and painl < painh and int(actions['PATM']) < painl):
                         # print ("Read the pressure parametric values:", actions)

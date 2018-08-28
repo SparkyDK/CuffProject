@@ -1,5 +1,4 @@
-import State
-
+from app.System.states.State import State
 
 class LOAD_RESERVOIR(State):
     def __init__(self, FSM):
@@ -11,37 +10,33 @@ class LOAD_RESERVOIR(State):
 
     def Execute(self, args):
         self.args = args
-        self.P = self.args['P']
-        self.Pain = self.args['PAIN']
-        print
-        "\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args
-        if (self.Pain == 1):
-            if (int(self.P) < Plow):
+        print ("\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args)
+        if (self.args['PAIN'] == 1):
+            if (int(self.args['PRESSURE']) < self.args['PAINL']):
                 # Still on track to add pain pressure
-                print
-                "Going to add more air with P=", self.P, "Plow=", Plow, " and Pup=", Pup, "at time: ", time.asctime(
-                    time.localtime(time.time())), "elapsed (", time.time() - start_time, ")"
+                print ("Going to add more air with P=", self.args['PRESSURE'])
+                print ("Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
+                print ("at time: ", time.asctime(time.localtime(time.time())))
+                print ("elapsed (", time.time() - start_time, ")")
                 self.FSM.ToTransition("toCONNECT_CUFF")
-            elif (self.P >= Plow and self.P <= Pup):
-                print
-                "Pain pressure looks right, so we are done with P=", self.P
+            elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
+                print ("Pain pressure looks right, so we are done with P=", self.args['RESSURE'])
                 self.FSM.ToTransition("toIDLE")
             else:
                 # Pressure is above the min and max pain thresholds
-                print
-                "Not sure how we got here with P=", self.P, "but pain pressure is too high"
-                if (self.P > Pmax):
-                    print
-                    "Emergency venting P=", self.P
+                print ("Not sure how we got here with P=", self.args['PRESSURE'])
+                print ("but pain pressure is too high")
+                if (self.args['PRESSURE'] > self.args['PMAX']):
+                    print ("Emergency venting P=", self.args['PRESSURE'])
                     self.FSM.ToTransition("toVENT")
                 else:
-                    print
-                    "Controlled venting P=", self.P, "Plow=", Plow, " and Pup=", Pup
+                    print ("Controlled venting P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'])
+                    print (" and Pup=", self.args['PAINH'])
                     self.FSM.ToTransition("toRELEASE")
         else:
             # We should usually never get here, without requiring pain.  This shouldn't happen, so get out safely, venting
-            print
-            "This usually doesn't happen with P=", self.P, " and Pain=", self.Pain
+            print ("This usually doesn't happen with P=", self.args['PRESSURE'])
+            print (" and Pain=", self.args['PAIN'])
             self.FSM.ToTransition("toISOLATE_VENT")
 
     def Exit(self):

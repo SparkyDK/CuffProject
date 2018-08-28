@@ -3,7 +3,6 @@ from app.System.states.IDLE import IDLE
 from app.System.states.CONNECT_CUFF import CONNECT_CUFF
 from app.System.states.ISOLATE_VENT import ISOLATE_VENT
 from app.System.states.LOAD_RESERVOIR import LOAD_RESERVOIR
-from app.System.states.NEW_ENTRY import NEW_ENTRY
 from app.System.states.RELEASE import RELEASE
 from app.System.states.VENT import VENT
 from app.System.FSM.transition import Transition
@@ -21,7 +20,6 @@ class System(Char):
         self.FSM.AddState("CONNECT_CUFF", CONNECT_CUFF(self.FSM))
         self.FSM.AddState("RELEASE", RELEASE(self.FSM))
         self.FSM.AddState("ISOLATE_VENT", ISOLATE_VENT(self.FSM))
-        self.FSM.AddState("NEW_ENTRY", NEW_ENTRY(self.FSM))
 
         # TRANSITIONS
         self.FSM.AddTransition("toIDLE", Transition("IDLE"))
@@ -30,7 +28,6 @@ class System(Char):
         self.FSM.AddTransition("toCONNECT_CUFF", Transition("CONNECT_CUFF"))
         self.FSM.AddTransition("toRELEASE", Transition("RELEASE"))
         self.FSM.AddTransition("toISOLATE_VENT", Transition("ISOLATE_VENT"))
-        self.FSM.AddTransition("toNEW_ENTRY", Transition("NEW_ENTRY"))
         # default to IDLE
         self.FSM.SetState("ISOLATE_VENT")
 

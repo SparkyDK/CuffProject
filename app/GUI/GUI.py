@@ -25,9 +25,11 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         self.control_args = control_args
         self.user_args = user_args
         # current_counter = [] * max_num_schedules
-        # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0}
-        # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0
-        #              'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
+        # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
+        #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
+        #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
+        # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
+        #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
         return (self.user_args)
 
     def count(self, *varargs):
