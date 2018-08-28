@@ -1,5 +1,4 @@
-import State
-
+from app.System.states.State import State
 
 class VENT(State):
     def __init__(self, FSM):
@@ -11,11 +10,9 @@ class VENT(State):
 
     def Execute(self, args):
         self.args = args
-        self.P = self.args['P']
-        print
-        "\n* VENT * \t with args:", self.args
+        print ("\n* VENT * \t with args:", self.args)
         # while (self.P>Patm):
-        if (self.P > Patm):
+        if (self.args['PRESSURE'] > self.args['PATM']):
             # Stay in the VENT state
             print("Still need to vent, since pressure is greater than atmospheric pressure")
         else:

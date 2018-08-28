@@ -1,5 +1,5 @@
-import State
-
+from app.System.states.State import State
+import time
 
 class RELEASE(State):
     def __init__(self, FSM):
@@ -11,15 +11,12 @@ class RELEASE(State):
 
     def Execute(self, args):
         self.args = args
-        self.P = self.args['P']
-        self.Pain = self.args['PAIN']
-        print
-        "\n* RELEASE * \t with args:", self.args
-        if (self.Pain == 1):
-            if (self.P < Plow):
+        print ("\n* RELEASE * \t with args:", self.args)
+        if (self.args['PAIN'] == 1):
+            if (self.args['PRESSURE'] < self.args['PAINL']):
                 # Need to top up pressure again
                 self.FSM.ToTransition("toLOAD_RESERVOIR")
-            elif (self.P > Plow and self.P < Pup):
+            elif (self.args['PRESSURE'] > self.args['PAINL'] and self.args['PRESSURE'] < self.args['PAINH']):
                 # Pressure in the zone
                 self.FSM.ToTransition("toIDLE")
             else:
@@ -32,6 +29,7 @@ class RELEASE(State):
     def Exit(self):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
         # sleep (0.1)
-        isolate()  # close all of the relays
-        sleep(0.1)  # Give the relays time to close
+        # close all of the relays
+
+        time.sleep(0.1)  # Give the relays time to close
         print("Exiting Vent")

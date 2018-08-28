@@ -6,6 +6,7 @@ from app.System.states.LOAD_RESERVOIR import LOAD_RESERVOIR
 from app.System.states.RELEASE import RELEASE
 from app.System.states.VENT import VENT
 from app.System.FSM.transition import Transition
+from app.System.FSM.FSM import FSM
 
 Char = type("Char", (object,), {})
 

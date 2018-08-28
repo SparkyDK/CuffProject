@@ -1,4 +1,5 @@
 from app.System.states.State import State
+import time
 
 class ISOLATE_VENT(State):
     def __init__(self, FSM):
@@ -7,8 +8,9 @@ class ISOLATE_VENT(State):
     def Enter(self):
         # May need to sleep here for a bit depending on how long previous relay opening and air transfer takes
         # sleep (0.1)
-        isolate()  # close all of the relays, specifically the tank relay
-        sleep(0.1)  # Give the relays time to close
+        # close all of the relays, specifically the tank relay
+
+        time.sleep(0.1)  # Give the relays time to close
         # Open the relays to the cuff and from the reservoir, but keep the tank relay closed
         pass
 

@@ -2,7 +2,8 @@ from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES, DEBUG
 from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
 from app.pain_schedule.pain_schedule import pain_schedule
-from app.GUI import GUI
+from app.GUI.GUI import Display
+
 from app.System import System
 
 import time
@@ -62,8 +63,8 @@ start_time = time.time()
 time.clock()
 elapsed_time = 0
 
-gui = GUI.Display()
-gui.run()
+gui = Display()
+gui.start()
 
 while (True == True):
 

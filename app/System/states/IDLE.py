@@ -1,4 +1,5 @@
 from app.System.states.State import State
+import time
 
 class IDLE(State):
     def __init__(self, FSM):
@@ -6,7 +7,7 @@ class IDLE(State):
 
     def Enter(self):
         # Close all of the relays
-        isolate()
+
         # Don't sleep here, because in this state most of the time
         pass
 
@@ -50,6 +51,7 @@ class IDLE(State):
 def Exit(self):
     # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
     # sleep (0.1)
-    isolate()  # close all of the relays
-    sleep(0.1)  # Give the relays time to close, although they usually will have had lots of time to do this
+    # close all of the relays
+
+    time.sleep(0.1)  # Give the relays time to close, although they usually will have had lots of time to do this
     print("Exiting Idle")

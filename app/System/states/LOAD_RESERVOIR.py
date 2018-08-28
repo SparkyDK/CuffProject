@@ -1,4 +1,5 @@
 from app.System.states.State import State
+import time
 
 class LOAD_RESERVOIR(State):
     def __init__(self, FSM):
@@ -17,7 +18,6 @@ class LOAD_RESERVOIR(State):
                 print ("Going to add more air with P=", self.args['PRESSURE'])
                 print ("Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
                 print ("at time: ", time.asctime(time.localtime(time.time())))
-                print ("elapsed (", time.time() - start_time, ")")
                 self.FSM.ToTransition("toCONNECT_CUFF")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 print ("Pain pressure looks right, so we are done with P=", self.args['RESSURE'])
@@ -42,6 +42,7 @@ class LOAD_RESERVOIR(State):
     def Exit(self):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
         # sleep (0.1)
-        isolate()  # close all of the relays
-        sleep(0.1)  # Give the relays time to close
+        # close all of the relays
+
+        time.sleep(0.1)  # Give the relays time to close
         print("Exiting Load Reservoir")
