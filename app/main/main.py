@@ -37,11 +37,14 @@ imported_schedule = ScheduleReader().read( filename="./tests/input_files/Schedul
 max_num_schedules = len(imported_schedule)
 print ("main read imported_schedule:", imported_schedule)
 
+current_counter = [0] * max_num_schedules
+for i in range(0, MAX_NUM_SCHEDULES):
+    current_counter[i] = imported_schedule[i][1]
+
 Global_cnt = 0
 state_history = [None] * HISTORY_LENGTH
 past_states = deque(state_history, HISTORY_LENGTH)
 pain_required = False
-current_counter = [0] * max_num_schedules
 control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
                 'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
                 'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
