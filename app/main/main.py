@@ -1,8 +1,11 @@
+from kivy.config import Config
+Config.set('kivy', 'keyboard_mode', 'systemandmulti')
+
 from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES, DEBUG
 from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
 from app.pain_schedule.pain_schedule import pain_schedule
-from app.GUI.GUI import Display
+from app.GUI.GUI import DisplayApp
 
 from app.System import System
 
@@ -23,7 +26,6 @@ def Convert_to_mm_Hg(digital_value):
 imported_schedule = []
 for i in range(0, MAX_NUM_SCHEDULES):
     imported_schedule.append([])
-print("TEST:", imported_schedule)
 
 # Returns the user-provided pressure parameter values as a dictionary with keys of PMAX, PAINL, PAINH, PATM
 pressure_parameters = PressureReader().read(filename="./tests/input_files/Pressure_Values.txt")
@@ -66,8 +68,8 @@ start_time = time.time()
 time.clock()
 elapsed_time = 0
 
-gui = Display()
-gui.__init__()
+gui = DisplayApp()
+gui.run()
 
 while (True == True):
 
@@ -89,9 +91,9 @@ while (True == True):
     elapsed_time = time.time() - start_time
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
         # Only process the pain schedule every time a second ticks
-        print (control_args)
-        control_args2 = pain_schedule().update(current_counter, control_args, user_args)
-        print (control_args2)
+        # print (control_args)
+        control_args = pain_schedule().update(current_counter, control_args, user_args)
+        # print (control_args2)
 
     # Read the current air pressure in the patient's cuff
     control_args['Pressure'] = Read_Cuff_Pressure()

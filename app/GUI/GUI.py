@@ -1,4 +1,4 @@
-# kivy.require("1.8.0")
+#kivy.require("1.8.0")
 from kivy.base import runTouchApp
 
 from kivy.uix.floatlayout import FloatLayout
@@ -13,24 +13,11 @@ from datetime import datetime
 
 state = 0
 
-
 class Display(FloatLayout):  # intro <display> and tells actions/functions
     def __init__(self, **kwargs):
         super(Display, self).__init__(**kwargs)
         print(kwargs)
         # self.txt = 170
-
-    def update(self, current_counter, control_args, user_args):
-        self.current_counter = current_counter
-        self.control_args = control_args
-        self.user_args = user_args
-        # current_counter = [] * max_num_schedules
-        # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
-        #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
-        #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
-        # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
-        #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
-        return (self.user_args)
 
     def count(self, *varargs):
         self.start = datetime.now()
@@ -72,17 +59,27 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
 
 class DisplayApp(App):  # defines app and returns display
-
     # desired_pressure = Patm
-
     desired_pressure = 0
     ENTER = 0
     STOP = 0
     GO = 0
     ABORT = 0
-
     current_pressure = 0
     disp = Display()
+
+    def update(self, current_counter, control_args, user_args):
+        self.current_counter = current_counter
+        self.control_args = control_args
+        self.user_args = user_args
+        # current_counter = [] * max_num_schedules
+        # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
+        #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
+        #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
+        # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
+        #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
+        return (self.user_args)
+
 
 
 def build(self):
