@@ -4,4 +4,4 @@ class pain_schedule:
 
         actions = PressureReader().read("./tests/test_files/TEST_Pressure_Values.txt")
         self.assertEqual({'PAINH': '920', 'PAINL': '900', 'PATM': '750', 'PMAX': '970'}, actions)
-        return(control_args)
+        return (control_args)

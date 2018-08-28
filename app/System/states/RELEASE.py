@@ -1,4 +1,6 @@
 import State
+
+
 class RELEASE(State):
     def __init__(self, FSM):
         super(RELEASE, self).__init__(FSM)
@@ -11,7 +13,8 @@ class RELEASE(State):
         self.args = args
         self.P = self.args['P']
         self.Pain = self.args['PAIN']
-        print "\n* RELEASE * \t with args:", self.args
+        print
+        "\n* RELEASE * \t with args:", self.args
         if (self.Pain == 1):
             if (self.P < Plow):
                 # Need to top up pressure again
@@ -29,6 +32,6 @@ class RELEASE(State):
     def Exit(self):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
         # sleep (0.1)
-        isolate()   # close all of the relays
-        sleep (0.1) # Give the relays time to close
-        print ("Exiting Vent")
+        isolate()  # close all of the relays
+        sleep(0.1)  # Give the relays time to close
+        print("Exiting Vent")
