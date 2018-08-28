@@ -1,7 +1,6 @@
-from app.FSM import FSM
+from app.System.FSM import FSM
 
 Char = type("Char", (object,), {})
-
 
 class System(Char):
     def __init__(self):

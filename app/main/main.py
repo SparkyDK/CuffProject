@@ -9,8 +9,6 @@ import time
 from collections import deque
 import math
 
-
-
 def Read_Cuff_Pressure():
     # Do the A/D conversion and read the converted value
     pass
@@ -23,8 +21,8 @@ def Convert_to_mm_Hg(self, digital_value):
     # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
     return (3*digital_value)
 
-
-imported_schedule = []for i in range(0, MAX_NUM_SCHEDULES): imported_schedule.append([])
+imported_schedule = []
+for i in range(0, MAX_NUM_SCHEDULES): imported_schedule.append([])
 print("TEST:", imported_schedule)
 
 # Returns the user-provided pressure parameter values as a dictionary with keys of PMAX, PAINL, PAINH, PATM
@@ -32,7 +30,7 @@ pressure_parameters = PressureReader().read(filename="./tests/input_files/Pressu
 print ("pressure_parameters", pressure_parameters)
 
 # Returns an array of tuples, with the desired action of Pain/Nil and the duration of each of those actions
-import_schedule = ScheduleReader().read( filename="./tests/input_files/Schedule.txt", file_schedule=import_schedule )
+import_schedule = ScheduleReader().read( filename="./tests/input_files/Schedule.txt", file_schedule=imported_schedule )
 max_num_schedules = len(import_schedule)
 print ("main read import_schedule:", import_schedule)
 
@@ -49,9 +47,10 @@ current_pressure = None
 
 try:
     # Create the system state machine that implements the control decisions
-    airctrl = System()
+    airctrl = System.System()
     # Vent the cuff first
     airctrl.FSM.SetState("ISOLATE_VENT")
+    airctrl.Execute()
 except KeyboardInterrupt:
     print("\nDone")
 
@@ -60,7 +59,7 @@ start_time = time.time()
 time.clock()
 elapsed_time = 0
 
-gui = Display()
+gui = GUI.Display()
 gui.run()
 
 while (True == True):
