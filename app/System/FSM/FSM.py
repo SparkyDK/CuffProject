@@ -98,7 +98,8 @@ class FSM(object):
             print ("Updated pain pressure values: painl=", self.control_args['PAINL'],
                    " painh=", self.control_args['PAINH'], " painvalue=", self.control_args['PAINVALUE'])
         else:
-            print("Not doing anything for the case for the control arguments:", control_args)
+            pass
+            #print("Not doing anything for the case for the control arguments:", control_args)
 
         return (self.control_args, self.current_counter)
 

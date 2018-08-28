@@ -41,7 +41,7 @@ Global_cnt = 0
 state_history = [None] * HISTORY_LENGTH
 past_states = deque(state_history, HISTORY_LENGTH)
 pain_required = False
-current_counter = [] * max_num_schedules
+current_counter = [0] * max_num_schedules
 control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
                 'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
                 'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
@@ -76,8 +76,8 @@ while (True == True):
     past_states.append(returned_state)
 
     localtime = time.asctime(time.localtime(time.time()))
-    #if (DEBUG == True and True == False):
-    if (DEBUG == True):
+    if (DEBUG == True and True == False):
+    #if (DEBUG == True):
         #    if (DEBUG==True):
         print (localtime, " (elapsed=", elapsed_time)
 
@@ -87,7 +87,8 @@ while (True == True):
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
         # Only process the pain schedule every time a second ticks
         print (control_args)
-        control_args = pain_schedule.update(current_counter, control_args, user_args)
+        control_args2 = pain_schedule().update(current_counter, control_args, user_args)
+        print (control_args2)
 
     # Read the current air pressure in the patient's cuff
     control_args['Pressure'] = Read_Cuff_Pressure()
