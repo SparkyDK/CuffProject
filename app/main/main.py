@@ -1,7 +1,7 @@
 from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES
 from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
-from app.pain_schedule import pain_schedule
+from app.pain_schedule.pain_schedule import pain_schedule
 from app.GUI import GUI
 from app.System import System
 
@@ -20,12 +20,16 @@ def Convert_to_mm_Hg(digital_value):
     return (3*digital_value)
 
 imported_schedule = []
-for i in range(0, MAX_NUM_SCHEDULES): imported_schedule.append([])
+for i in range(0, MAX_NUM_SCHEDULES):
+    imported_schedule.append([])
 print("TEST:", imported_schedule)
 
 # Returns the user-provided pressure parameter values as a dictionary with keys of PMAX, PAINL, PAINH, PATM
 pressure_parameters = PressureReader().read(filename="./tests/input_files/Pressure_Values.txt")
-print ("pressure_parameters", pressure_parameters)
+painl = int(pressure_parameters['PAINVALUE'] - pressure_parameters['PAINTOLERANCE'])
+painh = int(pressure_parameters['PAINVALUE'] + pressure_parameters['PAINTOLERANCE'])
+
+print ("pressure_parameters", pressure_parameters, "painh=", painh, "painl=", painl)
 
 # Returns an array of tuples, with the desired action of Pain/Nil and the duration of each of those actions
 import_schedule = ScheduleReader().read( filename="./tests/input_files/Schedule.txt", file_schedule=imported_schedule )
@@ -38,17 +42,19 @@ state_history = [None] * HISTORY_LENGTH
 past_states = deque(state_history, HISTORY_LENGTH)
 pain_required = False
 current_counter = [] * max_num_schedules
-control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0}
-user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN':0,
+control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
+                'PAINH': painh, 'PAINL': painl,
+                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
+user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
              'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
-current_pressure = None
+current_pressure = 0
 
 try:
     # Create the system state machine that implements the control decisions
     airctrl = System.System()
     # Vent the cuff first
     airctrl.FSM.SetState("ISOLATE_VENT")
-    airctrl.Execute()
+    airctrl.Execute(control_args)
 except KeyboardInterrupt:
     print("\nDone")
 
@@ -81,22 +87,16 @@ while (True == True):
 
     # Poll for user input and update the GUI based on the control arguments
     # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
+    old_user_args = user_args
     user_args = GUI.Display.update(current_counter, control_args, user_args)
 
     # Update or override the control signals: {'PAIN','STARTED','SCHEDULE_INDEX','PAUSE','FORCE'}
-    # NOTE: A FORCE is equivalent to an untimed PAIN cycle in PAUSE mode (PAUSE alone makes pressure NIL, otherwise)
-    #       OVERRIDE_PRESSURE (sampled from user_args) is used to create new values of PAINH and PAINL
-    #       STOP and ABORT both do an ABORT in the FORCE mode of operation, venting pressure, resetting index, etc.
     # Execute the state machine that implements the control decisions with updated control signals and pressure value
     try:
         old_control_args = control_args
-        control_args = airctrl.FSM.ControlDecisions(current_counter, control_args, user_args)
+        control_args = airctrl.FSM.ControlDecisions(current_counter, control_args, user_args,
+                                                    pressure_parameters, painh, painl)
         airctrl.FSM.Execute()
 
     except KeyboardInterrupt:
-        print ("\nDone")
-
-
-
-
-
+        print("\nDone")

@@ -23,11 +23,12 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
     def update(self, current_counter, control_args, user_args):
         self.current_counter = current_counter
         self.control_args = control_args
+        self.user_args = user_args
         # current_counter = [] * max_num_schedules
         # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0}
         # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0
         #              'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
-        return (user_args)
+        return (self.user_args)
 
     def count(self, *varargs):
         self.start = datetime.now()
