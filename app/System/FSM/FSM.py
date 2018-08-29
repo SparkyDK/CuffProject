@@ -47,7 +47,6 @@ class FSM(object):
                 self.current_counter[self.control_args['SCHEDULE_INDEX']] =\
                     -1 * self.schedule[self.control_args['SCHEDULE_INDEX']][1]
                 self.control_args['SCHEDULE_INDEX'] += 1
-
         else:
             # Done executing the schedule sequence
             print("Finished executing schedule")
@@ -58,12 +57,14 @@ class FSM(object):
             schedule_finished = True
         return (self.control_args, schedule_finished)
 
+    #airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args,
+    # old_user_args, user_args, pressure_parameters, painh, painl, second_tickover, toggle)
+
     def ControlDecisions(self, current_counter, schedule, control_args, old_user_args, user_args,
-                         pressure_parameters, painh, painl, second_tickover):
+                         pressure_parameters, painh, painl, second_tickover, toggle):
         # A FORCE is equivalent to an untimed PAIN cycle in PAUSE mode (PAUSE alone makes pressure NIL, otherwise)
         # OVERRIDE_PRESSURE (sampled from user_args) is used to create new values of PAINH and PAINL
         # STOP and ABORT both do an ABORT in the FORCE mode of operation, venting pressure, resetting index, etc.
-
         self.current_counter = current_counter
         self.schedule = schedule
         self.control_args = control_args
@@ -72,12 +73,18 @@ class FSM(object):
         self.painh = painh
         self.painl = painl
         self.second_tickover = second_tickover
+
+        if (toggle > 0 and toggle <=15):
+            toggle +=1
+            print ("CTRL: user=", self.user_args, "   control=", self.control_args)
+        else:
+            toggle = 0
+
         # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
         #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
         # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
         #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
         #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
-
         schedule_finished = False
 
         if (self.user_args['ABORT'] == 1):
@@ -89,18 +96,19 @@ class FSM(object):
             self.control_args['PAINH'] = int(pressure_parameters['PAINVALUE'] + pressure_parameters['PAINTOLERANCE'])
             for i in range (0, MAX_NUM_SCHEDULES):
                 self.current_counter[i] = schedule[i][1]
-            print ("Schedule values for counter: ", schedule[1])
+            print ("Schedule values for counter: ", schedule[i][1])
             self.SetState("ISOLATE_VENT")
         elif (self.control_args['STARTED'] == 1):
             # Pain schedule is ongoing
             if (self.control_args['PAUSE'] == 0):
                 # Not in pause mode yet
                 # Ignore the STOP, if already paused or if not running a schedule already
-                if (self.old_user_args['STOP'] == 1 and self.user_args['STOP'] == 0):
+                #if (self.old_user_args['STOP'] == 1 and self.user_args['STOP'] == 0):
+                if (self.old_user_args['STOP'] == 1):
+                    self.control_args['PAUSE'] = 1
                     # If running a schedule and a pause is requested and not already paused, then we are now in pause
                     print ("CTRL: User pressed and just released STOP during an unpaused and running schedule")
                     print (" in phase ", self.control_args['SCHEDULE_INDEX'], ".... now going to pause that schedule")
-                    self.control_args['PAUSE'] = 1
                     if (self.control_args['PAIN']==1):
                         # Don't pause in a pain state... go backwards to the end of the nearest NIL phase
                         print ("CTRL: User attempting to pause in a pain state... going to prevent this")
@@ -129,20 +137,27 @@ class FSM(object):
                     if (second_tickover == True):
                         self.control_args, schedule_finished = \
                             self.process_pain_schedule(self.control_args, self.schedule)
-
-        elif (self.old_user_args['GO'] == 1 and self.user_args['GO'] == 0):
-            print("CTRL: User requested a schedule start and just released the GO button")
+        #elif (self.old_user_args['GO'] == 1 and self.user_args['GO'] == 0):
+        elif (self.old_user_args['GO'] == 1):
+            # Schedule start requested, but no schedule currently running
+            print("CTRL: ------------> User requested a schedule start and we detected pressing of the GO button")
+            self.control_args['PAUSE'] = 0
             # schedule start requested
             if (self.control_args['STARTED'] == 0):
+                # this should be an unecessary check, given the elif relationship with the previous identical check
                 print ("Starting a cycle")
-                # No schedule started yet, but ignore GO button if already started
-                self.control_args['STARTED'] = 1; self.control_args['SCHEDULE_INDEX'] = 0
-                self.control_args['PAIN'] = 0; self.control_args['PAUSE'] = 0
+                # No schedule started yet
+                self.control_args['STARTED']=1; self.control_args['SCHEDULE_INDEX']=0; self.control_args['PAIN']=0
                 #print("current_counter: ", current_counter)
                 #print("schedule: ", schedule)
                 for i in range (0, MAX_NUM_SCHEDULES):
                     self.current_counter[i] = schedule[i][1]
-        elif (self.old_user_args['OVERRIDE'] == 1 and self.user_args['OVERRIDE'] == 0):
+            else:
+                # ignore the GO button if already started (could even clear the user input....)
+                pass
+        #elif (self.old_user_args['OVERRIDE'] == 1 and self.user_args['OVERRIDE'] == 0):
+        elif (self.user_args['OVERRIDE'] == 1):
+            # could set this value many times over... but that's OK
             print("CTRL: User changed pain pressure value to ", self.user_args['override_pressure'])
             print (" and just released the NEW/ENTER button")
             # New pain threshold value entered by user is used to adjust the pressure parameters
@@ -155,7 +170,7 @@ class FSM(object):
             pass
             #print("CTRL: Not doing anything for the case for the control arguments:", self.control_args)
 
-        return (self.control_args, self.current_counter, schedule_finished)
+        return (self.control_args, self.current_counter, schedule_finished, toggle)
 
     def Execute(self, args):
         self.args = args

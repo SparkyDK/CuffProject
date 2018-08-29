@@ -31,6 +31,7 @@ def on_press(key):
 
 keypress = None
 old_keypress = None
+toggle = 0
 
 def on_release(key):
     global keypress
@@ -84,7 +85,7 @@ pressure_parameters = PressureReader().read(filename="./app/input_files/Pressure
 painl = int(pressure_parameters['PAINVALUE'] - pressure_parameters['PAINTOLERANCE'])
 painh = int(pressure_parameters['PAINVALUE'] + pressure_parameters['PAINTOLERANCE'])
 
-print ("pressure_parameters", pressure_parameters, "painh=", painh, "painl=", painl)
+print ("pressure_parameters", pressure_parameters, "painh=", painh, "and painl=", painl)
 
 # Returns an array of tuples, with the desired action of Pain/Nil and the duration of each of those actions
 imported_schedule = ScheduleReader().read( filename="./app/input_files/Schedule.txt", file_schedule=imported_schedule )
@@ -155,7 +156,7 @@ while ( True == True ):
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
         # Only process the pain schedule each time a second ticks to the next truncated value
         second_tickover = True
-        print("*********** (", Global_cnt, ") Elapsed time:", elapsed_time, "keypress=", keypress)
+        print("**** (", Global_cnt, ") Elapsed:", elapsed_time, "keypress=", keypress, "ctrl:", control_args)
         if (keypress != old_keypress):
             old_keypress = keypress
             print ("New key pressed: ", keypress)
@@ -192,8 +193,10 @@ while ( True == True ):
             else:
                 pass
             print ("____________________________________________")
-            print ("Toggled something:", user_args)
+            print ("Toggled something (old):", old_user_args)
+            print ("Toggled something (new):", user_args)
             print ("____________________________________________")
+            toggle += 1
             time.sleep(1)
 
         # print (control_args2)
@@ -210,9 +213,9 @@ while ( True == True ):
     # Execute the state machine that implements the control decisions with updated control signals and pressure value
     try:
         old_control_args = control_args.copy()
-        control_args, current_counter, schedule_finished = \
-            airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,
-                                         pressure_parameters, painh, painl, second_tickover)
+        control_args, current_counter, schedule_finished, toggle = \
+            airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,\
+                                         pressure_parameters, painh, painl, second_tickover, toggle)
         if (schedule_finished == True): airctrl.FSM.SetState("ISOLATE_VENT")
         # Execute the state machine
         airctrl.FSM.Execute(control_args)
