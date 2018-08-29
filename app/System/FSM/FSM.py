@@ -90,7 +90,7 @@ class FSM(object):
 
 
     def ControlDecisions(self, current_counter, schedule, control_args, old_user_args, user_args,
-                         pressure_parameters, painh, painl, second_tickover, schedule_finished, toggle):
+                         pressure_parameters, second_tickover, schedule_finished, toggle):
         # A FORCE is equivalent to an untimed PAIN cycle in PAUSE mode (PAUSE alone makes pressure NIL, otherwise)
         # OVERRIDE_PRESSURE (sampled from user_args) is used to create new values of PAINH and PAINL
         # STOP and ABORT both do an ABORT in the FORCE mode of operation, venting pressure, resetting index, etc.
@@ -100,8 +100,6 @@ class FSM(object):
         self.old_user_args = old_user_args
         self.user_args = user_args
         self.pressure_parameters = pressure_parameters
-        self.painh = painh
-        self.painl = painl
         self.second_tickover = second_tickover
         self.schedule_finished = schedule_finished
         self.toggle = toggle
@@ -185,11 +183,20 @@ class FSM(object):
                 print("CTRL: User requested pain pressure value change to ", self.user_args['override_pressure'])
                 print(" by changing the value and pressing the NEW/ENTER button")
                 override_value = int(self.user_args['override_pressure'])
-                self.pressure_parameters['PAINVALUE'] = override_value
-                self.control_args['PAINL'] = override_value - self.pressure_parameters['PAINTOLERANCE']
-                self.control_args['PAINL'] = override_value + self.pressure_parameters['PAINTOLERANCE']
-                print("Updated pain pressure values: PAINL=", self.control_args['PAINL'])
-                print(" PAINH=", self.control_args['PAINH'], " PAINVALUE=", pressure_parameters['PAINVALUE'])
+                painl = override_value - self.pressure_parameters['PAINTOLERANCE']
+                painh = override_value + self.pressure_parameters['PAINTOLERANCE']
+                patm = self.pressure_parameters['PATM']
+                pmax = self.pressure_parameters['PMAX']
+                if (pmax > painh and painl < painh and patm < painl):
+                    self.pressure_parameters['PAINVALUE'] = override_value
+                    self.control_args['PAINL'] = override_value - self.pressure_parameters['PAINTOLERANCE']
+                    self.control_args['PAINH'] = override_value + self.pressure_parameters['PAINTOLERANCE']
+                    print("Updated pain pressure values: PAINL=", self.control_args['PAINL'])
+                    print(" PAINH=", self.control_args['PAINH'], " PAINVALUE=", pressure_parameters['PAINVALUE'])
+                else:
+                    print ("Something wrong with the following pressure values (they should decrease monotonically):")
+                    print ("Pmax=", pmax, "painh=", painh, "painl=", painl, "Patm=", patm)
+                    print ("Not going to change anything....")
 
         if (self.schedule_finished == True and self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 0):
         # We can repair the schedule index, so that it is not left out of range after pain schedule completion

@@ -154,11 +154,15 @@ while ( True == True ):
     # localtime = time.asctime(time.localtime(time.time()) )
     old_elapsed_time = elapsed_time
     elapsed_time = time.time() - start_time
+
     second_tickover = False
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
         # Only process the pain schedule each time a second ticks to the next truncated value
         second_tickover = True
-        print("*** <key:",old_keypress,"> (", Global_cnt, ") Elapsed:", elapsed_time, "ctrl:", control_args)
+
+        print("**** <key:", old_keypress, "> (", Global_cnt, ") Elapsed:", elapsed_time, "keypress=", keypress, "ctrl:",
+              control_args)
+
         if (keypress != old_keypress):
             old_keypress = keypress
             print ("New key pressed: ", keypress)
@@ -188,10 +192,17 @@ while ( True == True ):
                 print("'d' pressed")
                 if (user_args['DOWN']==1): user_args['DOWN'] = 0
                 else: user_args['DOWN'] = 1
+            elif (keypress == "'r'"):
+                control_args['PRESSURE'] += pressure_parameters['PAINTOLERANCE']
+                print("'r' pressed to raise the pressure value to ", control_args['PRESSURE'])
+            elif (keypress == "'l'"):
+                control_args['PRESSURE'] -= pressure_parameters['PAINTOLERANCE']
+                print("'l' pressed to lower the pressure value to ", control_args['PRESSURE'])
             elif (keypress == "'o'"):
                 print ("'o' pressed")
-                user_args['override_pressure'] = 200
-                user_args['OVERRIDE']=1
+                user_args['override_pressure'] = 850
+                if (user_args['OVERRIDE']==1): user_args['OVERRIDE'] = 0
+                else: user_args['OVERRIDE'] = 1
             else:
                 pass
             print ("____________________________________________")
@@ -217,7 +228,7 @@ while ( True == True ):
         old_control_args = control_args.copy()
         control_args, current_counter, pressure_parameters, schedule_finished, toggle = \
             airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,\
-                                         pressure_parameters, painh, painl, second_tickover, schedule_finished, toggle)
+                                         pressure_parameters, second_tickover, schedule_finished, toggle)
         if (schedule_finished == True):
             airctrl.FSM.SetState("VENT")
 

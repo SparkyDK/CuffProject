@@ -47,8 +47,8 @@ class PressureReader:
     def getErrorMessage(self, lines):
         return str(
             "You have: " + str(len(lines)) + " lines in the file. "
-                                             "Require: " + str(MAX_NUM_PARAMETERS) + "\n"
-                                                                                     "Order is " + str(lines) + "\n"
-                                                                                                                "Only 4 value types are allowed [in any order]: PAINVALUE_xxx, PAINTOLERANCE_xxx, PATM_xxx, PMAX_xxx [xxx is given in mm Hg]\n"
-                                                                                                                "ALSO! Need PMAX > PAINVALUE+PAINTOLERANCE > PAINVALUE-PAINTOLERANCE > Patm"
+        "Require: " + str(MAX_NUM_PARAMETERS) + "\n"
+        "Order is " + str(lines) + "\n"
+        "Only 4 value types are allowed [in any order]: PAINVALUE_xxx, PAINTOLERANCE_xxx, PATM_xxx, PMAX_xxx [xxx is given in mm Hg]\n"
+        "ALSO! Need PMAX > PAINVALUE+PAINTOLERANCE > PAINVALUE-PAINTOLERANCE > Patm"
         )
