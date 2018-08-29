@@ -13,7 +13,7 @@ class VENT(State):
         self.args = args
         print ("\n* VENT * \t with args:", self.args)
         # while (self.P>Patm):
-        if (self.args['PRESSURE'] > self.args['PATM']):
+        if ( int(self.args['PRESSURE']) > int(self.args['PATM']) ):
             # Stay in the VENT state
             print("Still need to vent, since pressure is greater than atmospheric pressure")
         else:

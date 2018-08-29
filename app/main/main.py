@@ -14,33 +14,34 @@ from collections import deque
 import math
 
 def Read_Cuff_Pressure(control_args, past_states):
-    self.control_args = control_args
-    self.past_states = past_states
+    mycontrol_args = control_args
+    mypast_states = past_states
     # Do the A/D conversion and read the converted value
-    if (DEBUG == FALSE):
+    if (DEBUG == False):
         pass  # Add the A/D read instruction here to set up the real sampled digital_pressure_value
         digital_pressure_value = 17000
-        self.control_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
+        mycontrol_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
     else:
         # DEBUG
-        if (self.past_states[4] == "CONNECT_CUFF" and self.past_states[3] == "LOAD_RESERVOIR"):
+        pressure_value = 0.0
+        if (mypast_states[4] == "CONNECT_CUFF" and mypast_states[3] == "LOAD_RESERVOIR"):
         # Controlled pressure increase
-            pressure_value = int(self.control_args['PRESSURE']) + 25
-        elif (self.past_states[4] == "RELEASE" and self.past_states[3] == "CONNECT_CUFF"):
+            pressure_value = int(mycontrol_args['PRESSURE']) + 25
+        elif (mypast_states[4] == "RELEASE" and mypast_states[3] == "CONNECT_CUFF"):
         # Controlled pressure release path
-            pressure_value = int(self.control_args['PRESSURE']) - 10
-        elif (self.past_states[4] == "RELEASE" and self.past_states[3] == "LOAD_RESERVOIR"):
+            pressure_value = int(mycontrol_args['PRESSURE']) - 10
+        elif (mypast_states[4] == "RELEASE" and mypast_states[3] == "LOAD_RESERVOIR"):
         # Controlled pressure release path (in case of leaks)
-            pressure_value = int(self.control_args['PRESSURE']) - 10
-        elif (self.past_states[4] == "VENT"):
+            pressure_value = int(mycontrol_args['PRESSURE']) - 10
+        elif (mypast_states[4] == "VENT"):
         # Venting case
             pressure_value = int(control_args['PATM'])
         else:
         # Don't change the pressure value at all
-            pressure_value = self.control_args['PRESSURE']
-        self.control_args['PRESSURE'] = pressure_value
+            pressure_value = mycontrol_args['PRESSURE']
+        mycontrol_args['PRESSURE'] = pressure_value
 
-    return ( self.control_args )
+    return ( mycontrol_args )
 
 def Convert_to_mm_Hg(digital_value):
     # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
@@ -88,7 +89,8 @@ except KeyboardInterrupt:
 
 # Initialize the timers
 start_time = time.time()
-time.clock()
+#time.clock()
+time.process_time()
 elapsed_time = 0
 
 gui = DisplayApp()
@@ -116,17 +118,17 @@ while (True == True):
     # localtime = time.asctime(time.localtime(time.time()) )
     old_elapsed_time = elapsed_time
     elapsed_time = time.time() - start_time
+    second_tickover = False
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
-        second_tickover=True
-    if (second_tickover==True):
+        second_tickover = True
         # Only process the pain schedule each time a second ticks over to the next truncated value
         # print (control_args)
-        print ("*********** (", Global_cnt, ") Elapsed time:", elapsed_time)
+        print("*********** (", Global_cnt, ") Elapsed time:", elapsed_time)
         control_args = pain_schedule().update(current_counter, control_args, user_args)
         # print (control_args2)
 
     # Read the current air pressure in the patient's cuff
-    control_args['PRESSURE'] = Read_Cuff_Pressure(control_args, past_states)
+    control_args = Read_Cuff_Pressure(control_args, past_states)
 
     # Poll for user input and update the GUI based on the control arguments
     # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately

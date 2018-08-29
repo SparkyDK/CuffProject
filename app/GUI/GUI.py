@@ -76,9 +76,8 @@ class DisplayApp(App):  # defines app and returns display
     current_pressure = 0
     disp = Display()
 
-    def update(self, Global_cnt, past_states, current_counter, control_args, user_args):
+    def update(self, Global_cnt, current_counter, control_args, user_args):
         self.Global_cnt = Global_cnt
-        self.past_states = past_states
         self.current_counter = current_counter
         self.control_args = control_args
         self.user_args = user_args

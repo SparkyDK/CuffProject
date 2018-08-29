@@ -27,8 +27,9 @@ class FSM(object):
     def ToTransition(self, toTrans):
         self.trans = self.transitions[toTrans]
 
-    def process_pain_schedule(self, control_args):
+    def process_pain_schedule(self, control_args, schedule):
         self.control_args = control_args
+        self.schedule = schedule
 
         schedule_finished = False
         if (self.control_args['SCHEDULE_INDEX'] < MAX_NUM_SCHEDULES):
@@ -43,7 +44,8 @@ class FSM(object):
                 # Leave it negative to indicate overall progress (and simplify graphics processing)
                 # and then go to the next phase of the schedule
                 print("Finished schedule phase ", self.control_args['SCHEDULE_INDEX'], "\n")
-                self.current_counter[schedule_index] = -1 * time_schedule[self.control_args['SCHEDULE_INDEX']]
+                self.current_counter[self.control_args['SCHEDULE_INDEX']] =\
+                    -1 * self.schedule[self.control_args['SCHEDULE_INDEX']][1]
                 self.control_args['SCHEDULE_INDEX'] += 1
         else:
             # Done executing the schedule sequence
@@ -75,6 +77,8 @@ class FSM(object):
         #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
         #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
 
+        schedule_finished = False
+
         if (self.user_args['ABORT'] == 1):
             print ("CTRL: User pressed abort")
             # Highest priority user input
@@ -99,30 +103,31 @@ class FSM(object):
                     if (self.control_args['PAIN']==1):
                         # Don't pause in a pain state... go backwards to the end of the nearest NIL phase
                         print ("CTRL: User attempting to pause in a pain state... going to prevent this")
-                        current_index = self.control_args['SCHEDULE_INDEX']
-                        while (self.current_counter[current_index] == 'PAIN' and current_index >= 0):
+                        while (self.current_counter[self.control_args['SCHEDULE_INDEX']] == 'PAIN' and
+                               self.control_args['SCHEDULE_INDEX'] >= 0):
                             # Restore previous PAIN phases
-                            self.current_counter[current_index] = schedule[current_index][1]
-                           current_index -= 1
-                        if (current_index >= 0):
-                            self.control_args['SCHEDULE_INDEX'] = current_index
+                            self.current_counter[self.control_args['SCHEDULE_INDEX']] =\
+                                schedule[self.control_args['SCHEDULE_INDEX']][1]
+                            self.control_args['SCHEDULE_INDEX'] -= 1
+                        if (self.control_args['SCHEDULE_INDEX'] >= 0):
                             # put one second back on the counter for this NIL phase
-                            self.current_counter[current_index] = 1
+                            self.current_counter[self.control_args['SCHEDULE_INDEX']] = 1
                         else:
                             # All Pain phases, including very first phase, so start again
                             self.control_args['SCHEDULE_INDEX'] = 0
-                            current_index=0
                             #print ("current_counter: ", current_counter)
                             #print ("schedule: ", schedule)
                             for i in range(0, MAX_NUM_SCHEDULES):
                                 self.current_counter[i] = schedule[i][1]
-                        print("CTRL: Turned off pain and going back to phase", current_index, " of the pain schedule")
+                        print("CTRL: Turned off pain and going back to phase", self.control_args['SCHEDULE_INDEX'])
+                        print(" of the pain schedule")
                     # Regardless, no more PAIN when paused
                     self.control_args['PAIN'] = 0
                 else:
                 # In the middle of an unpaused schedule, so process it each second tick
                     if (second_tickover == True):
-                        self.control_args, schedule_finished = self.process_pain_schedule(self.control_args)
+                        self.control_args, schedule_finished = \
+                            self.process_pain_schedule(self.control_args, self.schedule)
 
         elif (self.old_user_args['GO'] == 1 and self.user_args['GO'] == 0):
             print("CTRL: User requested a schedule start and just released the GO button")
@@ -147,7 +152,7 @@ class FSM(object):
                    " painh=", self.control_args['PAINH'], " painvalue=", self.control_args['PAINVALUE'])
         else:
             pass
-            print("CTRL: Not doing anything for the case for the control arguments:", control_args)
+            #print("CTRL: Not doing anything for the case for the control arguments:", self.control_args)
 
         return (self.control_args, self.current_counter, schedule_finished)
 
