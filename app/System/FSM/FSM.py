@@ -154,6 +154,8 @@ class FSM(object):
                 if (self.old_user_args['GO'] == 1):
                     # pressing GO clears us out of PAUSE mode
                     self.control_args['PAUSE'] = 0
+                # Make sure that no pain is applied during pause mode
+                self.control_args['PAIN'] = 0
         #elif (self.old_user_args['GO'] == 1 and self.user_args['GO'] == 0):
         elif (self.old_user_args['GO'] == 1):
             # Not aborting and no schedule is currently running when user requests first starting of the schedule
