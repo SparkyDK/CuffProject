@@ -213,7 +213,7 @@ while ( True == True ):
     # Execute the state machine that implements the control decisions with updated control signals and pressure value
     try:
         old_control_args = control_args.copy()
-        control_args, current_counter, schedule_finished, toggle = \
+        control_args, current_counter, pressure_parameters, schedule_finished, toggle = \
             airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,\
                                          pressure_parameters, painh, painl, second_tickover, toggle)
         if (schedule_finished == True): airctrl.FSM.SetState("ISOLATE_VENT")
