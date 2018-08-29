@@ -65,7 +65,6 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         #self.ids.newpressure.text = "%d" % app.desired_pressure
         #print("New desired pressure is now ", app.desired_pressure)
 
-
 class DisplayApp(App):  # defines app and returns display
     # desired_pressure = Patm
     desired_pressure = 0
@@ -89,35 +88,34 @@ class DisplayApp(App):  # defines app and returns display
         #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
 
         #print ("Updating user values with cnt=", self.Global_cnt)
-        if (DEBUG == True and self.Global_cnt == 20):
+        if (DEBUG == True and self.Global_cnt == 20 and True == False):
             # debug statement only!
             self.user_args['STOP'] = 1
             print ("\tDebug: Stop activated with Global count = ", Global_cnt)
             print ("User args now:", self.user_args)
 
-        if (DEBUG == True and (self.Global_cnt == 30 or self.Global_cnt == 2)):
+        if (DEBUG == True and (self.Global_cnt == 30 or self.Global_cnt == 2) and True == False):
             # debug statement only!
             self.user_args['STOP'] = 0
             print ("\tDebug: Stop de-activated with Global count = ", self.Global_cnt)
             print ("User args now:", self.user_args)
 
-        if (DEBUG == True and (self.Global_cnt == 500 or self.Global_cnt == 4000 or self.Global_cnt == 5000)):
+        if (DEBUG == True and (self.Global_cnt == 500 or self.Global_cnt == 4000 or self.Global_cnt == 5000)  and True == False):
             # debug statement only!
             self.user_args['GO'] = 1
             print ("\tDebug: Go activated with Global count = ", self.Global_cnt)
             print ("User args now:", self.user_args)
 
-        if (DEBUG == True and (self.Global_cnt == 1000 or self.Global_cnt == 4500)):
+        if (DEBUG == True and (self.Global_cnt == 1000 or self.Global_cnt == 4500) and True == False):
             # debug statement only!
             self.user_args['GO'] = 0
             print ("\tDebug: Go de-ctivated with Global count = ", self.Global_cnt)
             print ("User args now:", self.user_args)
 
+
         #print ("Control args now:", self.control_args)
         #print ("User args now:", self.user_args)
         return (self.user_args)
-
-
 
 def build(self):
     return DisplayApp.disp

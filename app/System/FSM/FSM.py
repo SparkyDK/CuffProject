@@ -47,6 +47,7 @@ class FSM(object):
                 self.current_counter[self.control_args['SCHEDULE_INDEX']] =\
                     -1 * self.schedule[self.control_args['SCHEDULE_INDEX']][1]
                 self.control_args['SCHEDULE_INDEX'] += 1
+
         else:
             # Done executing the schedule sequence
             print("Finished executing schedule")
@@ -83,11 +84,11 @@ class FSM(object):
             print ("CTRL: User pressed abort")
             # Highest priority user input
             self.control_args['SCHEDULE_INDEX'] = 0; self.control_args['PAIN'] = 0; self.control_args['STARTED'] = 0
-            self.control_args['PAUSE'] = 0; self.control_args['FORCE'] = 0
+            self.control_args['PAUSE'] = 0; self.control_args['FORCE'] = 0; self.user_args['ABORT'] = 0
             self.control_args['PAINL'] = int(pressure_parameters['PAINVALUE'] - pressure_parameters['PAINTOLERANCE'])
             self.control_args['PAINH'] = int(pressure_parameters['PAINVALUE'] + pressure_parameters['PAINTOLERANCE'])
             for i in range (0, MAX_NUM_SCHEDULES):
-                self.current_counter[i][1] = schedule[i][1]
+                self.current_counter[i] = schedule[i][1]
             print ("Schedule values for counter: ", schedule[1])
             self.SetState("ISOLATE_VENT")
         elif (self.control_args['STARTED'] == 1):

@@ -1,10 +1,9 @@
-from kivy.config import Config
-Config.set('kivy', 'keyboard_mode', 'systemandmulti')
+#from kivy.config import Config
+#Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 
 from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES, DEBUG
 from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
-from app.pain_schedule.pain_schedule import pain_schedule
 from app.GUI.GUI import DisplayApp
 
 from app.System import System
@@ -12,6 +11,35 @@ from app.System import System
 import time
 from collections import deque
 import math
+
+import threading
+import msvcrt
+
+from pynput import keyboard
+
+def kbd_input(*args, **kwargs):
+    with keyboard.Listener(on_press=on_press,on_release=on_release) as listener:
+        listener.join()
+
+def on_press(key):
+    try:
+        pass
+        #print('alphanumeric key {0} pressed'.format(key.char))
+    except AttributeError:
+        pass
+        #print('special key {0} pressed'.format(key))
+
+keypress = None
+old_keypress = None
+
+def on_release(key):
+    global keypress
+    #print('{0} released'.format(key))
+    keypress = format(key)
+    #keypress = key
+    if key == keyboard.Key.esc:
+        # Stop listener
+        return False
 
 def Read_Cuff_Pressure(control_args, past_states):
     mycontrol_args = control_args
@@ -97,7 +125,12 @@ gui = DisplayApp()
 # Not sure why this run method is not working, but it hangs my machine
 # gui.run()
 
-while (True == True):
+kw_args = dict(value=0)
+args = []
+t = threading.Timer(0.01, kbd_input, args, kw_args)
+t.start()
+
+while ( True == True ):
 
     Global_cnt += 1
     #print ("Global_cnt=", Global_cnt)
@@ -120,11 +153,49 @@ while (True == True):
     elapsed_time = time.time() - start_time
     second_tickover = False
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
+        # Only process the pain schedule each time a second ticks to the next truncated value
         second_tickover = True
-        # Only process the pain schedule each time a second ticks over to the next truncated value
-        # print (control_args)
-        print("*********** (", Global_cnt, ") Elapsed time:", elapsed_time)
-        control_args = pain_schedule().update(current_counter, control_args, user_args)
+        print("*********** (", Global_cnt, ") Elapsed time:", elapsed_time, "keypress=", keypress)
+        if (keypress != old_keypress):
+            old_keypress = keypress
+            print ("New key pressed: ", keypress)
+            # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
+            #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
+
+            if (keypress == "'x'"):
+                print ("'x' pressed")
+                exit(0)
+            elif (keypress == "'g'"):
+                print ("'g' pressed")
+                if (user_args['GO']==1): user_args['GO'] = 0
+                else: user_args['GO'] = 1
+            elif (keypress == "'s'"):
+                print ("'s' pressed")
+                if (user_args['STOP']==1): user_args['STOP'] = 0
+                else: user_args['STOP'] = 1
+            elif (keypress == "'a'"):
+                print ("'a' pressed")
+                if (user_args['ABORT']==1): user_args['ABORT'] = 0
+                else: user_args['ABORT'] = 1
+            elif (keypress == "'u'"):
+                print ("'u' pressed")
+                if (user_args['UP']==1): user_args['UP'] = 0
+                else: user_args['UP'] = 1
+            elif (keypress == "'d'"):
+                print("'d' pressed")
+                if (user_args['DOWN']==1): user_args['DOWN'] = 0
+                else: user_args['DOWN'] = 1
+            elif (keypress == "'o'"):
+                print ("'o' pressed")
+                user_args['override_pressure'] = 200
+                user_args['OVERRIDE']=1
+            else:
+                pass
+            print ("____________________________________________")
+            print ("Toggled something:", user_args)
+            print ("____________________________________________")
+            time.sleep(1)
+
         # print (control_args2)
 
     # Read the current air pressure in the patient's cuff
@@ -143,6 +214,7 @@ while (True == True):
             airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,
                                          pressure_parameters, painh, painl, second_tickover)
         if (schedule_finished == True): airctrl.FSM.SetState("ISOLATE_VENT")
+        # Execute the state machine
         airctrl.FSM.Execute(control_args)
 
     except KeyboardInterrupt:
