@@ -11,7 +11,9 @@ class VENT(State):
 
     def Execute(self, args):
         self.args = args
-        print ("\n* VENT * \t with args:", self.args)
+        if ( self.args['STARTED'] == 1 ):
+            # Only print this message when running a schedule
+            print ("* VENT * \t with args:", self.args)
         # while (self.P>Patm):
         if ( int(self.args['PRESSURE']) > int(self.args['PATM']) ):
             # Stay in the VENT state
@@ -20,4 +22,6 @@ class VENT(State):
             self.FSM.ToTransition("toIDLE")
 
     def Exit(self):
-        print("Exiting Vent")
+        if ( self.args['STARTED'] == 1 ):
+            # Only print this message when running a schedule
+            print("Exiting Vent")

@@ -100,7 +100,9 @@ Global_cnt = 0
 state_history = [None] * HISTORY_LENGTH
 past_states = deque(state_history, HISTORY_LENGTH)
 pain_required = False
-control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
+schedule_finished = False
+# Initial PAUSE state is active, but not running a schedule.  A pain schedule can be restarted by pressing ABORT
+control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 1, 'FORCE': 0,
                 'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
                 'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
 user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
@@ -156,7 +158,7 @@ while ( True == True ):
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
         # Only process the pain schedule each time a second ticks to the next truncated value
         second_tickover = True
-        print("**** (", Global_cnt, ") Elapsed:", elapsed_time, "keypress=", keypress, "ctrl:", control_args)
+        print("*** <key:",old_keypress,"> (", Global_cnt, ") Elapsed:", elapsed_time, "ctrl:", control_args)
         if (keypress != old_keypress):
             old_keypress = keypress
             print ("New key pressed: ", keypress)
@@ -215,8 +217,10 @@ while ( True == True ):
         old_control_args = control_args.copy()
         control_args, current_counter, pressure_parameters, schedule_finished, toggle = \
             airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,\
-                                         pressure_parameters, painh, painl, second_tickover, toggle)
-        if (schedule_finished == True): airctrl.FSM.SetState("ISOLATE_VENT")
+                                         pressure_parameters, painh, painl, second_tickover, schedule_finished, toggle)
+        if (schedule_finished == True):
+            airctrl.FSM.SetState("VENT")
+
         # Execute the state machine
         airctrl.FSM.Execute(control_args)
 

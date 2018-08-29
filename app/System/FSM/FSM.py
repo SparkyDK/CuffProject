@@ -27,12 +27,12 @@ class FSM(object):
     def ToTransition(self, toTrans):
         self.trans = self.transitions[toTrans]
 
-    def process_pain_schedule(self, control_args, schedule):
+    def process_pain_schedule(self, control_args, schedule, schedule_finished):
         self.control_args = control_args
         self.schedule = schedule
+        self.schedule_finished = schedule_finished
 
-        schedule_finished = False
-        if (self.control_args['SCHEDULE_INDEX'] < MAX_NUM_SCHEDULES):
+        if (self.control_args['SCHEDULE_INDEX'] < MAX_NUM_SCHEDULES and schedule_finished == False):
             # Not finished the schedule yet
             # Don't really need to be set again every second for each phase
             # Could just do it for the very first second of each phase
@@ -40,14 +40,17 @@ class FSM(object):
                 # No pain permitted in Pause mode
                 self.control_args['PAIN'] = 0
             else:
-                self.control_args['PAIN'] = self.schedule[self.control_args['SCHEDULE_INDEX']][0]
+                if (self.schedule[self.control_args['SCHEDULE_INDEX']][0] == 'PAIN'):
+                    self.control_args['PAIN'] = 1
+                else:
+                    self.control_args['PAIN'] = 0
 
             if (self.current_counter[self.control_args['SCHEDULE_INDEX']] > 1):
                 # Current schedule phase still not complete
                 self.current_counter[self.control_args['SCHEDULE_INDEX']] -= 1
-                print("Schedule Counter adjusted: Schedule:", self.control_args['SCHEDULE_INDEX'])
-                print(" with counter value = ", self.current_counter[self.control_args['SCHEDULE_INDEX']])
-                print(" and pain set to ", self.control_args['PAIN'])
+                print("\tSchedule Counter adjusted: Schedule:", self.control_args['SCHEDULE_INDEX'],
+                      " with counter value = ", self.current_counter[self.control_args['SCHEDULE_INDEX']],
+                      " and pain set to ", self.control_args['PAIN'])
             else:
                 # Current phase is now complete (Current_counter value is zero ... or negative)
                 # Reset the displayed/current value back to the starting value
@@ -58,14 +61,15 @@ class FSM(object):
                     -1 * self.schedule[self.control_args['SCHEDULE_INDEX']][1]
                 self.control_args['SCHEDULE_INDEX'] += 1
         else:
-            # Done executing the schedule sequence
+            # Done executing the schedule sequence ... could leave most of this stuff out of here and
+            # just use the schedule_finished
             print("Finished executing schedule")
-            self.control_args['SCHEDULE_INDEX'] = 0;
+            self.control_args['SCHEDULE_INDEX'] = 0
             self.control_args['PAIN'] = 0
-            self.control_args['STARTED'] = 0;
+            self.control_args['STARTED'] = 0
             self.control_args['PAUSE'] = 0
-            schedule_finished = True
-        return (self.control_args, schedule_finished)
+            self.schedule_finished = True
+        return (self.control_args, self.schedule_finished)
 
     def reset_schedule(self, control_args, current_counter, pressure_parameters, schedule):
         self.control_args = control_args
@@ -73,20 +77,20 @@ class FSM(object):
         self.pressure_parameters = pressure_parameters
         self.schedule = schedule
 
-        self.control_args['SCHEDULE_INDEX'] = 0;
-        self.control_args['PAIN'] = 0;
+        self.control_args['SCHEDULE_INDEX'] = 0
+        self.control_args['PAIN'] = 0
         # self.control_args['FORCE'] = 0;
         # self.user_args['ABORT'] = 0
         self.control_args['PAINL'] = int(pressure_parameters['PAINVALUE'] - pressure_parameters['PAINTOLERANCE'])
         self.control_args['PAINH'] = int(pressure_parameters['PAINVALUE'] + pressure_parameters['PAINTOLERANCE'])
         for i in range(0, MAX_NUM_SCHEDULES):
             self.current_counter[i] = schedule[i][1]
-        print("Schedule values for counter: ", schedule[i][1])
+        print("Schedule value for counter ", i, " reset to: ", schedule[i][1])
         self.SetState("ISOLATE_VENT")
 
 
     def ControlDecisions(self, current_counter, schedule, control_args, old_user_args, user_args,
-                         pressure_parameters, painh, painl, second_tickover, toggle):
+                         pressure_parameters, painh, painl, second_tickover, schedule_finished, toggle):
         # A FORCE is equivalent to an untimed PAIN cycle in PAUSE mode (PAUSE alone makes pressure NIL, otherwise)
         # OVERRIDE_PRESSURE (sampled from user_args) is used to create new values of PAINH and PAINL
         # STOP and ABORT both do an ABORT in the FORCE mode of operation, venting pressure, resetting index, etc.
@@ -99,6 +103,7 @@ class FSM(object):
         self.painh = painh
         self.painl = painl
         self.second_tickover = second_tickover
+        self.schedule_finished = schedule_finished
         self.toggle = toggle
 
         if (self.toggle > 0 and self.toggle <=1):
@@ -112,7 +117,6 @@ class FSM(object):
         # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
         #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
         #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
-        schedule_finished = False
 
         # {STARTED, PAUSE} states are as follows:
         # {0,1} is the initial default state
@@ -123,23 +127,27 @@ class FSM(object):
         if (self.user_args['ABORT'] == 1):
             # "reset" back to a starting state
             # Highest priority user input
-            print ("CTRL: User pressed abort; resetting pain schedule")
+            if (second_tickover == True):
+                # Only display this useful message once a second
+                print ("CTRL: User pressed abort; resetting pain schedule")
+                self.reset_schedule(self.control_args, self.current_counter, pressure_parameters, self.schedule)
             # initial state has an automatic pause (final state does not)
             self.control_args['STARTED'] = 0; self.control_args['PAUSE'] = 1;
-            self.reset_schedule(self.control_args, self.current_counter, pressure_parameters, self.schedule)
+            self.schedule_finished = False
         elif (self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # Initial start of the pain schedule (start "running" for the first time)
             if (second_tickover == True):
                 # Synchronize the pain schedule counting to the seconds tickover points
                 print("CTRL: Pain schedule being started for the first time; now running the pain schedule")
                 self.control_args['STARTED'] = 1; self.control_args['PAUSE'] = 0
-                self.control_args, schedule_finished = self.process_pain_schedule(self.control_args, self.schedule)
+                self.control_args, self.schedule_finished =\
+                    self.process_pain_schedule(self.control_args, self.schedule, self.schedule_finished)
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 0 and self.user_args['STOP'] == 1):
             # "pause"
             # In the "running" state, a STOP button means that a pause is required (STOP ignored otherwise)
-            print("CTRL: Pain schedule being paused")
-            self.user_args['PAUSE'] = 1
-            self.user_args['PAIN'] = 0 # We don't permit PAIN to be administered in the "paused" state
+            print("CTRL: Pain schedule being paused (and we disable pain too, in this state)")
+            self.control_args['PAUSE'] = 1
+            self.control_args['PAIN'] = 0 # We don't permit PAIN to be administered in the "paused" state
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # resume "running"
             # In the "paused" state, GO means that the pause is ended and processing resumes (GO ignored otherwise)
@@ -147,14 +155,16 @@ class FSM(object):
                 # Synchronize the pain schedule counting to the seconds tickover points
                 print("CTRL: Pain schedule being resumed")
                 self.control_args['PAUSE'] = 0
-                self.control_args, schedule_finished = self.process_pain_schedule(self.control_args, self.schedule)
+                self.control_args, self.schedule_finished =\
+                    self.process_pain_schedule(self.control_args, self.schedule, self.schedule_finished)
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 0):
             # keep on "running"
             # Continue processing of the the pain schedule
             if (second_tickover == True):
                 # Execute on the seconds tickover points
-                print("CTRL: Pain schedule continues")
-                self.control_args, schedule_finished = self.process_pain_schedule(self.control_args, self.schedule)
+                # print("CTRL: Pain schedule continues")
+                self.control_args, self.schedule_finished =\
+                    self.process_pain_schedule(self.control_args, self.schedule, self.schedule_finished)
                 # eventually, schedule will be finished
         else:
             # All other cases, do nothing.
@@ -181,14 +191,14 @@ class FSM(object):
                 print("Updated pain pressure values: PAINL=", self.control_args['PAINL'])
                 print(" PAINH=", self.control_args['PAINH'], " PAINVALUE=", pressure_parameters['PAINVALUE'])
 
-        if (schedule_finished == True and self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 0):
+        if (self.schedule_finished == True and self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 0):
         # We can repair the schedule index, so that it is not left out of range after pain schedule completion
         # We have also left the counters as negative versions of their original, starting values
         # This way, we can display all negative numbers as grayed-out records of progress made through the schedule
             self.control_args['SCHEDULE_INDEX'] = 0
             self.control_args['PAIN'] = 0  # We don't permit PAIN to be administered once schedule completed
 
-        return (self.control_args, self.current_counter, self.pressure_parameters, schedule_finished, self.toggle)
+        return (self.control_args, self.current_counter, self.pressure_parameters, self.schedule_finished, self.toggle)
 
 
     def Execute(self, args):
