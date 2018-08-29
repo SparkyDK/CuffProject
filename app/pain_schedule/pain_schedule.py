@@ -20,6 +20,6 @@ class pain_schedule:
         force = self.user_args['OVERRIDE']
         schedule_index = self.control_args['SCHEDULE_INDEX']
         #print ("Schedule_index=", schedule_index)
-        count = self.current_counter[schedule_index]
+        count = self.current_counter[self.control_args['SCHEDULE_INDEX']]
 
         return (self.control_args)
