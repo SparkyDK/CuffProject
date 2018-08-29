@@ -1,4 +1,7 @@
-#kivy.require("1.8.0")
+#from kivy.config import Config
+#Config.set('kivy', 'keyboard_mode', 'systemandmulti')
+
+#kivy.require("1.10.1")
 from kivy.base import runTouchApp
 
 from kivy.uix.floatlayout import FloatLayout

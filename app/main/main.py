@@ -6,6 +6,8 @@ from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
 from app.GUI.GUI import DisplayApp
 
+from app.GUI.HelloWorldGraphic import HelloWorld
+
 from app.System import System
 
 import time
@@ -126,12 +128,24 @@ elapsed_time = 0
 
 gui = DisplayApp()
 # Not sure why this run method is not working, but it hangs my machine
-# gui.run()
+#gui.run()
+
 
 kw_args = dict(value=0)
 args = []
 t = threading.Timer(0.01, kbd_input, args, kw_args)
 t.start()
+
+# works fine, but blocks
+#gui2 = HelloWorld()
+#gui2.run()
+
+# Does not work
+#try:
+#    g = threading.Timer(0.01, HelloWorld,)
+#    g.start()
+#except KeyboardInterrupt:
+#    print("\nDone")
 
 while ( True == True ):
 

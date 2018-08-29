@@ -203,7 +203,7 @@ class FSM(object):
         # We have also left the counters as negative versions of their original, starting values
         # This way, we can display all negative numbers as grayed-out records of progress made through the schedule
             self.control_args['SCHEDULE_INDEX'] = 0
-            self.control_args['PAIN'] = 0  # We don't permit PAIN to be administered once schedule completed
+            self.control_args['PAIN'] = 0  # We don't permit PAIN to be administered once the schedule is completed
 
         return (self.control_args, self.current_counter, self.pressure_parameters, self.schedule_finished, self.toggle)
 
