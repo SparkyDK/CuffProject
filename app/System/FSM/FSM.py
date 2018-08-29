@@ -33,11 +33,20 @@ class FSM(object):
 
         schedule_finished = False
         if (self.control_args['SCHEDULE_INDEX'] < MAX_NUM_SCHEDULES):
+            # Not finished the schedule yet
+            # Don't really need to be set again every second for each phase
+            # Could just do it for the very first second of each phase
+            if (self.control_args['PAUSE'] == 1):
+                self.control_args['PAIN'] = 0
+            else:
+                self.control_args['PAIN'] = self.schedule[self.control_args['SCHEDULE_INDEX']][0]
+
             if (self.current_counter[self.control_args['SCHEDULE_INDEX']] > 1):
                 # Current schedule phase still not complete
                 self.current_counter[self.control_args['SCHEDULE_INDEX']] -= 1
                 print("Schedule Counter adjusted: Schedule:", self.control_args['SCHEDULE_INDEX'])
                 print(" with counter value = ", self.current_counter[self.control_args['SCHEDULE_INDEX']])
+                print(" and pain set to ", self.control_args['PAIN'])
             else:
                 # Current phase is now complete (Current_counter value is zero ... or negative)
                 # Reset the displayed/current value back to the starting value
@@ -74,7 +83,7 @@ class FSM(object):
         self.painl = painl
         self.second_tickover = second_tickover
 
-        if (toggle > 0 and toggle <=15):
+        if (toggle > 0 and toggle <=1):
             toggle +=1
             print ("CTRL: user=", self.user_args, "   control=", self.control_args)
         else:
@@ -101,7 +110,7 @@ class FSM(object):
         elif (self.control_args['STARTED'] == 1):
             # Pain schedule is ongoing
             if (self.control_args['PAUSE'] == 0):
-                # Not in pause mode yet
+                # Not in pause mode yet, but now we could be
                 # Ignore the STOP, if already paused or if not running a schedule already
                 #if (self.old_user_args['STOP'] == 1 and self.user_args['STOP'] == 0):
                 if (self.old_user_args['STOP'] == 1):
@@ -109,7 +118,7 @@ class FSM(object):
                     # If running a schedule and a pause is requested and not already paused, then we are now in pause
                     print ("CTRL: User pressed and just released STOP during an unpaused and running schedule")
                     print (" in phase ", self.control_args['SCHEDULE_INDEX'], ".... now going to pause that schedule")
-                    if (self.control_args['PAIN']==1):
+                    if (self.control_args['PAIN'] == 1):
                         # Don't pause in a pain state... go backwards to the end of the nearest NIL phase
                         print ("CTRL: User attempting to pause in a pain state... going to prevent this")
                         while (self.current_counter[self.control_args['SCHEDULE_INDEX']] == 'PAIN' and
@@ -130,45 +139,48 @@ class FSM(object):
                                 self.current_counter[i] = schedule[i][1]
                         print("CTRL: Turned off pain and going back to phase", self.control_args['SCHEDULE_INDEX'])
                         print(" of the pain schedule")
-                    # Regardless, no more PAIN when paused
-                    self.control_args['PAIN'] = 0
+                        # Regardless, no more PAIN when paused
+                        self.control_args['PAIN'] = 0
+                    else:
+                        # Paused in the NIL state, so do nothing
+                        pass
                 else:
-                # In the middle of an unpaused schedule, so process it each second tick
+                # In the middle of an unpaused schedule, so process it at each second tick
                     if (second_tickover == True):
                         self.control_args, schedule_finished = \
                             self.process_pain_schedule(self.control_args, self.schedule)
+            else:
+                # We are in pause mode
+                if (self.old_user_args['GO'] == 1):
+                    # pressing GO clears us out of PAUSE mode
+                    self.control_args['PAUSE'] = 0
         #elif (self.old_user_args['GO'] == 1 and self.user_args['GO'] == 0):
         elif (self.old_user_args['GO'] == 1):
-            # Schedule start requested, but no schedule currently running
-            print("CTRL: ------------> User requested a schedule start and we detected pressing of the GO button")
-            self.control_args['PAUSE'] = 0
+            # Not aborting and no schedule is currently running when user requests first starting of the schedule
             # schedule start requested
-            if (self.control_args['STARTED'] == 0):
-                # this should be an unecessary check, given the elif relationship with the previous identical check
-                print ("Starting a cycle")
-                # No schedule started yet
-                self.control_args['STARTED']=1; self.control_args['SCHEDULE_INDEX']=0; self.control_args['PAIN']=0
-                #print("current_counter: ", current_counter)
-                #print("schedule: ", schedule)
-                for i in range (0, MAX_NUM_SCHEDULES):
-                    self.current_counter[i] = schedule[i][1]
-            else:
-                # ignore the GO button if already started (could even clear the user input....)
-                pass
+            print ("Starting a cycle")
+            # No schedule started yet
+            self.control_args['STARTED']=1; self.control_args['SCHEDULE_INDEX']=0; self.control_args['PAIN']=0
+            self.control_args['PAUSE'] = 0
+            for i in range (0, MAX_NUM_SCHEDULES):
+                # Populate the timers for each phase of the schedule
+                self.current_counter[i] = schedule[i][1]
         #elif (self.old_user_args['OVERRIDE'] == 1 and self.user_args['OVERRIDE'] == 0):
         elif (self.user_args['OVERRIDE'] == 1):
-            # could set this value many times over... but that's OK
+            # User has hit 'enter' to override the pain threshold pressure value
+            # could set this value many times over... but that's OK.  When the button is released the
+            # latest value will be latched finally
             print("CTRL: User changed pain pressure value to ", self.user_args['override_pressure'])
-            print (" and just released the NEW/ENTER button")
+            print (" and selected the NEW/ENTER button")
             # New pain threshold value entered by user is used to adjust the pressure parameters
             pressure_parameters['PAINVALUE']=self.user_args['override_pressure']
             self.control_args['PAINL'] = int(self.user_args['override_pressure'] - pressure_parameters['PAINTOLERANCE'])
             self.control_args['PAINL'] = int(self.user_args['override_pressure'] + pressure_parameters['PAINTOLERANCE'])
             print ("Updated pain pressure values: painl=", self.control_args['PAINL'],
-                   " painh=", self.control_args['PAINH'], " painvalue=", self.control_args['PAINVALUE'])
+                   " painh=", self.control_args['PAINH'], " painvalue=", pressure_parameters['PAINVALUE'])
         else:
             pass
-            #print("CTRL: Not doing anything for the case for the control arguments:", self.control_args)
+            #print("CTRL: Not doing anything for the case for these control arguments:", self.control_args)
 
         return (self.control_args, self.current_counter, schedule_finished, toggle)
 
