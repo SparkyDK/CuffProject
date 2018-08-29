@@ -7,6 +7,7 @@ class RELEASE(State):
 
     def Enter(self):
         # Close the relays to the tank and for the reservoir vent, but open the cuff relay
+        # S1 Closed, S2 Closed, S3 Open
         pass
 
     def Execute(self, args):
@@ -30,6 +31,7 @@ class RELEASE(State):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
         # sleep (0.1)
         # close all of the relays
+        # S1 Closed, S2 Closed, S3 Closed
 
         time.sleep(0.1)  # Give the relays time to close
         print("Exiting Vent")

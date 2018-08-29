@@ -7,6 +7,7 @@ class CONNECT_CUFF(State):
 
     def Enter(self):
         # Open the relay to the cuff and close the others
+        # S1 Closed, S2 Open, S3 Closed
         pass
 
     def Execute(self, args):
@@ -38,7 +39,8 @@ class CONNECT_CUFF(State):
     def Exit(self):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
         # sleep (0.1)
-        pass    # close all of the relays
+        # S1 Closed, S2 Closed, S3 Closed
+        pass
         time.sleep(0.1)  # Give the relays time to close
 
         print("Exiting Connect Cuff")

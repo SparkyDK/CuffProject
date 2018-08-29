@@ -13,15 +13,38 @@ import time
 from collections import deque
 import math
 
-def Read_Cuff_Pressure():
+def Read_Cuff_Pressure(control_args, past_states):
+    self.control_args = control_args
+    self.past_states = past_states
     # Do the A/D conversion and read the converted value
-    pressure_value = 50
-    converted_value = Convert_to_mm_Hg(digital_value=pressure_value)
-    return (converted_value)
+    if (DEBUG == FALSE):
+        pass  # Add the A/D read instruction here to set up the real sampled digital_pressure_value
+        digital_pressure_value = 17000
+        self.control_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
+    else:
+        # DEBUG
+        if (self.past_states[4] == "CONNECT_CUFF" and self.past_states[3] == "LOAD_RESERVOIR"):
+        # Controlled pressure increase
+            pressure_value = int(self.control_args['PRESSURE']) + 25
+        elif (self.past_states[4] == "RELEASE" and self.past_states[3] == "CONNECT_CUFF"):
+        # Controlled pressure release path
+            pressure_value = int(self.control_args['PRESSURE']) - 10
+        elif (self.past_states[4] == "RELEASE" and self.past_states[3] == "LOAD_RESERVOIR"):
+        # Controlled pressure release path (in case of leaks)
+            pressure_value = int(self.control_args['PRESSURE']) - 10
+        elif (self.past_states[4] == "VENT"):
+        # Venting case
+            pressure_value = int(control_args['PATM'])
+        else:
+        # Don't change the pressure value at all
+            pressure_value = self.control_args['PRESSURE']
+        self.control_args['PRESSURE'] = pressure_value
+
+    return ( self.control_args )
 
 def Convert_to_mm_Hg(digital_value):
     # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
-    return (3*digital_value)
+    return (digital_value/1000)
 
 imported_schedule = []
 for i in range(0, MAX_NUM_SCHEDULES):
@@ -69,9 +92,13 @@ time.clock()
 elapsed_time = 0
 
 gui = DisplayApp()
-gui.run()
+# Not sure why this run method is not working, but it hangs my machine
+# gui.run()
 
 while (True == True):
+
+    Global_cnt += 1
+    #print ("Global_cnt=", Global_cnt)
 
     # Keep a state history
     returned_state = airctrl.FSM.GetCurState()
@@ -90,27 +117,34 @@ while (True == True):
     old_elapsed_time = elapsed_time
     elapsed_time = time.time() - start_time
     if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
-        # Only process the pain schedule every time a second ticks
+        second_tickover=True
+    if (second_tickover==True):
+        # Only process the pain schedule each time a second ticks over to the next truncated value
         # print (control_args)
+        print ("*********** (", Global_cnt, ") Elapsed time:", elapsed_time)
         control_args = pain_schedule().update(current_counter, control_args, user_args)
         # print (control_args2)
 
     # Read the current air pressure in the patient's cuff
-    control_args['Pressure'] = Read_Cuff_Pressure()
+    control_args['PRESSURE'] = Read_Cuff_Pressure(control_args, past_states)
 
     # Poll for user input and update the GUI based on the control arguments
     # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
     old_user_args = user_args
-    user_args = gui.update(current_counter, control_args, user_args)
+    user_args = gui.update(Global_cnt, current_counter, control_args, user_args)
 
     # Update or override the control signals: {'PAIN','STARTED','SCHEDULE_INDEX','PAUSE','FORCE'}
     # Execute the state machine that implements the control decisions with updated control signals and pressure value
     try:
         old_control_args = control_args
-        control_args, current_counter = airctrl.FSM.ControlDecisions(current_counter, imported_schedule,
-                                                                     control_args, user_args,
-                                                                     pressure_parameters, painh, painl)
+        control_args, current_counter, schedule_finished = \
+            airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,
+                                         pressure_parameters, painh, painl, second_tickover)
+        if (schedule_finished == True): airctrl.FSM.SetState("ISOLATE_VENT")
         airctrl.FSM.Execute(control_args)
 
     except KeyboardInterrupt:
         print("\nDone")
+
+    if (Global_cnt == 5100):
+        exit(0)

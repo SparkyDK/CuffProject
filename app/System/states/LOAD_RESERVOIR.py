@@ -7,6 +7,7 @@ class LOAD_RESERVOIR(State):
 
     def Enter(self):
         # Close the cuff and reservoir relays and open the tank relay
+        # S1 Open, S2 Open, S3 Closed
         pass
 
     def Execute(self, args):
@@ -43,6 +44,7 @@ class LOAD_RESERVOIR(State):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
         # sleep (0.1)
         # close all of the relays
+        # S1 Closed, S2 Closed, S3 Closed
 
         time.sleep(0.1)  # Give the relays time to close
         print("Exiting Load Reservoir")

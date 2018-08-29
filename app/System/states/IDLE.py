@@ -7,7 +7,7 @@ class IDLE(State):
 
     def Enter(self):
         # Close all of the relays
-
+        # S1 Closed, S2 Closed, S3 Closed
         # Don't sleep here, because in this state most of the time
         pass
 

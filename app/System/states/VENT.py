@@ -6,6 +6,7 @@ class VENT(State):
 
     def Enter(self):
         # open the venting relay for the reservoir and to the cuff, but close the tank relay
+        # S1 Closed, S2 Open, S3 Open
         pass
 
     def Execute(self, args):
