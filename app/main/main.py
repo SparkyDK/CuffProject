@@ -132,13 +132,13 @@ while (True == True):
 
     # Poll for user input and update the GUI based on the control arguments
     # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
-    old_user_args = user_args
+    old_user_args = user_args.copy()
     user_args = gui.update(Global_cnt, current_counter, control_args, user_args)
 
     # Update or override the control signals: {'PAIN','STARTED','SCHEDULE_INDEX','PAUSE','FORCE'}
     # Execute the state machine that implements the control decisions with updated control signals and pressure value
     try:
-        old_control_args = control_args
+        old_control_args = control_args.copy()
         control_args, current_counter, schedule_finished = \
             airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,
                                          pressure_parameters, painh, painl, second_tickover)
