@@ -11,8 +11,4 @@ class A_to_D_lookup:
             digital_value.append(columns[0])
             mm_Hg.append(columns[1])
 
-        #num_entries = len(digital_value)
-        #for i in range (0, num_entries):
-            #print(digital_value[i],":",mm_Hg[i])
-
         return (digital_value, mm_Hg)

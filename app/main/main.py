@@ -17,7 +17,7 @@ import math
 
 # Allows interpolation between empirically-determined pressure transducer values and mm_Hg values
 from scipy import interpolate
-import numpy as np
+# import numpy as np
 
 import threading
 #import msvcrt
