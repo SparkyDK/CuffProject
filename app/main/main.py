@@ -4,6 +4,7 @@
 from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES, DEBUG
 from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
+from app.filereaders.A_to_D_lookup_table import A_to_D_lookup
 from app.GUI.GUI import DisplayApp
 
 #from app.GUI.HelloWorldGraphic import HelloWorld
@@ -13,6 +14,10 @@ from app.System import System
 import time
 from collections import deque
 import math
+
+# Allows interpolation between empirically-determined pressure transducer values and mm_Hg values
+from scipy import interpolate
+import numpy as np
 
 import threading
 #import msvcrt
@@ -47,6 +52,7 @@ def on_release(key):
 def Read_Cuff_Pressure(control_args, past_states):
     mycontrol_args = control_args
     mypast_states = past_states
+
     # Do the A/D conversion and read the converted value
     if (DEBUG == False):
         pass  # Add the A/D read instruction here to set up the real sampled digital_pressure_value
@@ -72,12 +78,30 @@ def Read_Cuff_Pressure(control_args, past_states):
             pressure_value = mycontrol_args['PRESSURE']
         mycontrol_args['PRESSURE'] = pressure_value
 
+        # test_value = 16000000
+        # interpolated_value = Convert_to_mm_Hg(digital_value=test_value)
+
     return ( mycontrol_args )
 
 def Convert_to_mm_Hg(digital_value):
+    digital_input = digital_value
     # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
-    return (digital_value/1000)
+    # Assume that we have a 24-bit A/D, which results in values in a range of [0, 16777216]
+    digital_values, mmHg_values = A_to_D_lookup().read(filename="./app/input_files/A_to_D_lookup_table.txt")
 
+    length = len(digital_values)
+    for i in range (0, length):
+    # convert to integers
+        digital_values[i] = int(digital_values[i])
+        mmHg_values[i] = int(mmHg_values[i])
+
+    interpolation_function = interpolate.interp1d(digital_values, mmHg_values)
+
+    #print ("Starting lookup table values are:", digital_values, mmHg_values)
+    interpolated_value = math.floor( interpolation_function(digital_input) )
+    #print ("Took in ", digital_input, " and interpolated it to a corresponding mm Hg value of", interpolated_value)
+
+    return ( interpolated_value )
 
 # old_keypress, user_args, control_args, toggle = \
 #    keyboard_test(keypress, old_keypress, user_args, old_user_args, control_args, pressure_parameters, toggle)
