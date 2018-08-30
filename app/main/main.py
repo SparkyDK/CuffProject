@@ -57,6 +57,7 @@ def Read_Cuff_Pressure(control_args, past_states):
     if (DEBUG == False):
         pass  # Add the A/D read instruction here to set up the real sampled digital_pressure_value
         # digital_pressure_value = polled value or handled interrupt value after sensing and A/D conversion
+        # It may also be necessary to average/filter the value, depending on its stability/performance ... TBD
         digital_pressure_value = 16000000  # debug only!
         mycontrol_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
     else:
