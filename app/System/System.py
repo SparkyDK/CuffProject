@@ -29,7 +29,7 @@ class System(Char):
         self.FSM.AddTransition("toCONNECT_CUFF", Transition("CONNECT_CUFF"))
         self.FSM.AddTransition("toRELEASE", Transition("RELEASE"))
         self.FSM.AddTransition("toISOLATE_VENT", Transition("ISOLATE_VENT"))
-        # default to IDLE
+        # default to VENT
         self.FSM.SetState("ISOLATE_VENT")
 
     def Execute(self, args):
