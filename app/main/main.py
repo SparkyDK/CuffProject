@@ -6,7 +6,7 @@ from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
 from app.GUI.GUI import DisplayApp
 
-from app.GUI.HelloWorldGraphic import HelloWorld
+#from app.GUI.HelloWorldGraphic import HelloWorld
 
 from app.System import System
 
@@ -15,7 +15,7 @@ from collections import deque
 import math
 
 import threading
-import msvcrt
+#import msvcrt
 
 from pynput import keyboard
 
@@ -78,6 +78,77 @@ def Convert_to_mm_Hg(digital_value):
     # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
     return (digital_value/1000)
 
+
+# old_keypress, user_args, control_args, toggle = \
+#    keyboard_test(keypress, old_keypress, user_args, old_user_args, control_args, pressure_parameters, toggle)
+# return (old_keypress, user_args, control_args, toggle)
+def keyboard_test(keypress, old_keypress, user_args, old_user_args, control_args, pressure_parameters, toggle):
+    # Use the keyboard to simulate user inputs from the touch screen
+
+    if (keypress != old_keypress):
+        old_keypress = keypress
+        print("New key pressed: ", keypress)
+    # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
+    #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
+
+        if (keypress == "'x'"):
+            print("'x' pressed")
+            exit(0)
+        elif (keypress == "'g'"):
+            print("'g' pressed")
+            if (user_args['GO'] == 1):
+                user_args['GO'] = 0
+            else:
+                user_args['GO'] = 1
+        elif (keypress == "'s'"):
+            print("'s' pressed")
+            if (user_args['STOP'] == 1):
+                user_args['STOP'] = 0
+            else:
+                user_args['STOP'] = 1
+        elif (keypress == "'a'"):
+            print("'a' pressed")
+            if (user_args['ABORT'] == 1):
+                user_args['ABORT'] = 0
+            else:
+                user_args['ABORT'] = 1
+        elif (keypress == "'u'"):
+            print("'u' pressed")
+            if (user_args['UP'] == 1):
+                user_args['UP'] = 0
+            else:
+                user_args['UP'] = 1
+        elif (keypress == "'d'"):
+            print("'d' pressed")
+            if (user_args['DOWN'] == 1):
+                user_args['DOWN'] = 0
+            else:
+                user_args['DOWN'] = 1
+        elif (keypress == "'r'"):
+            control_args['PRESSURE'] += pressure_parameters['PAINTOLERANCE']
+            print("'r' pressed to raise the pressure value to ", control_args['PRESSURE'])
+        elif (keypress == "'l'"):
+            control_args['PRESSURE'] -= pressure_parameters['PAINTOLERANCE']
+            print("'l' pressed to lower the pressure value to ", control_args['PRESSURE'])
+        elif (keypress == "'o'"):
+            print("'o' pressed")
+            user_args['override_pressure'] = 850
+            if (user_args['OVERRIDE'] == 1):
+                user_args['OVERRIDE'] = 0
+            else:
+                user_args['OVERRIDE'] = 1
+        else:
+            pass
+        print("____________________________________________")
+        print("Toggled something (old):", old_user_args)
+        print("Toggled something (new):", user_args)
+        print("____________________________________________")
+        toggle += 1
+        time.sleep(1)
+    return(old_keypress, user_args, control_args, toggle)
+
+# _____________________________________________________________________________________________________
+
 imported_schedule = []
 for i in range(0, MAX_NUM_SCHEDULES):
     imported_schedule.append([])
@@ -95,30 +166,29 @@ max_num_schedules = len(imported_schedule)
 print ("main read imported_schedule:", imported_schedule)
 
 current_counter = [0] * max_num_schedules
-for i in range(0, MAX_NUM_SCHEDULES):
-    current_counter[i] = imported_schedule[i][1]
+for phase in range(0, MAX_NUM_SCHEDULES):
+    current_counter[i] = imported_schedule[phase][1]
 
 Global_cnt = 0
 state_history = [None] * HISTORY_LENGTH
 past_states = deque(state_history, HISTORY_LENGTH)
-pain_required = False
 schedule_finished = False
+
 # Initial PAUSE state is active, but not running a schedule.  A pain schedule can be restarted by pressing ABORT
 control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 1, 'FORCE': 0,
                 'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
                 'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
 user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
              'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
+old_user_args = user_args.copy()
+
 current_pressure = 0
 
-try:
-    # Create the system state machine that implements the control decisions
-    airctrl = System.System()
-    # Vent the cuff first
-    airctrl.FSM.SetState("ISOLATE_VENT")
-    airctrl.Execute(control_args)
-except KeyboardInterrupt:
-    print("\nDone")
+# Create the system state machine that implements the control decisions
+airctrl = System.System()
+# Vent the cuff first
+airctrl.FSM.SetState("ISOLATE_VENT")
+airctrl.Execute(control_args)
 
 # Initialize the timers
 start_time = time.time()
@@ -129,7 +199,6 @@ elapsed_time = 0
 gui = DisplayApp()
 # Not sure why this run method is not working, but it hangs my machine
 #gui.run()
-
 
 kw_args = dict(value=0)
 args = []
@@ -170,63 +239,16 @@ while ( True == True ):
     elapsed_time = time.time() - start_time
 
     second_tickover = False
-    if ( math.floor(elapsed_time) != math.floor(old_elapsed_time) ):
+    if math.floor(elapsed_time) != math.floor(old_elapsed_time):
         # Only process the pain schedule each time a second ticks to the next truncated value
         second_tickover = True
 
-        print("**** <key:", old_keypress, "> (", Global_cnt, ") Elapsed:", elapsed_time, "keypress=", keypress, "ctrl:",
-              control_args)
+        print("*** <", old_keypress, ">a Elapsed: {0:.4f}".format(elapsed_time,), "\tctrl:", control_args)
 
-        if (keypress != old_keypress):
-            old_keypress = keypress
-            print ("New key pressed: ", keypress)
-            # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
-            #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
-
-            if (keypress == "'x'"):
-                print ("'x' pressed")
-                exit(0)
-            elif (keypress == "'g'"):
-                print ("'g' pressed")
-                if (user_args['GO']==1): user_args['GO'] = 0
-                else: user_args['GO'] = 1
-            elif (keypress == "'s'"):
-                print ("'s' pressed")
-                if (user_args['STOP']==1): user_args['STOP'] = 0
-                else: user_args['STOP'] = 1
-            elif (keypress == "'a'"):
-                print ("'a' pressed")
-                if (user_args['ABORT']==1): user_args['ABORT'] = 0
-                else: user_args['ABORT'] = 1
-            elif (keypress == "'u'"):
-                print ("'u' pressed")
-                if (user_args['UP']==1): user_args['UP'] = 0
-                else: user_args['UP'] = 1
-            elif (keypress == "'d'"):
-                print("'d' pressed")
-                if (user_args['DOWN']==1): user_args['DOWN'] = 0
-                else: user_args['DOWN'] = 1
-            elif (keypress == "'r'"):
-                control_args['PRESSURE'] += pressure_parameters['PAINTOLERANCE']
-                print("'r' pressed to raise the pressure value to ", control_args['PRESSURE'])
-            elif (keypress == "'l'"):
-                control_args['PRESSURE'] -= pressure_parameters['PAINTOLERANCE']
-                print("'l' pressed to lower the pressure value to ", control_args['PRESSURE'])
-            elif (keypress == "'o'"):
-                print ("'o' pressed")
-                user_args['override_pressure'] = 850
-                if (user_args['OVERRIDE']==1): user_args['OVERRIDE'] = 0
-                else: user_args['OVERRIDE'] = 1
-            else:
-                pass
-            print ("____________________________________________")
-            print ("Toggled something (old):", old_user_args)
-            print ("Toggled something (new):", user_args)
-            print ("____________________________________________")
-            toggle += 1
-            time.sleep(1)
-
-        # print (control_args2)
+        if (DEBUG == True):
+        # Simulate user touch screen input with a regular keyboard
+            old_keypress, user_args, control_args, toggle = \
+                keyboard_test(keypress, old_keypress, user_args, old_user_args, control_args, pressure_parameters, toggle)
 
     # Read the current air pressure in the patient's cuff
     control_args = Read_Cuff_Pressure(control_args, past_states)
@@ -237,20 +259,22 @@ while ( True == True ):
     user_args = gui.update(Global_cnt, current_counter, control_args, user_args)
 
     # Update or override the control signals: {'PAIN','STARTED','SCHEDULE_INDEX','PAUSE','FORCE'}
-    # Execute the state machine that implements the control decisions with updated control signals and pressure value
+    # Execute the asynchronous part of the state machine that implements the control decisions
+    # with the newly-updated control signals and newly-sampled pressure value
     try:
         old_control_args = control_args.copy()
         control_args, current_counter, pressure_parameters, schedule_finished, toggle = \
-            airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,\
+            airctrl.FSM.ControlDecisions(current_counter, imported_schedule, control_args, old_user_args, user_args,
                                          pressure_parameters, second_tickover, schedule_finished, toggle)
         if (schedule_finished == True):
+            # At the end of the pain schedule, hold the state machine in the vent state and turn off pain
+            # Could send it back to IDLE, as an alternative, but what if there is some residual pressure
+            # in the cuff at the end of the experiment...
             airctrl.FSM.SetState("VENT")
+            control_args['PAIN'] = 0
 
         # Execute the state machine
         airctrl.FSM.Execute(control_args)
 
     except KeyboardInterrupt:
         print("\nDone")
-
-    #if (Global_cnt == 5100):
-    #    exit(0)

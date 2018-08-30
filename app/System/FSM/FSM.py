@@ -83,9 +83,9 @@ class FSM(object):
         # self.user_args['ABORT'] = 0
         self.control_args['PAINL'] = int(pressure_parameters['PAINVALUE'] - pressure_parameters['PAINTOLERANCE'])
         self.control_args['PAINH'] = int(pressure_parameters['PAINVALUE'] + pressure_parameters['PAINTOLERANCE'])
-        for i in range(0, MAX_NUM_SCHEDULES):
-            self.current_counter[i] = schedule[i][1]
-        print("Schedule value for counter ", i, " reset to: ", schedule[i][1])
+        for schedule_phase in range(0, MAX_NUM_SCHEDULES):
+            self.current_counter[schedule_phase] = schedule[schedule_phase][1]
+            print("Schedule value for phase ", schedule_phase, " reset to: ", schedule[schedule_phase][1])
         self.SetState("ISOLATE_VENT")
 
 
@@ -110,12 +110,6 @@ class FSM(object):
         else:
             self.toggle = 0
 
-        # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
-        #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
-        # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0, 'FORCE': 0,
-        #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
-        #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
-
         # {STARTED, PAUSE} states are as follows:
         # {0,1} is the initial default state
         # {0,0} is the final state, once the pain schedule has been run
@@ -130,7 +124,7 @@ class FSM(object):
                 print ("CTRL: User pressed abort; resetting pain schedule")
                 self.reset_schedule(self.control_args, self.current_counter, pressure_parameters, self.schedule)
             # initial state has an automatic pause (final state does not)
-            self.control_args['STARTED'] = 0; self.control_args['PAUSE'] = 1;
+            self.control_args['STARTED'] = 0; self.control_args['PAUSE'] = 1
             self.schedule_finished = False
         elif (self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # Initial start of the pain schedule (start "running" for the first time)

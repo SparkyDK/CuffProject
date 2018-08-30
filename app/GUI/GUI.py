@@ -2,15 +2,15 @@
 #Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 
 #kivy.require("1.10.1")
-from kivy.base import runTouchApp
+#from kivy.base import runTouchApp
 
 from kivy.uix.floatlayout import FloatLayout
-from kivy.uix.button import Button
-from kivy.properties import ListProperty
+#from kivy.uix.button import Button
+#from kivy.properties import ListProperty
 
 from kivy.app import App
 
-from kivy.clock import Clock
+#from kivy.clock import Clock
 
 from datetime import datetime
 from app.constants.CONSTANTS import DEBUG
