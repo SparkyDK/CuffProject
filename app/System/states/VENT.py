@@ -1,12 +1,14 @@
 from app.System.states.State import State
+import time
 
 class VENT(State):
     def __init__(self, FSM):
         super(VENT, self).__init__(FSM)
 
     def Enter(self):
-        # open the venting relay for the reservoir and to the cuff, but close the tank relay
+        # Open the relays to the cuff and from the reservoir, but keep the tank relay closed
         # S1 Closed, S2 Open, S3 Open
+
         pass
 
     def Execute(self, args):
@@ -22,6 +24,11 @@ class VENT(State):
             self.FSM.ToTransition("toIDLE")
 
     def Exit(self):
-        if ( self.args['STARTED'] == 1 ):
+        # Does not hurt to take some time before leaving the vent state
+        # This will give the air a chance to exit the tubing and also prevent relay wear and tear
+        # at the end of a pain schedule, since this state is held in a forced way
+        print ("Allowing some time for venting to take place")
+        time.sleep(10)
+        if ( self.args['STARTED'] == 1 or True==True):
             # Only print this message when running a schedule
             print("Exiting Vent")
