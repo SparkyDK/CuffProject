@@ -167,7 +167,7 @@ print ("main read imported_schedule:", imported_schedule)
 
 current_counter = [0] * max_num_schedules
 for phase in range(0, MAX_NUM_SCHEDULES):
-    current_counter[i] = imported_schedule[phase][1]
+    current_counter[phase] = imported_schedule[phase][1]
 
 Global_cnt = 0
 state_history = [None] * HISTORY_LENGTH
