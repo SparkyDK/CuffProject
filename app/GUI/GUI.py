@@ -1,19 +1,12 @@
-#from kivy.config import Config
-#Config.set('kivy', 'keyboard_mode', 'systemandmulti')
-
+from kivy.config import Config
+Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 #kivy.require("1.10.1")
-#from kivy.base import runTouchApp
 
 from kivy.uix.floatlayout import FloatLayout
-#from kivy.uix.button import Button
-#from kivy.properties import ListProperty
-
 from kivy.app import App
-
-#from kivy.clock import Clock
+from kivy.logger import LoggerHistory
 
 from datetime import datetime
-from app.constants.CONSTANTS import DEBUG
 
 state = 0
 
@@ -90,34 +83,6 @@ class DisplayApp(App):  # defines app and returns display
         # user_args = {'GO': 0, 'STOP': 0, 'ABORT': 0, 'UP': 0, 'DOWN': 0,
         #             'override_pressure': pressure_parameters['PAINVALUE'], 'OVERRIDE': 0}
 
-        #print ("Updating user values with cnt=", self.Global_cnt)
-        if (DEBUG == True and self.Global_cnt == 20 and True == False):
-            # debug statement only!
-            self.user_args['STOP'] = 1
-            print ("\tDebug: Stop activated with Global count = ", Global_cnt)
-            print ("User args now:", self.user_args)
-
-        if (DEBUG == True and (self.Global_cnt == 30 or self.Global_cnt == 2) and True == False):
-            # debug statement only!
-            self.user_args['STOP'] = 0
-            print ("\tDebug: Stop de-activated with Global count = ", self.Global_cnt)
-            print ("User args now:", self.user_args)
-
-        if (DEBUG == True and (self.Global_cnt == 500 or self.Global_cnt == 4000 or self.Global_cnt == 5000)  and True == False):
-            # debug statement only!
-            self.user_args['GO'] = 1
-            print ("\tDebug: Go activated with Global count = ", self.Global_cnt)
-            print ("User args now:", self.user_args)
-
-        if (DEBUG == True and (self.Global_cnt == 1000 or self.Global_cnt == 4500) and True == False):
-            # debug statement only!
-            self.user_args['GO'] = 0
-            print ("\tDebug: Go de-ctivated with Global count = ", self.Global_cnt)
-            print ("User args now:", self.user_args)
-
-
-        #print ("Control args now:", self.control_args)
-        #print ("User args now:", self.user_args)
         return (self.user_args)
 
 def build(self):

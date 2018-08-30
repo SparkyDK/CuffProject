@@ -1,5 +1,4 @@
 #:kivy 1.10.1
-
 <Display>
 	Label:
 		Image:
@@ -22,7 +21,6 @@
 	Button:
 		id: newpressure
 		text: 789
-		# text: app.desired_pressure
 		font_size: 45
 		color: 0,0,0,1
 		pos_hint: {'x':0.31, 'y': 0.07}
@@ -34,7 +32,6 @@
 		size_hint: 0.17, 0.15
 		background_color: 1,1,1,0
 		on_release: root.newpressure_function( direction="up", desired_pressure=456 )
-		#on_release: root.newpressure_function( direction="up", desired_pressure=app.desired_pressure )
 	Button:
 		id: down
 		pos_hint: {'x':0.5825, 'y': 0.0675}
@@ -42,7 +39,6 @@
 		size_hint: 0.17, 0.15
 		background_color: 1,1,1,0
 		on_release: root.newpressure_function( direction="down", desired_pressure=123)
-		#on_release: root.newpressure_function( direction="down", desired_pressure=app.desired_pressure)
 	Button:
 		id: enter
 		text: "ENTER"

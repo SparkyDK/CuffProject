@@ -217,13 +217,12 @@ airctrl.Execute(control_args)
 
 # Initialize the timers
 start_time = time.time()
-#time.clock()
 time.process_time()
 elapsed_time = 0
 
 gui = DisplayApp()
 # Not sure why this run method is not working, but it hangs my machine
-#gui.run()
+gui.run()
 
 kw_args = dict(value=0)
 args = []
