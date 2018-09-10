@@ -28,7 +28,7 @@ class VENT(State):
         # This will give the air a chance to exit the tubing and also prevent relay wear and tear
         # at the end of a pain schedule, since this state is held in a forced way
         print ("Allowing some time for venting to take place")
-        time.sleep(10)
+        time.sleep(3)
         if ( self.args['STARTED'] == 1 or True==True):
             # Only print this message when running a schedule
             print("Exiting Vent")

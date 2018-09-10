@@ -15,6 +15,10 @@ import time
 from collections import deque
 import math
 
+#import sys
+#from ADS1256_definitions import *
+#from pipyadc import ADS1256
+
 # Allows interpolation between empirically-determined pressure transducer values and mm_Hg values
 from scipy import interpolate
 # import numpy as np
@@ -230,6 +234,18 @@ args = []
 t = threading.Timer(0.01, kbd_input, args, kw_args)
 t.start()
 
+# Code from: https://github.com/ul-gh/PiPyADC/blob/master/example.py
+# Set up the A/D
+#ads = ADS1256()
+### STEP 2: Gain and offset self-calibration:
+#ads.cal_self()
+
+# Specify here an arbitrary length list (tuple) of arbitrary input channel pair
+# eight-bit code values to scan sequentially from index 0 to last.
+# Eight channels fit on the screen nicely for this example..
+# CH_SEQUENCE = (POTI, LDR, EXT2, EXT3, EXT4, EXT7, POTI_INVERTED, SHORT_CIRCUIT)
+# CH_SEQUENCE = (EXT2)
+
 # works fine, but blocks
 #gui2 = HelloWorldApp()
 #gui2.run()
@@ -264,6 +280,13 @@ while ( True == True ):
     if math.floor(elapsed_time) != math.floor(old_elapsed_time):
         # Only process the pain schedule each time a second ticks to the next truncated value
         second_tickover = True
+
+        # Read pressure value here
+        # Use the code example in: https://github.com/ul-gh/PiPyADC/blob/master/example.py
+        ### STEP 3: Get data:
+        # raw_channels = ads.read_sequence(CH_SEQUENCE)
+        # voltages = [i * ads.v_per_digit for i in raw_channels]
+        # print raw_channels, voltages
 
         print("*** <", old_keypress, ">a Elapsed: {0:.4f}".format(elapsed_time,), "\tctrl:", control_args)
 
