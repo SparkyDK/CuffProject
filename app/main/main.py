@@ -7,7 +7,7 @@ from app.filereaders.PressureReader import PressureReader
 from app.filereaders.A_to_D_lookup_table import A_to_D_lookup
 from app.GUI.GUI import DisplayApp
 
-#from app.GUI.HelloWorldGraphic import HelloWorld
+from app.GUI.HelloWorldGraphic import HelloWorldApp
 
 from app.System import System
 
@@ -231,15 +231,12 @@ t = threading.Timer(0.01, kbd_input, args, kw_args)
 t.start()
 
 # works fine, but blocks
-#gui2 = HelloWorld()
+#gui2 = HelloWorldApp()
 #gui2.run()
 
 # Does not work
-#try:
-#    g = threading.Timer(0.01, HelloWorld,)
-#    g.start()
-#except KeyboardInterrupt:
-#    print("\nDone")
+#g = threading.Timer(0.01, HelloWorldApp,)
+#g.start()
 
 while ( True == True ):
 
@@ -281,7 +278,7 @@ while ( True == True ):
     # Poll for user input and update the GUI based on the control arguments
     # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
     old_user_args = user_args.copy()
-    user_args = gui.update(Global_cnt, current_counter, control_args, user_args)
+    #user_args = gui.update(Global_cnt, current_counter, control_args, user_args)
 
     # Update or override the control signals: {'PAIN','STARTED','SCHEDULE_INDEX','PAUSE','FORCE'}
     # Execute the asynchronous part of the state machine that implements the control decisions
