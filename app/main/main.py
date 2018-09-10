@@ -1,6 +1,6 @@
 #from kivy.config import Config
 #Config.set('kivy', 'keyboard_mode', 'systemandmulti')
-#hi
+
 
 from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES, DEBUG
 from app.filereaders.ScheduleReader import ScheduleReader
@@ -36,7 +36,7 @@ def on_press(key):
     except AttributeError:
         pass
         #print('special key {0} pressed'.format(key))
-keypress = 0
+
 keypress = None
 old_keypress = None
 toggle = 0
