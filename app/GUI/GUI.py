@@ -85,8 +85,11 @@ class DisplayApp(App):  # defines app and returns display
 
         return (self.user_args)
 
-def build(self):
-    return DisplayApp.disp
+#def build(self):
+    #return DisplayApp.disp
+
+    def build(self):
+        return Display()
 
 # if __name__ == "__main__":
 #    gui = DisplayApp()
