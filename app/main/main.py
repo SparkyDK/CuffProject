@@ -7,7 +7,7 @@ from app.filereaders.ScheduleReader import ScheduleReader
 from app.filereaders.PressureReader import PressureReader
 from app.filereaders.A_to_D_lookup_table import A_to_D_lookup
 from app.GUI.GUI import DisplayApp
-from app.System.A_to_D.pyads1256 import ADS1256
+#from app.System.A_to_D.pyads1256 import ADS1256
 
 from app.GUI.HelloWorldGraphic import HelloWorldApp
 
@@ -243,11 +243,11 @@ t.start()
 #ads.cal_self()
 
 # Using code taken from: https://github.com/SeanDHeath/PyADS1256
-ads = ADS1256()
+#ads = ADS1256()
 # Do a test read of the A/D ID register
-myid = ads.ReadID()
-if (DEBUG == True):
-    print("A/D ID:", myid)
+#myid = ads.ReadID()
+#if (DEBUG == True):
+#    print("A/D ID:", myid)
 
 # Specify here an arbitrary length list (tuple) of arbitrary input channel pair
 # eight-bit code values to scan sequentially from index 0 to last.
@@ -297,8 +297,8 @@ while ( True == True ):
         # voltages = [i * ads.v_per_digit for i in raw_channels]
         # print raw_channels, voltages
 
-        pressure_value = ads.ReadADC()
-        print ("Pressure value read at:", localtime, " =", pressure_value)
+        #pressure_value = ads.ReadADC()
+        #print ("Pressure value read at:", localtime, " =", pressure_value)
 
         print("*** <", old_keypress, ">a Elapsed: {0:.4f}".format(elapsed_time,), "\tctrl:", control_args)
 

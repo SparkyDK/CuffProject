@@ -9,7 +9,9 @@ def debug_print(string):
 
 class ADS1256:
 
-    from app.System.A_to_D.ADC_CONSTANTS import *
+    from app.System.A_to_D.ADC_CONSTANTS import DRDY_PIN, RESET_PIN,PDWN_PIN, CS_PIN,\
+        SPI_CHANNEL, SPI_FREQUENCY, DRDY_TIMEOUT, SCLK_FREQUENCY, DATA_TIMEOUT, CMD_RREG,\
+        CMD_WREG, CMD_RDATA, REG_STATUS
 
     # The RPI GPIO to use for chip select and ready polling
     def __init__(self):
@@ -136,6 +138,7 @@ class ADS1256:
         return read
 
     def WriteReg(self, start_register, data):
+        self.register = start_register
         """
         Writes data to the register, implements:
 
@@ -197,6 +200,7 @@ class ADS1256:
         self.DataDelay()
 
         # The result is 24 bits
+        self.result = []
         self.result.append(self.ReadByte())
         self.result.append(self.ReadByte())
         self.result.append(self.ReadByte())
