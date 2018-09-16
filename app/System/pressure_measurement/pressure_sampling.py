@@ -3,7 +3,6 @@ from app.filereaders.A_to_D_lookup_table import A_to_D_lookup
 # Allows interpolation between empirically-determined pressure transducer values and mm_Hg values
 from scipy import interpolate
 
-
 def Read_Cuff_Pressure(control_args, past_states):
     mycontrol_args = control_args
 

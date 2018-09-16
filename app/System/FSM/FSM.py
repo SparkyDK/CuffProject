@@ -27,7 +27,6 @@ class FSM(object):
     def ToTransition(self, toTrans):
         self.trans = self.transitions[toTrans]
 
-
     def reset_schedule(self, control_args, current_counter, pressure_parameters, schedule):
         self.control_args = control_args
         self.current_counter = current_counter
@@ -43,9 +42,6 @@ class FSM(object):
             self.current_counter[schedule_phase] = schedule[schedule_phase][1]
             print("Schedule value for phase ", schedule_phase, " reset to: ", schedule[schedule_phase][1])
         self.SetState("ISOLATE_VENT")
-
-
-
 
     def Execute(self, args):
         self.args = args

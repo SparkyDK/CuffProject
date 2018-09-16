@@ -1,4 +1,4 @@
-from app.System.pain_schedule.setup_pain_schedule import past_states
+from app.System.pain_schedule.pain_schedule import past_states
 
 def stub_pressure_adjustment(past_states)
     pressure_value = 0.0

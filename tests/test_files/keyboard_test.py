@@ -21,39 +21,43 @@ def on_release(key):
         # Stop listener
         return False
 
-def Read_Cuff_Pressure(control_args, past_states):
-    mycontrol_args = control_args
-    mypast_states = past_states
+def keyboard_user_input_simulation(past_states):
+    self.mypast_states = past_states
 
-    # Do the A/D conversion and read the converted value
-    if (DEBUG == False):
-        pass  # Add the A/D read instruction here to set up the real sampled digital_pressure_value
-        # digital_pressure_value = polled value or handled interrupt value after sensing and A/D conversion
-        # It may also be necessary to average/filter the value, depending on its stability/performance ... TBD
-        digital_pressure_value = 16000000  # debug only!
-        mycontrol_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
+    #def kbd_input(*args, **kwargs):
+    #    with keyboard.Listener(on_press=on_press, on_release=on_release) as listener:
+    #        listener.join()
+
+    print("*** <", old_keypress, ">a Elapsed: {0:.4f}".format(elapsed_time, ), "\tctrl:", control_args)
+    if (DEBUG == True):
+        # Simulate user touch screen input with a regular keyboard
+        old_keypress, user_args, control_args, toggle = \
+            keyboard_test(keypress, old_keypress, user_args, old_user_args, control_args,
+                          pressure_parameters, toggle)
+
+    # Read the current air pressure in the patient's cuff
+
+    # DEBUG
+    pressure_value = 0.0
+    if (self.mypast_states[4] == "CONNECT_CUFF" and self.mypast_states[3] == "LOAD_RESERVOIR"):
+    # Controlled pressure increase
+        pressure_value = int(mycontrol_args['PRESSURE']) + 25
+    elif (self.mypast_states[4] == "RELEASE" and self.mypast_states[3] == "CONNECT_CUFF"):
+    # Controlled pressure release path
+        pressure_value = int(mycontrol_args['PRESSURE']) - 10
+    elif (self.mypast_states[4] == "RELEASE" and self.mypast_states[3] == "LOAD_RESERVOIR"):
+    # Controlled pressure release path (in case of leaks)
+        pressure_value = int(mycontrol_args['PRESSURE']) - 10
+    elif (self.mypast_states[4] == "VENT"):
+    # Venting case
+        pressure_value = int(control_args['PATM'])
     else:
-        # DEBUG
-        pressure_value = 0.0
-        if (mypast_states[4] == "CONNECT_CUFF" and mypast_states[3] == "LOAD_RESERVOIR"):
-        # Controlled pressure increase
-            pressure_value = int(mycontrol_args['PRESSURE']) + 25
-        elif (mypast_states[4] == "RELEASE" and mypast_states[3] == "CONNECT_CUFF"):
-        # Controlled pressure release path
-            pressure_value = int(mycontrol_args['PRESSURE']) - 10
-        elif (mypast_states[4] == "RELEASE" and mypast_states[3] == "LOAD_RESERVOIR"):
-        # Controlled pressure release path (in case of leaks)
-            pressure_value = int(mycontrol_args['PRESSURE']) - 10
-        elif (mypast_states[4] == "VENT"):
-        # Venting case
-            pressure_value = int(control_args['PATM'])
-        else:
-        # Don't change the pressure value at all
-            pressure_value = mycontrol_args['PRESSURE']
-        mycontrol_args['PRESSURE'] = pressure_value
+    # Don't change the pressure value at all
+        pressure_value = mycontrol_args['PRESSURE']
+    mycontrol_args['PRESSURE'] = pressure_value
 
-        # test_value = 16000000
-        # interpolated_value = Convert_to_mm_Hg(digital_value=test_value)
+    # test_value = 16000000
+    # interpolated_value = Convert_to_mm_Hg(digital_value=test_value)
 
     return ( mycontrol_args )
 
@@ -122,6 +126,6 @@ def keyboard_test(keypress, old_keypress, user_args, old_user_args, control_args
         time.sleep(1)
     return(old_keypress, user_args, control_args, toggle)
 
-keypress = None
-old_keypress = None
-toggle = 0
+    keypress = None
+    old_keypress = None
+    toggle = 0
