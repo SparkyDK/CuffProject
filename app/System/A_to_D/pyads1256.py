@@ -1,7 +1,6 @@
 import time
 import wiringpi2 as wp
 
-
 def debug_print(string):
     if True:
         print("DEBUG: " + string)

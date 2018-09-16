@@ -10,7 +10,7 @@ from app.System.FSM.FSM import FSM
 
 Char = type("Char", (object,), {})
 
-class System(Char):
+class Setup_FSM_States(Char):
     def __init__(self):
         self.FSM = FSM(self)
 
