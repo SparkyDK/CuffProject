@@ -14,7 +14,8 @@ class VENT(State):
         self.args = args
         if ( int(self.args['PRESSURE']) > int(self.args['PATM']) ):
             # Stay in the VENT state
-            print("Still need to vent, since pressure is greater than atmospheric pressure")
+            print("Still need to vent, since pressure", self.args['PRESSURE'],\
+                  " is greater than atmospheric pressure", self.args['PATM'])
         else:
             self.FSM.ToTransition("toIDLE")
 

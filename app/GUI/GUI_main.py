@@ -11,6 +11,8 @@ from app.System.pain_schedule.pain_schedule import pain_schedule
 from app.System.FSM.setup_FSM_states import Setup_FSM_States
 from app.System.FSM.control_decisions import ControlDecisions
 
+from tests.test_files.keyboard_test import keyboard_testing
+
 import collections
 
 from app.constants.CONSTANTS import HISTORY_LENGTH
@@ -25,37 +27,40 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         self.txt = 170
         print ("Started up the Display")
 
-        control_args = {}           # SCHEDULE_INDEX','PAIN','STARTED','PAUSE','PAINH','PAINL','PRESSURE','PATM','PMAX'
-        user_args = {}              # 'GO','STOP','ABORT','UP','DOWN','override_pressure','OVERRIDE'
-        pressure_parameters = {}    # 'PAINTOLERANCE', 'PAINVALUE', 'PATM', 'PMAX'
-        imported_schedule = []      # MAX_NUM_SCHEDULES tuples of: {NIL|PAIN, seconds_value}
-        schedule_finished = 0       # boolean to indicate pain schedule is complete
+        time.sleep(10)
 
-        past_states = collections.deque([None]*HISTORY_LENGTH)            # queue history of past few states
-        start_time = None           # initial system starting time for program
-        elapsed_time = 0            # program execution time
-
-        Global_cnt=0                # Counter to keep track of number of loops in the while(true): construct
-        toggle = 0                  # used for keyboard-based debugging
-        current_counter=0           # keeps track of seconds count for current phase of pain schedule
-
-        decision = ControlDecisions()
-        airctrl = Setup_FSM_States()    # state machine to control relays
-        schedule = pain_schedule()      # manages the NIL/PAIN schedule
-
-        # Initialize the system
-        control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time, \
-        current_counter, imported_schedule, Global_cnt, past_states, decision, airctrl, schedule, toggle = \
-            self.setup_system(control_args, user_args, pressure_parameters, schedule_finished, start_time,
-                              elapsed_time, current_counter, imported_schedule, Global_cnt, past_states,
-                              decision, airctrl, schedule, toggle)
-        while (True):
-            # Run the system forever
-            control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time, \
-            current_counter, imported_schedule, Global_cnt, past_states, decision, airctrl, schedule, toggle = \
-                self.run_system(control_args, user_args, pressure_parameters, schedule_finished, start_time,
-                                elapsed_time, current_counter, imported_schedule, Global_cnt, past_states,
-                                decision, airctrl, schedule, toggle)
+        # control_args = {}           # SCHEDULE_INDEX','PAIN','STARTED','PAUSE','PAINH','PAINL','PRESSURE','PATM','PMAX'
+        # user_args = {}              # 'GO','STOP','ABORT','UP','DOWN','override_pressure','OVERRIDE'
+        # pressure_parameters = {}    # 'PAINTOLERANCE', 'PAINVALUE', 'PATM', 'PMAX'
+        # imported_schedule = []      # MAX_NUM_SCHEDULES tuples of: {NIL|PAIN, seconds_value}
+        # schedule_finished = 0       # boolean to indicate pain schedule is complete
+        #
+        # past_states = collections.deque([None]*HISTORY_LENGTH)            # queue history of past few states
+        # start_time = None           # initial system starting time for program
+        # elapsed_time = 0            # program execution time
+        #
+        # Global_cnt=0                # Counter to keep track of number of loops in the while(true): construct
+        # toggle = 0                  # used for keyboard-based debugging
+        # current_counter=0           # keeps track of seconds count for current phase of pain schedule
+        #
+        # decision = ControlDecisions()
+        # airctrl = Setup_FSM_States()    # state machine to control relays
+        # schedule = pain_schedule()      # manages the NIL/PAIN schedule
+        #
+        # # Initialize the system
+        # control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time, \
+        # current_counter, imported_schedule, Global_cnt, past_states, decision, airctrl, schedule, toggle = \
+        #     self.setup_system(control_args, user_args, pressure_parameters, schedule_finished, start_time,
+        #                       elapsed_time, current_counter, imported_schedule, Global_cnt, past_states,
+        #                       decision, airctrl, schedule, toggle)
+        # #while (True):
+        # if (True==True):
+        #     # Run the system forever
+        #     control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time, \
+        #     current_counter, imported_schedule, Global_cnt, past_states, decision, airctrl, schedule, toggle = \
+        #         self.run_system(control_args, user_args, pressure_parameters, schedule_finished, start_time,
+        #                         elapsed_time, current_counter, imported_schedule, Global_cnt, past_states,
+        #                         decision, airctrl, schedule, toggle)
 
     def setup_system(self, control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time,
                      current_counter, imported_schedule, Global_cnt, past_states, decision, airctrl, schedule, toggle):
@@ -218,13 +223,10 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
             #app.desired_pressure -= 1
         else:
             print("Error! newpressure_function: We should not be here (expecting 'up' or 'down' only)")
+        pass
 
 class DisplayApp(App):  # defines app and returns display
-
     disp = Display()
-
-    from kivy.config import Config
-    Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 
     def build(self):
         return Display()
