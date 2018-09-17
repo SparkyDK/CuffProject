@@ -23,11 +23,10 @@ import time
 class Display(FloatLayout):  # intro <display> and tells actions/functions
     def __init__(self, **kwargs):
         super(Display, self).__init__(**kwargs)
-        print(kwargs)
+        #print(kwargs)
         self.txt = 170
-        print ("Started up the Display")
-
-        time.sleep(10)
+        print ("Started up the Display and ran __init__")
+        time.sleep(2)
 
         # control_args = {}           # SCHEDULE_INDEX','PAIN','STARTED','PAUSE','PAINH','PAINL','PRESSURE','PATM','PMAX'
         # user_args = {}              # 'GO','STOP','ABORT','UP','DOWN','override_pressure','OVERRIDE'
@@ -227,6 +226,14 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
 class DisplayApp(App):  # defines app and returns display
     disp = Display()
+    print ("disp:", disp)
 
     def build(self):
+        print ("built Display")
         return Display()
+        #return disp
+
+if __name__ == '__main__':
+    gui = DisplayApp()
+    print("gui: ", gui)
+    gui.run()
