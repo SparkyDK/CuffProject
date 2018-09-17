@@ -34,7 +34,7 @@
 # pressure_value = ads.ReadADC()
 # print ("Pressure value read at:", localtime, " =", pressure_value)
 
-class ADC_sampling(self):
+class ADC_sampling:
     pass
 
     def get_current_pressure(self):

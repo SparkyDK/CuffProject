@@ -6,7 +6,7 @@ class LOAD_RESERVOIR(State):
         super(LOAD_RESERVOIR, self).__init__(FSM)
 
     def Enter(self):
-        # Close the cuff and reservoir relays and open the tank relay
+        # Close the cuff and reservoir relays (keep them closed) and open the tank relay
         # S1 Open, S2 Open, S3 Closed
         pass
 
@@ -41,9 +41,10 @@ class LOAD_RESERVOIR(State):
             self.FSM.ToTransition("toISOLATE_VENT")
 
     def Exit(self):
-        # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
+        # May need to sleep here for a bit longer, depending on how long the relay opening and air transfer takes
         # close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
 
-        time.sleep(0.1)  # Give the relays time to close
+        time.sleep(0.1)  # Give the relays and solenoids time to actually close
+        # need to determine this value, by experiment, but they are specified as having a response time less than 20ms
         print("Exiting Load Reservoir")

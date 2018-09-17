@@ -16,7 +16,7 @@ def Read_Cuff_Pressure(control_args, past_states):
     # Set up the real sampled digital_pressure_value
     # Maybe put this in a non-blocking thread, depending on time required for conversion
     adc = ADC_sampling()
-    digital_pressure_value = adc.digital_pressure_value()
+    digital_pressure_value = adc.get_current_pressure()
     mycontrol_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
 
     return (mycontrol_args)

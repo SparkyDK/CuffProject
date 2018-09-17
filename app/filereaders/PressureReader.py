@@ -1,6 +1,5 @@
 from app.constants.CONSTANTS import MAX_NUM_PARAMETERS, PRESSURE_TYPES
 
-
 class PressureReader:
     def read(self, filename):
         with open(filename) as file:

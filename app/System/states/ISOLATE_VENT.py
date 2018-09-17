@@ -6,7 +6,7 @@ class ISOLATE_VENT(State):
         super(ISOLATE_VENT, self).__init__(FSM)
 
     def Enter(self):
-        # May need to sleep here for a bit depending on how long previous relay opening and air transfer takes
+        # May need to sleep here for a bit longer, depending on how long previous relay opening and air transfer takes
         # close all of the relays, especially the tank relay
         # S1 Closed, S2 Closed, S3 Closed
 
@@ -15,8 +15,6 @@ class ISOLATE_VENT(State):
 
     def Execute(self, args):
         self.args = args
-        print
-        "\n* ISOLATE_VENT * \twith args:", self.args
         self.FSM.ToTransition("toVENT")
 
     def Exit(self):
