@@ -4,7 +4,7 @@ from collections import deque
 
 from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_SCHEDULES
 
-class pain_schedule():
+class pain_schedule:
     def __init__(self):
         pass
 
@@ -19,16 +19,14 @@ class pain_schedule():
         # with keys of PMAX, PAINVALUE, PAINTOLERANCE, PATM
         self.pressure_parameters = PressureReader().read(filename="./app/input_files/Pressure_Values.txt")
 
-        #painl = int(self.pressure_parameters['PAINVALUE'] - self.pressure_parameters['PAINTOLERANCE'])
-        #painh = int(self.pressure_parameters['PAINVALUE'] + self.pressure_parameters['PAINTOLERANCE'])
-
-        #print("pressure_parameters", pressure_parameters, "painh=", painh, "and painl=", painl)
-
         # Returns an array of tuples, with the desired action of Pain/Nil and the duration of each of those actions
         self.imported_schedule = ScheduleReader().read(filename="./app/input_files/Schedule.txt",
                                                   file_schedule=imported_schedule)
         max_num_schedules = len(imported_schedule)
         print("main read imported_schedule:", imported_schedule)
+        if (MAX_NUM_SCHEDULES != max_num_schedules):
+            print ("The configured number of schedules is not the required value of:", MAX_NUM_SCHEDULES)
+            exit(1)
 
         self.current_counter = [0] * max_num_schedules
         for phase in range(0, MAX_NUM_SCHEDULES):
@@ -40,12 +38,11 @@ class pain_schedule():
         return (self.current_counter, self.imported_schedule, self.Global_cnt,
                 self.schedule_finished, self.pressure_parameters)
 
-    def execute_pain_schedule(self, control_args, schedule, schedule_finished, current_counter, imported_schedule):
+    def execute_pain_schedule(self, control_args, schedule, schedule_finished, current_counter):
         self.control_args = control_args
         self.schedule = schedule
         self.schedule_finished = schedule_finished
         self.current_counter = current_counter
-        self.imported_schedule = imported_schedule
 
         if (self.control_args['SCHEDULE_INDEX'] < MAX_NUM_SCHEDULES and schedule_finished == False):
             # Not finished the schedule yet
@@ -85,4 +82,4 @@ class pain_schedule():
             self.control_args['PAUSE'] = 0
             self.schedule_finished = True
 
-        return (self.control_args, self.schedule_finished)
+        return (self.control_args, self.schedule_finished, self.current_counter)

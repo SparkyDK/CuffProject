@@ -34,7 +34,7 @@ class CONNECT_CUFF(State):
                 print(" and Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
         else:
             # No pain required
-            self.FSM.ToTransition("toVENT")
+            self.FSM.ToTransition("toISOLATE_VENT")
 
     def Exit(self):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes

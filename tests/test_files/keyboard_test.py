@@ -29,11 +29,14 @@ def keyboard_user_input_simulation(past_states):
     #        listener.join()
 
     print("*** <", old_keypress, ">a Elapsed: {0:.4f}".format(elapsed_time, ), "\tctrl:", control_args)
-    if (DEBUG == True):
-        # Simulate user touch screen input with a regular keyboard
-        old_keypress, user_args, control_args, toggle = \
-            keyboard_test(keypress, old_keypress, user_args, old_user_args, control_args,
-                          pressure_parameters, toggle)
+    # Simulate user touch screen input with a regular keyboard
+    old_keypress, user_args, control_args, toggle = \
+        keyboard_test(keypress, old_keypress, user_args, old_user_args, control_args,
+                      pressure_parameters, toggle)
+
+    if (second_tickover == True):
+        # Only display this useful message once a second
+        print("CTRL: User pressed abort; resetting pain schedule")
 
     # Read the current air pressure in the patient's cuff
 

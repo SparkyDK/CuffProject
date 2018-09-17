@@ -35,14 +35,13 @@ class LOAD_RESERVOIR(State):
                     print (" and Pup=", self.args['PAINH'])
                     self.FSM.ToTransition("toRELEASE")
         else:
-            # We should usually never get here, without requiring pain.  This shouldn't happen, so get out safely, venting
+            # We should usually never get here, without requiring pain.  This shouldn't happen; get out safely, venting
             print ("This usually doesn't happen with P=", self.args['PRESSURE'])
             print (" and Pain=", self.args['PAIN'])
             self.FSM.ToTransition("toISOLATE_VENT")
 
     def Exit(self):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
-        # sleep (0.1)
         # close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
 

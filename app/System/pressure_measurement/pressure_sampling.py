@@ -1,24 +1,25 @@
 from app.filereaders.A_to_D_lookup_table import A_to_D_lookup
+from app.System.A_to_D.ADC_sampling import ADC_sampling
 
 # Allows interpolation between empirically-determined pressure transducer values and mm_Hg values
 from scipy import interpolate
+import math
 
 def Read_Cuff_Pressure(control_args, past_states):
     mycontrol_args = control_args
 
-    # Do the A/D conversion and read the converted value
-    pass  # Add the A/D read instruction here to set up the real sampled digital_pressure_value
+    # Do the A/D conversion on the voltage from the pressure transducer using the ADC sampling board and
+    # then read the converted value (which will be a proportional digital value to the actual voltage)
     # digital_pressure_value = polled value or handled interrupt value after sensing and A/D conversion
     # It may also be necessary to average/filter the value, depending on its stability/performance ... TBD
-    #digital_pressure_value = 16000000  # debug only!
-    mycontrol_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
-    mycontrol_args['PRESSURE'] = pressure_value
 
-    # test_value = 16000000
-    # interpolated_value = Convert_to_mm_Hg(digital_value=test_value)
+    # Set up the real sampled digital_pressure_value
+    # Maybe put this in a non-blocking thread, depending on time required for conversion
+    adc = ADC_sampling()
+    digital_pressure_value = adc.digital_pressure_value()
+    mycontrol_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
 
     return (mycontrol_args)
-
 
 def Convert_to_mm_Hg(digital_value):
     digital_input = digital_value

@@ -25,7 +25,7 @@ class RELEASE(State):
                 self.FSM.ToTransition("toCONNECT_CUFF")
         else:
             # Should not be here, since no pain is required so vent and go back to IDLE
-            self.FSM.ToTransition("toVENT")
+            self.FSM.ToTransition("toISOLATE_VENT")
 
     def Exit(self):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
