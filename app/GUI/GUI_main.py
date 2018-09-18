@@ -37,7 +37,7 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         self.ids.schedule1.text = datetime.utcfromtimestamp(d.total_seconds()).strftime("%S")
 
     def abort_function(self):
-        print ("Aborting...)
+        print ("Aborting...")
         g.control_args['ABORT'] = 1
         #print ("abort function args:", args)
         self.ids.abort.text = "Clicked"
