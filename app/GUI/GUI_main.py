@@ -8,17 +8,10 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.app import App
 from kivy.clock import Clock
 
+from app.GUI import g
+
 from datetime import datetime
 from app.System.pressure_measurement.pressure_sampling import Read_Cuff_Pressure
-from app.System.pain_schedule.pain_schedule import pain_schedule
-from app.System.FSM.setup_FSM_states import Setup_FSM_States
-from app.System.FSM.control_decisions import ControlDecisions
-
-from tests.test_files.keyboard_test import keyboard_testing
-
-import collections
-
-from app.constants.CONSTANTS import HISTORY_LENGTH
 
 import math
 import time
@@ -44,7 +37,9 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         self.ids.schedule1.text = datetime.utcfromtimestamp(d.total_seconds()).strftime("%S")
 
     def abort_function(self):
-        print ("Aborting...")
+        print ("Aborting...)
+        g.control_args['ABORT'] = 1
+        #print ("abort function args:", args)
         self.ids.abort.text = "Clicked"
         #user_args{'ABORT'} = 1
 
@@ -199,48 +194,34 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         #        self.decision, self.airctrl, self.schedule, self.toggle)
 
 class DisplayApp(App):  # defines app and returns display
-    #print ("disp:", disp)
     testvar = 0
 
     def build(self):
 
-        control_args = {}  # SCHEDULE_INDEX','PAIN','STARTED','PAUSE','PAINH','PAINL','PRESSURE','PATM','PMAX'
-        user_args = {}  # 'GO','STOP','ABORT','UP','DOWN','override_pressure','OVERRIDE'
-        pressure_parameters = {}  # 'PAINTOLERANCE', 'PAINVALUE', 'PATM', 'PMAX'
-        imported_schedule = []  # MAX_NUM_SCHEDULES tuples of: {NIL|PAIN, seconds_value}
-        schedule_finished = 0  # boolean to indicate pain schedule is complete
-
-        past_states = collections.deque([None] * HISTORY_LENGTH)  # queue history of past few states
-        start_time = None  # initial system starting time for program
-        elapsed_time = 0  # program execution time
-
-        Global_cnt = 0  # Counter to keep track of number of loops in the while(true): construct
-        toggle = 0  # used for keyboard-based debugging
-        current_counter = 0  # keeps track of seconds count for current phase of pain schedule
-
-        decision = ControlDecisions()
-        airctrl = Setup_FSM_States()  # state machine to control relays
-        schedule = pain_schedule()  # manages the NIL/PAIN schedule
-
         disp = Display()
 
+        testingvar = 1234
+
         # Initialize the system
-        control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time, \
-        current_counter, imported_schedule, Global_cnt, past_states, decision, airctrl, schedule, toggle = \
-            disp.setup_system(control_args, user_args, pressure_parameters, schedule_finished, start_time,
-                             elapsed_time, current_counter, imported_schedule, Global_cnt, past_states,
-                             decision, airctrl, schedule, toggle)
+        g.control_args, g.user_args, g.pressure_parameters, g.schedule_finished, g.start_time,\
+        g.elapsed_time, g.current_counter, g.imported_schedule, g.Global_cnt, g.past_states,\
+        g.decision, g.airctrl, g.schedule,\
+        g.toggle = disp.setup_system(g.control_args, g.user_args, g.pressure_parameters,\
+                                          g.schedule_finished, g.start_time, g.elapsed_time,\
+                                          g.current_counter, g.imported_schedule, g.Global_cnt,\
+                                          g.past_states, g.decision, g.airctrl, g.schedule,\
+                                          g.toggle)
 
-        Clock.schedule_interval(partial(disp.run_system, (control_args, user_args, pressure_parameters,
-                                                          schedule_finished, start_time, elapsed_time, current_counter,
-                                                          imported_schedule, Global_cnt, past_states, decision, airctrl,
-                                                          schedule, toggle) ), 1.0 )
-                                                          #  schedule, toggle) ), 1.0 / 60.0)
-
+        Clock.schedule_interval(partial(disp.run_system, (g.control_args, g.user_args,\
+                                                          g.pressure_parameters, g.schedule_finished,\
+                                                          g.start_time, g.elapsed_time,\
+                                                          g.current_counter, g.imported_schedule,\
+                                                          g.Global_cnt, g.past_states, g.decision,\
+                                                          g.airctrl, g.schedule, g.toggle) ), 1.0 )
+                                                          #  g.schedule, g.toggle) ), 1.0 / 60.0)
         # result=0
         # localtime = time.asctime(time.localtime(time.time()))
         # Clock.schedule_interval(partial(disp.do_something, {'time':localtime, 'result':result} ), 1.0/60.0)
-
         return disp
 
 if __name__ == '__main__':
