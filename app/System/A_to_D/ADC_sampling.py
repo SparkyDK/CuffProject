@@ -36,6 +36,7 @@
 
 from app.GUI import g
 from app.constants.CONSTANTS import DEBUG
+from app.filereaders.quick_read_test import quick_read
 
 class ADC_sampling:
     pass
@@ -47,7 +48,9 @@ class ADC_sampling:
             digital_pressure_value = 0
             # digital_pressure_value = read_the_value_from_ADC_conversion
         else:
-            g.digital_pressure_value = g.digital_pressure_value - 10000
+            # 160000000
+            g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
+            g.digital_pressure_value = g.digital_pressure_value - 100000
             digital_pressure_value = g.digital_pressure_value
             #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", digital_pressure_value)
 

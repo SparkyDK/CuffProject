@@ -29,11 +29,12 @@ class pain_schedule:
             exit(1)
 
         self.current_counter = [0] * max_num_schedules
+
         for phase in range(0, MAX_NUM_SCHEDULES):
             self.current_counter[phase] = imported_schedule[phase][1]
 
         self.Global_cnt = 0
-        self.schedule_finished = False
+        self.schedule_finished = 0
 
         return (self.current_counter, self.imported_schedule, self.Global_cnt,
                 self.schedule_finished, self.pressure_parameters)
@@ -44,7 +45,9 @@ class pain_schedule:
         self.schedule_finished = schedule_finished
         self.current_counter = current_counter
 
-        if (self.control_args['SCHEDULE_INDEX'] < MAX_NUM_SCHEDULES and schedule_finished == False):
+        pain_phase = self.control_args['SCHEDULE_INDEX']
+
+        if (pain_phase < MAX_NUM_SCHEDULES and self.schedule_finished == 0):
             # Not finished the schedule yet
             # Don't really need to be set again every second for each phase
             # Could just do it for the very first second of each phase
@@ -52,34 +55,33 @@ class pain_schedule:
                 # No pain permitted in Pause mode
                 self.control_args['PAIN'] = 0
             else:
-                if (self.schedule[self.control_args['SCHEDULE_INDEX']][0] == 'PAIN'):
+                if (self.imported_schedule[pain_phase][0] == 'PAIN'):
                     self.control_args['PAIN'] = 1
                 else:
                     self.control_args['PAIN'] = 0
 
-            if (self.current_counter[self.control_args['SCHEDULE_INDEX']] > 1):
+            if (self.current_counter[pain_phase] > 1):
                 # Current schedule phase still not complete
-                self.current_counter[self.control_args['SCHEDULE_INDEX']] -= 1
-                print("\tSchedule Counter adjusted: Schedule:", self.control_args['SCHEDULE_INDEX'],
-                      " with counter value = ", self.current_counter[self.control_args['SCHEDULE_INDEX']],
+                self.current_counter[pain_phase] -= 1
+                print("\tSchedule Counter adjusted: Schedule:", pain_phase,
+                      " with counter value = ", self.current_counter[pain_phase],
                       " and pain set to ", self.control_args['PAIN'])
             else:
                 # Current phase is now complete (Current_counter value is zero ... or negative)
                 # Reset the displayed/current value back to the starting value
                 # Leave it negative to indicate overall progress (and simplify graphics processing)
                 # and then go to the next phase of the schedule
-                print("Finished schedule phase ", self.control_args['SCHEDULE_INDEX'], "\n")
-                self.current_counter[self.control_args['SCHEDULE_INDEX']] = \
-                    -1 * self.schedule[self.control_args['SCHEDULE_INDEX']][1]
+                print("Finished schedule phase ", pain_phase, "\n")
+                self.current_counter[pain_phase] = \
+                    -1 * self.imported_schedule[pain_phase][1]
                 self.control_args['SCHEDULE_INDEX'] += 1
         else:
             # Done executing the schedule sequence ... could leave most of this stuff out of here and
             # just use the schedule_finished
-            print("Finished executing schedule")
             self.control_args['SCHEDULE_INDEX'] = 0
             self.control_args['PAIN'] = 0
             self.control_args['STARTED'] = 0
             self.control_args['PAUSE'] = 0
-            self.schedule_finished = True
+            self.schedule_finished = 1
 
         return (self.control_args, self.schedule_finished, self.current_counter)

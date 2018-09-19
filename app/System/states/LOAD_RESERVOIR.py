@@ -21,7 +21,7 @@ class LOAD_RESERVOIR(State):
                 print ("at time: ", time.asctime(time.localtime(time.time())))
                 self.FSM.ToTransition("toCONNECT_CUFF")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
-                print ("Pain pressure looks right, so we are done with P=", self.args['RESSURE'])
+                print ("Pain pressure looks right, so we are done with P=", self.args['PRESSURE'])
                 self.FSM.ToTransition("toIDLE")
             else:
                 # Pressure is above the min and max pain thresholds

@@ -22,7 +22,7 @@ class ControlDecisions:
         self.schedule = schedule
         self.toggle = toggle
 
-        print ("\nCTRL: User_args are:", self.user_args)
+        print ("\nCTRL: User_args are:", self.user_args, "and state machine in state:", self.airctrl.FSM.GetCurState())
 
         if (self.toggle > 0 and self.toggle <= 1):
             self.toggle += 1
@@ -46,13 +46,14 @@ class ControlDecisions:
                 self.schedule.setup_pain_schedule(self.control_args, self.pressure_parameters)
             self.control_args['STARTED'] = 0
             self.control_args['PAUSE'] = 1      # Requested feature requires Reset/Abort, before GO button will work
-            self.schedule_finished = False
+            self.schedule_finished = 0
             self.user_args['ABORT'] = 0        # Clear the button signal back to the GUI
         elif (self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # Initial start of the pain schedule (start "running" for the first time)
             print ("Starting the schedule for the first time")
-            if (self.second_tickover == True):
+            if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE"):
                 # Synchronize the pain schedule counting to the seconds tickover points
+                # and wait for state machine to settle in IDLE state
                 print("CTRL: Pain schedule being started for the first time; now running the pain schedule")
                 self.control_args['STARTED'] = 1
                 self.control_args['PAUSE'] = 0
@@ -70,8 +71,9 @@ class ControlDecisions:
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # resume "running"
             # In the "paused" state, GO means that the pause is ended and processing resumes (GO ignored otherwise)
-            if (self.second_tickover == True):
+            if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE"):
                 # Synchronize the pain schedule counting to the seconds tickover points
+                # and wait for the state machine to be settled in the IDLE state
                 print("CTRL: Pain schedule being resumed")
                 self.control_args['PAUSE'] = 0
                 self.control_args, self.schedule_finished, self.current_counter = \
@@ -81,25 +83,23 @@ class ControlDecisions:
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 0):
             # keep on "running"
             # Continue processing of the the pain schedule
-            if (self.second_tickover == True):
-                # Execute once each second tickover
+            if (self.second_tickover == True  and self.airctrl.FSM.GetCurState()=="IDLE"):
+                # Execute once each second tickover, provided state machine is settled in the IDLE state
                 self.control_args, self.schedule_finished, self.current_counter = \
                     self.schedule.execute_pain_schedule(self.control_args, self.schedule,
                                                         self.schedule_finished, self.current_counter)
                 self.user_args['STOP'] = 0  # Clear the button signal back to the GUI (in case of nuisance-pressing)
                 self.user_args['GO'] = 0    # Clear the button signal back to the GUI (in case of nuisance-pressing)
                 # eventually, schedule will be finished, as indicated by boolean schedule_finished
-                if (self.schedule_finished == True):
+                if (self.schedule_finished == 1):
                     print ("Schedule now finished")
         else:
             # All other cases, do nothing.
             # This includes initial power-up and the final case when the schedule is finished
             # Also includes cases where GO and STOP buttons are ignored appropriately
-            print ("CTRL: Other case... resetting STOP and GO buttons")
-            if (self.second_tickover == True):
+           if (self.second_tickover == True):
                 self.user_args['GO'] = 0
                 self.user_args['STOP'] = 0
-            pass
 
         if (self.user_args['OVERRIDE'] == 1):
             # User has hit 'enter' to override the pain threshold pressure value (lowest priority activity)
@@ -127,13 +127,16 @@ class ControlDecisions:
                     print("Not going to change anything....")
             self.user_args['OVERRIDE'] = 0  # Clear the button signal back to the GUI
 
-        if (self.schedule_finished == True and self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 0):
+        if (self.schedule_finished == 1 and self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 0):
             # Repair the schedule index, so that it is not left out of range after pain schedule completion
             # Leave the counters as negative versions of their original, starting values
             # Display all negative numbers as grayed-out records of progress made through the schedule
             self.control_args['SCHEDULE_INDEX'] = 0
             self.control_args['PAIN'] = 0  # We don't permit PAIN to be administered once the schedule is completed
 
-        print ("CTRL (2) user_args: ", self.user_args)
+        #print ("CTRL (2) user_args: ", self.user_args)
+
+        #print ("CTRL out: schedule_finished=", self.schedule_finished)
+
         return (self.user_args, self.control_args, self.current_counter, self.pressure_parameters,\
                 self.schedule_finished, self.toggle)

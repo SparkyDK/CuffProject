@@ -47,13 +47,12 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         # self.elapsed_time, self.current_counter, self.imported_schedule, self.Global_cnt, self.past_states,\
         # self.decision, self.airctrl, self.schedule, self.toggle = args
 
-        self.control_args, self.user_args, self.pressure_parameters, self.schedule_finished, self.start_time,\
-        self.elapsed_time, self.current_counter, self.imported_schedule, self.Global_cnt, self.past_states,\
+        self.control_args, self.user_args, self.pressure_parameters, self.elapsed_time, self.start_time, \
+        self.schedule_finished, self.current_counter, self.imported_schedule, self.Global_cnt, self.past_states,\
         self.decision, self.airctrl, self.schedule, self.toggle =\
-            g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time,\
+            g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time, \
             g.schedule_finished, g.current_counter, g.imported_schedule, g.Global_cnt,g.past_states,\
             g.decision, g.airctrl, g.schedule, g.toggle
-
 
         #print ("Current gGlobalcnt=", g.Global_cnt, "with selfGlobalcnt=", self.Global_cnt)
         # Not particularly necessary; mostly for debugging purposes
@@ -102,7 +101,7 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
                                                      self.user_args, self.pressure_parameters, second_tickover,
                                                      self.schedule_finished, self.airctrl,
                                                      self.schedule, self.toggle)
-            if (self.schedule_finished == True):
+            if (self.schedule_finished == 1):
                 # At the end of the pain schedule, turn off pain and keep venting the cuff in IDLE state
                 self.control_args['PAIN'] = 0
 
@@ -134,12 +133,13 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         d = datetime.now() - self.start
         self.ids.schedule1.text = datetime.utcfromtimestamp(d.total_seconds()).strftime("%S")
 
+    def abort_ack_function(self):
+        self.ids.abort.text = ""
+
     def abort_function(self):
         print ("Aborting...")
         g.user_args['ABORT'] = 1
-        #print ("abort function args:", args)
-        self.ids.abort.text = "Clicked"
-        #user_args{'ABORT'} = 1
+        self.ids.abort.text = "RELEASE/\nRESET"
 
     def enter_ack_function(self):
         self.ids.enter.text = ""
