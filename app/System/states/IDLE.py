@@ -1,5 +1,4 @@
 from app.System.states.State import State
-import time
 
 class IDLE(State):
     def __init__(self, FSM):
@@ -53,5 +52,5 @@ class IDLE(State):
 def Exit(self):
     # close all of the relays
     # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
-    # sleep (0.1)
+    # sleep (9.0*refresh_period/10.0)
     pass

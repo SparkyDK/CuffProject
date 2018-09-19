@@ -22,7 +22,7 @@ class ControlDecisions:
         self.schedule = schedule
         self.toggle = toggle
 
-        print ("\nCTRL: User_args are:", self.user_args, "and state machine in state:", self.airctrl.FSM.GetCurState())
+        #print ("\nCTRL: User_args are:", self.user_args, "and state machine in state:", self.airctrl.FSM.GetCurState())
 
         if (self.toggle > 0 and self.toggle <= 1):
             self.toggle += 1

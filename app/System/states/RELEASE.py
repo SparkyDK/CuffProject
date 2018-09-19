@@ -1,4 +1,5 @@
 from app.System.states.State import State
+from app.constants.CONSTANTS import refresh_period
 import time
 
 class RELEASE(State):
@@ -29,9 +30,8 @@ class RELEASE(State):
 
     def Exit(self):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
-        # sleep (0.1)
         # close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
 
-        time.sleep(0.1)  # Give the relays time to close
+        time.sleep(9.0*refresh_period/10.0)  # Give the relays time to close
         print("Exiting Vent")

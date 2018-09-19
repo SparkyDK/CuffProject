@@ -12,4 +12,4 @@ HISTORY_LENGTH = 5
 MAX_NUM_SCHEDULES = 8
 MAX_NUM_PARAMETERS = 4
 
-# Conversion lookup table
+refresh_period = 0.2

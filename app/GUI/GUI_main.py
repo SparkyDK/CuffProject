@@ -11,17 +11,21 @@ from kivy.properties import StringProperty
 # from kivy.properties import NumericProperty
 
 from app.GUI import g
+from app.constants.CONSTANTS import refresh_period
+from app.GUI.kivy_color_management import kivy_color_adjustment
 
 from datetime import datetime
 from app.System.pressure_measurement.pressure_sampling import Read_Cuff_Pressure
 
 import math
 import time
-import threading
 
 class Display(FloatLayout):  # intro <display> and tells actions/functions
+    # Pressure values (current value from sensor and adjustable pain value)
     current_pressure = StringProperty('---')
     new_pressure = StringProperty('---')
+
+    # Schedule values
     schedule1_pressure = StringProperty('---')
     schedule2_pressure = StringProperty('---')
     schedule3_pressure = StringProperty('---')
@@ -30,6 +34,9 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
     schedule6_pressure = StringProperty('---')
     schedule7_pressure = StringProperty('---')
     schedule8_pressure = StringProperty('---')
+
+    kivy_color = kivy_color_adjustment()
+
     def __init__(self, **kwargs):
         super(Display, self).__init__(**kwargs)
         #print(kwargs)
@@ -44,11 +51,11 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         print ("Scheduling the system to execute every", self.interval,"seconds")
         Clock.schedule_interval(partial(self.run_system, (g.control_args, g.user_args, g.pressure_parameters,\
             g.schedule_finished, g.start_time, g.elapsed_time, g.current_counter, g.imported_schedule,\
-            g.Global_cnt, g.past_states, g.decision, g.airctrl, g.schedule, g.toggle) ), self.interval/1.0 )
+            g.Global_cnt, g.past_states, g.decision, g.airctrl, g.schedule, g.toggle) ), self.interval/refresh_period )
 
     def run_system(self, args, dt, *largs):
 
-        print ("run_system args:", args)
+        #print ("run_system args:", args)
 
         # self.control_args, self.user_args, self.pressure_parameters, self.schedule_finished, self.start_time,\
         # self.elapsed_time, self.current_counter, self.imported_schedule, self.Global_cnt, self.past_states,\
@@ -98,14 +105,12 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
         self.current_pressure = str(g.control_args['PRESSURE'])
         self.new_pressure = str(g.user_args['override_pressure'])
-        self.schedule1_pressure = str(g.current_counter[0])
-        self.schedule2_pressure = str(g.current_counter[1])
-        self.schedule3_pressure = str(g.current_counter[2])
-        self.schedule4_pressure = str(g.current_counter[3])
-        self.schedule5_pressure = str(g.current_counter[4])
-        self.schedule6_pressure = str(g.current_counter[5])
-        self.schedule7_pressure = str(g.current_counter[6])
-        self.schedule8_pressure = str(g.current_counter[7])
+
+        self.schedule1_pressure, self.ids.schedule1.color, self.schedule2_pressure, self.ids.schedule2.color,\
+        self.schedule3_pressure, self.ids.schedule3.color, self.schedule4_pressure, self.ids.schedule4.color,\
+        self.schedule5_pressure, self.ids.schedule5.color, self.schedule6_pressure, self.ids.schedule6.color,\
+        self.schedule7_pressure, self.ids.schedule7.color, self.schedule8_pressure, self.ids.schedule8.color =\
+            kivy_color_adjustment.grey_out( self, current_counter=self.current_counter )
 
         # Poll for user input and update the GUI based on the control arguments
         # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
@@ -159,7 +164,7 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         self.ids.abort.text = ""
 
     def abort_function(self):
-        print ("Aborting...")
+        print ("Requesting an Abort ...")
         g.user_args['ABORT'] = 1
         self.ids.abort.text = "RELEASE/\nRESET"
 
@@ -177,7 +182,7 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
     def go_function(self):
         g.user_args['GO'] = 1
-        print ("Starting a schedule")
+        print ("Requesting start of a schedule")
         self.ids.go.text = "GO"  # changes go to clicked when clicked
 
     def stop_ack_function(self):
@@ -185,7 +190,7 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
     def stop_function(self):
         g.user_args['STOP'] = 1
-        print ("Stopping/pausing a schedule")
+        print ("Requesting the Stopping/pausing of a schedule")
         self.ids.stop.text = "STOP"
 
     def new_pressure_down(self):
@@ -196,21 +201,10 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         g.user_args['override_pressure'] += 1
         print ("Increasing pressure to", g.user_args['override_pressure'])
 
-    # def do_something(self, args, dt, *largs):
-    #     self.args = args
-    #     self.args['result'] += 1
-    #     print ("TEST: ",self.args['result'])
-    #     #print ("arguments: args=", args, "and dt=",dt)
-    #     print ("do_something args:", args)
-    #     localtime = time.asctime(time.localtime(time.time()))
-    #     print("\ndo_something:", localtime)
-    #     #time.sleep(1)
-    #     return (localtime, 4)
-
 class DisplayApp(App):  # defines app and returns display
     def build(self):
         disp = Display()
-        disp.schedule_system(1.0)
+        disp.schedule_system(refresh_period)
 
         # result=0
         # localtime = time.asctime(time.localtime(time.time()))

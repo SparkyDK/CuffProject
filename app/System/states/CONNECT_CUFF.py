@@ -1,4 +1,5 @@
 from app.System.states.State import State
+from app.constants.CONSTANTS import refresh_period
 import time
 
 class CONNECT_CUFF(State):
@@ -41,6 +42,6 @@ class CONNECT_CUFF(State):
         # sleep (0.1)
         # S1 Closed, S2 Closed, S3 Closed
         pass
-        time.sleep(0.1)  # Give the relays time to close
+        time.sleep(9.0*refresh_period/10.0)  # Give the relays time to close
 
         print("Exiting Connect Cuff")
