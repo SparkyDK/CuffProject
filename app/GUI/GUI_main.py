@@ -22,7 +22,14 @@ import threading
 class Display(FloatLayout):  # intro <display> and tells actions/functions
     current_pressure = StringProperty('---')
     new_pressure = StringProperty('---')
-
+    schedule1_pressure = StringProperty('---')
+    schedule2_pressure = StringProperty('---')
+    schedule3_pressure = StringProperty('---')
+    schedule4_pressure = StringProperty('---')
+    schedule5_pressure = StringProperty('---')
+    schedule6_pressure = StringProperty('---')
+    schedule7_pressure = StringProperty('---')
+    schedule8_pressure = StringProperty('---')
     def __init__(self, **kwargs):
         super(Display, self).__init__(**kwargs)
         #print(kwargs)
@@ -74,6 +81,13 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         # of system time seconds ticks over to the next integer value (e.g. 3.99999992 becomes 4.0000245)
         if math.floor(self.elapsed_time) != math.floor(old_elapsed_time):
             second_tickover = True
+            if (g.control_args['PAIN'] == 0):
+                self.ids.nopain.color = 0, 0, 0, 1
+                self.ids.pain.color = 0, 0, 0, 0
+            else:
+                self.ids.nopain.color = 0, 0, 0, 0
+                self.ids.pain.color = 0, 0, 0, 1
+
             #localtime = time.asctime(time.localtime(time.time()))
             #print ("Second tick at", localtime)
         else:
@@ -84,6 +98,14 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
         self.current_pressure = str(g.control_args['PRESSURE'])
         self.new_pressure = str(g.user_args['override_pressure'])
+        self.schedule1_pressure = str(g.current_counter[0])
+        self.schedule2_pressure = str(g.current_counter[1])
+        self.schedule3_pressure = str(g.current_counter[2])
+        self.schedule4_pressure = str(g.current_counter[3])
+        self.schedule5_pressure = str(g.current_counter[4])
+        self.schedule6_pressure = str(g.current_counter[5])
+        self.schedule7_pressure = str(g.current_counter[6])
+        self.schedule8_pressure = str(g.current_counter[7])
 
         # Poll for user input and update the GUI based on the control arguments
         # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
