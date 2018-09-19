@@ -7,6 +7,7 @@ from app.System.FSM.setup_FSM_states import Setup_FSM_States
 from app.System.FSM.control_decisions import ControlDecisions
 
 control_args = {}  # SCHEDULE_INDEX','PAIN','STARTED','PAUSE','PAINH','PAINL','PRESSURE','PATM','PMAX'
+current_pressure = 0
 user_args = {}  # 'GO','STOP','ABORT','UP','DOWN','override_pressure','OVERRIDE'
 pressure_parameters = {}  # 'PAINTOLERANCE', 'PAINVALUE', 'PATM', 'PMAX'
 imported_schedule = []  # MAX_NUM_SCHEDULES tuples of: {NIL|PAIN, seconds_value}
@@ -23,3 +24,5 @@ current_counter = 0  # keeps track of seconds count for current phase of pain sc
 decision = ControlDecisions()
 airctrl = Setup_FSM_States()  # state machine to control relays
 schedule = pain_schedule()  # manages the NIL/PAIN schedule
+
+digital_pressure_value = 16000000

@@ -19,7 +19,7 @@
 		on_release: root.abort_function()
 	Button:
 		id: newpressure
-		text: "789"
+		text: root.new_pressure
 		font_size: 45
 		color: 0,0,0,1
 		pos_hint: {'x':0.31, 'y': 0.07}
@@ -30,14 +30,14 @@
 		pos_hint: {'x':0.5825, 'y': 0.2825}
 		size_hint: 0.17, 0.15
 		background_color: 1,1,1,0
-		on_release: root.newpressure_function( direction="up", desired_pressure=456 )
+		on_release: root.new_pressure_up()
 	Button:
 		id: down
 		pos_hint: {'x':0.5825, 'y': 0.0675}
 		color: 1,1,1,1
 		size_hint: 0.17, 0.15
 		background_color: 1,1,1,0
-		on_release: root.newpressure_function( direction="down", desired_pressure=123)
+		on_release: root.new_pressure_down()
 	Button:
 		id: enter
 		text: "ENTER"
@@ -47,9 +47,8 @@
 		color: 1,1,1,1
 		size_hint: 0.17, 0.36
 		background_color: 1,0,0,0
-		on_release: 
-			root.enter_function()
-			root.state_update()
+		on_press: root.enter_ack_function()
+		on_release: root.enter_function()
 	Button:
 		id: go
 		text: "GO"
@@ -58,7 +57,8 @@
 		background_color: 0,0,0,0
 		pos_hint: {'x':0.04, 'y': 0.496}
 		size_hint: 0.1275, 0.2525
-		on_release: root.count()
+		on_press: root.go_ack_function()
+		on_release: root.go_function()
 	Button:
 		id: stop
 		text: "STOP"
@@ -67,10 +67,11 @@
 		background_color: 0,0,0,0
 		pos_hint: {'x':0.2069, 'y': 0.496}
 		size_hint: 0.1275, 0.2525
+		on_press: root.stop_ack_function()
 		on_release: root.stop_function()
 	Button:
 		id: current pressure
-		text: "170"
+		text: root.current_pressure
 		font_size: 65
 		bold: True
 		color: 0,0,0,1

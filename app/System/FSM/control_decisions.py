@@ -22,6 +22,8 @@ class ControlDecisions:
         self.schedule = schedule
         self.toggle = toggle
 
+        print ("\nCTRL: User_args are:", self.user_args)
+
         if (self.toggle > 0 and self.toggle <= 1):
             self.toggle += 1
             print("CTRL: user=", self.user_args, "   control=", self.control_args)
@@ -48,13 +50,13 @@ class ControlDecisions:
             self.user_args['ABORT'] = 0        # Clear the button signal back to the GUI
         elif (self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # Initial start of the pain schedule (start "running" for the first time)
+            print ("Starting the schedule for the first time")
             if (self.second_tickover == True):
                 # Synchronize the pain schedule counting to the seconds tickover points
                 print("CTRL: Pain schedule being started for the first time; now running the pain schedule")
                 self.control_args['STARTED'] = 1
                 self.control_args['PAUSE'] = 0
-                self.control_args, self.schedule_finished = \
-                    self.control_args, self.schedule_finished, self.current_counter = \
+                self.control_args, self.schedule_finished, self.current_counter = \
                     self.schedule.execute_pain_schedule(self.control_args, self.schedule,
                                                         self.schedule_finished, self.current_counter)
                 self.user_args['GO'] = 0  # Clear the button signal back to the GUI
@@ -86,11 +88,17 @@ class ControlDecisions:
                                                         self.schedule_finished, self.current_counter)
                 self.user_args['STOP'] = 0  # Clear the button signal back to the GUI (in case of nuisance-pressing)
                 self.user_args['GO'] = 0    # Clear the button signal back to the GUI (in case of nuisance-pressing)
-        # eventually, schedule will be finished, as indicated by boolean schedule_finished
+                # eventually, schedule will be finished, as indicated by boolean schedule_finished
+                if (self.schedule_finished == True):
+                    print ("Schedule now finished")
         else:
             # All other cases, do nothing.
             # This includes initial power-up and the final case when the schedule is finished
             # Also includes cases where GO and STOP buttons are ignored appropriately
+            print ("CTRL: Other case... resetting STOP and GO buttons")
+            if (self.second_tickover == True):
+                self.user_args['GO'] = 0
+                self.user_args['STOP'] = 0
             pass
 
         if (self.user_args['OVERRIDE'] == 1):
@@ -117,7 +125,7 @@ class ControlDecisions:
                     print("Something wrong with the following pressure values (they should decrease monotonically):")
                     print("Pmax=", pmax, "painh=", painh, "painl=", painl, "Patm=", patm)
                     print("Not going to change anything....")
-                self.user_args['OVERRIDE'] = 0  # Clear the button signal back to the GUI
+            self.user_args['OVERRIDE'] = 0  # Clear the button signal back to the GUI
 
         if (self.schedule_finished == True and self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 0):
             # Repair the schedule index, so that it is not left out of range after pain schedule completion
@@ -126,4 +134,6 @@ class ControlDecisions:
             self.control_args['SCHEDULE_INDEX'] = 0
             self.control_args['PAIN'] = 0  # We don't permit PAIN to be administered once the schedule is completed
 
-        return (self.control_args, self.current_counter, self.pressure_parameters, self.schedule_finished, self.toggle)
+        print ("CTRL (2) user_args: ", self.user_args)
+        return (self.user_args, self.control_args, self.current_counter, self.pressure_parameters,\
+                self.schedule_finished, self.toggle)

@@ -34,11 +34,22 @@
 # pressure_value = ads.ReadADC()
 # print ("Pressure value read at:", localtime, " =", pressure_value)
 
+from app.GUI import g
+from app.constants.CONSTANTS import DEBUG
+
 class ADC_sampling:
     pass
 
     def get_current_pressure(self):
         pass
-        digital_pressure_value = 16000000
+        if (DEBUG == False):
+            pass
+            digital_pressure_value = 0
+            # digital_pressure_value = read_the_value_from_ADC_conversion
+        else:
+            g.digital_pressure_value = g.digital_pressure_value - 10000
+            digital_pressure_value = g.digital_pressure_value
+            #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", digital_pressure_value)
+
         return (digital_pressure_value)
 
