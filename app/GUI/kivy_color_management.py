@@ -1,8 +1,18 @@
+import time
 class kivy_color_adjustment:
-    def grey_out(self, current_counter, control_args, user_args):
+    nopaincolour = 0, 0, 0, 1
+    paincolour = 0, 0, 0, 1
+    gocolour = 0, 0, 0, 1
+    stopcolour = 0, 0, 0, 1
+    entercolour = 1, 1, 1, 1
+    time_state = ""
+    def grey_out(self, current_counter, control_args, user_args, pressure_parameters, second_tickover, airctrl):
         self.current_counter = current_counter
         self.control_args = control_args
         self.user_args = user_args
+        self.pressure_parameters = pressure_parameters
+        self.second_tickover = second_tickover
+        self.airctrl = airctrl
 
         self.value1 = str(self.current_counter[0])
         self.value2 = str(self.current_counter[1])
@@ -66,8 +76,26 @@ class kivy_color_adjustment:
         else:
             self.stopcolour = 0, 0, 0, 1
 
-        return(self.value1, self.colour1, self.value2, self.colour2,\
-               self.value3, self.colour3, self.value4, self.colour4,\
-               self.value5, self.colour5, self.value6, self.colour6,\
-               self.value7, self.colour7, self.value8, self.colour8,\
-               self.gocolour, self.stopcolour)
+        if (second_tickover == True):
+            if (self.control_args['PAIN'] == 0):
+                self.nopaincolour = 0, 0, 0, 1
+                self.paincolour = 0, 0, 0, 0
+            else:
+                self.nopaincolour = 0, 0, 0, 0
+                self.paincolour = 0, 0, 0, 1
+
+        localtime = time.asctime(time.localtime(time.time()))
+        if (self.airctrl.FSM.GetCurState() == "IDLE"):
+            self.time_state = localtime + ": " + "Normal"
+        else:
+            self.time_state = localtime + ": " + self.airctrl.FSM.GetCurState()
+
+        if ( self.user_args['override_pressure'] + self.pressure_parameters['PAINTOLERANCE'] >=\
+                self.pressure_parameters['PMAX'] ):
+            self.entercolour = 1, 0, 0, 1
+        else:
+            self.entercolour = 1, 1, 1, 1
+
+        return(self.value1, self.colour1, self.value2, self.colour2, self.value3, self.colour3, self.value4, self.colour4,
+               self.value5, self.colour5, self.value6, self.colour6, self.value7, self.colour7, self.value8, self.colour8,
+               self.gocolour, self.stopcolour, self.paincolour, self.nopaincolour, self.entercolour, self.time_state)

@@ -124,7 +124,8 @@ class ControlDecisions:
                 else:
                     print("Something wrong with the following pressure values (they should decrease monotonically):")
                     print("Pmax=", pmax, "painh=", painh, "painl=", painl, "Patm=", patm)
-                    print("Not going to change anything....")
+                    print("Not going to change anything....revert the override value back to the default")
+                    self.user_args['override_pressure'] = int(self.pressure_parameters['PAINVALUE'])
             self.user_args['OVERRIDE'] = 0  # Clear the button signal back to the GUI
 
         if (self.schedule_finished == 1 and self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 0):

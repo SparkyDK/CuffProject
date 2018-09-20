@@ -37,8 +37,6 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
     time_state = StringProperty('Starting up the system')
 
-    kivy_color = kivy_color_adjustment()
-
     def __init__(self, **kwargs):
         super(Display, self).__init__(**kwargs)
         #print(kwargs)
@@ -56,7 +54,6 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
             g.Global_cnt, g.past_states, g.decision, g.airctrl, g.schedule, g.toggle) ), self.interval/refresh_period )
 
     def run_system(self, args, dt, *largs):
-
         #print ("run_system args:", args)
 
         # self.control_args, self.user_args, self.pressure_parameters, self.schedule_finished, self.start_time,\
@@ -88,19 +85,13 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
         # Pain schedule requires a one-second tick, created at the point where the integer truncation
         # of system time seconds ticks over to the next integer value (e.g. 3.99999992 becomes 4.0000245)
-        if math.floor(self.elapsed_time) != math.floor(old_elapsed_time):
-            second_tickover = True
-            if (g.control_args['PAIN'] == 0):
-                self.ids.nopain.color = 0, 0, 0, 1
-                self.ids.pain.color = 0, 0, 0, 0
-            else:
-                self.ids.nopain.color = 0, 0, 0, 0
-                self.ids.pain.color = 0, 0, 0, 1
 
+        if math.floor(self.elapsed_time) != math.floor(old_elapsed_time):
+            self.second_tickover = True
             #localtime = time.asctime(time.localtime(time.time()))
             #print ("Second tick at", localtime)
         else:
-            second_tickover = False
+            self.second_tickover = False
 
         # Read the current pressure value
         self.control_args = Read_Cuff_Pressure(self.control_args, self.past_states)
@@ -108,19 +99,16 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
         self.current_pressure = str(g.control_args['PRESSURE'])
         self.new_pressure = str(g.user_args['override_pressure'])
 
-        localtime = time.asctime(time.localtime(time.time()))
-        if (self.airctrl.FSM.GetCurState() == "IDLE"):
-            self.time_state = localtime + ": " + "Normal"
-        else:
-            self.time_state = localtime + ": " + self.airctrl.FSM.GetCurState()
-
+        # Dynamic conditional update of display values and colours, such as graying out of inactive button text
         self.schedule1_pressure, self.ids.schedule1.color, self.schedule2_pressure, self.ids.schedule2.color,\
         self.schedule3_pressure, self.ids.schedule3.color, self.schedule4_pressure, self.ids.schedule4.color,\
         self.schedule5_pressure, self.ids.schedule5.color, self.schedule6_pressure, self.ids.schedule6.color,\
-        self.schedule7_pressure, self.ids.schedule7.color, self.schedule8_pressure, self.ids.schedule8.color, \
-        self.ids.go.color, self.ids.stop.color =\
-            kivy_color_adjustment.grey_out( self, current_counter=self.current_counter,\
-                                            control_args=self.control_args, user_args=self.user_args )
+        self.schedule7_pressure, self.ids.schedule7.color, self.schedule8_pressure, self.ids.schedule8.color,\
+        self.ids.go.color, self.ids.stop.color, self.ids.pain.color, self.ids.nopain.color, self.ids.enter.color,\
+        self.time_state =\
+            kivy_color_adjustment().grey_out(current_counter=self.current_counter, control_args=self.control_args,\
+                                             user_args=self.user_args, pressure_parameters=self.pressure_parameters,\
+                                             second_tickover=self.second_tickover, airctrl=self.airctrl)
 
         # Poll for user input and update the GUI based on the control arguments
         # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
@@ -135,7 +123,7 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
             self.user_args, self.control_args, self.current_counter, self.pressure_parameters,\
             self.schedule_finished, self.toggle =\
                 self.decision.respond_to_user_inputs(self.current_counter, self.imported_schedule, self.control_args,\
-                                                     self.user_args, self.pressure_parameters, second_tickover,
+                                                     self.user_args, self.pressure_parameters, self.second_tickover,
                                                      self.schedule_finished, self.airctrl,
                                                      self.schedule, self.toggle)
             if (self.schedule_finished == 1):
