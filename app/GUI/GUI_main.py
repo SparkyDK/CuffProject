@@ -112,7 +112,6 @@ class Display(FloatLayout):  # intro <display> and tells actions/functions
 
         # Poll for user input and update the GUI based on the control arguments
         # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
-
         try:
             #old_control_args = control_args.copy()
             # Update or override the control signals: {'PAIN','STARTED','SCHEDULE_INDEX','PAUSE'}
