@@ -53,16 +53,16 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def init_system(self):
         # Initialize the system global variables.... maybe there is a better way to do this without globals
         g.control_args, g.user_args, g.pressure_parameters, g.schedule_finished, g.start_time, \
-        g.elapsed_time, g.current_counter, g.imported_schedule, g.Global_cnt, g.past_states, \
+        g.elapsed_time, g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, g.past_states, \
         g.decision, g.airctrl, g.schedule, \
         g.toggle = self.setup_system(g.control_args, g.user_args, g.pressure_parameters, \
                                     g.schedule_finished, g.start_time, g.elapsed_time, \
-                                    g.current_counter, g.imported_schedule, g.Global_cnt, \
+                                    g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, \
                                     g.past_states, g.decision, g.airctrl, g.schedule, \
                                     g.toggle)
 
     def setup_system(self, control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time,
-                     current_counter, imported_schedule, Global_cnt, past_states, decision, airctrl, schedule, toggle):
+                     current_counter, all_schedules, imported_schedule, Global_cnt, past_states, decision, airctrl, schedule, toggle):
         self.control_args = control_args
         self.user_args = user_args
         self.pressure_parameters = pressure_parameters
@@ -70,6 +70,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.start_time = start_time
         self.elapsed_time = elapsed_time
         self.current_counter = current_counter
+        self.all_schedules = all_schedules
         self.imported_schedule = imported_schedule
         self.Global_cnt = Global_cnt
         self.past_states = past_states
@@ -81,7 +82,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
         print (self.pressure_parameters)
 
         # Create a schedule for the administration of pain and set up the indices and pressure parameters
-        self.current_counter,self.imported_schedule,self.Global_cnt,self.schedule_finished,self.pressure_parameters = \
+        self.current_counter, self.all_schedules, self.imported_schedule,\
+        self.Global_cnt, self.schedule_finished, self.pressure_parameters = \
             schedule.setup_pain_schedule(self.control_args, self.pressure_parameters)
 
         painl = int(self.pressure_parameters['PAINVALUE']) - int(self.pressure_parameters['PAINTOLERANCE'])
@@ -173,12 +175,21 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.current_pressure = str(g.control_args['PRESSURE'])
         self.new_pressure = str(g.user_args['override_pressure'])
 
+        # Fill in the schedule values for the pain schedule page
+        self.s1_phase1, self.s1_phase2, self.s1_phase3, self.s1_phase4,\
+        self.s1_phase5, self.s1_phase6, self.s1_phase7, self.s1_phase8,\
+        self.s2_phase1, self.s2_phase2, self.s2_phase3, self.s2_phase4,\
+        self.s2_phase5, self.s2_phase6, self.s2_phase7, self.s2_phase8 =\
+        update_schedule
+
+
         # Dynamic conditional update of display values and colours, such as graying out of inactive button text
         self.phase1, self.ids.phase1.color, self.phase2, self.ids.phase2.color,\
         self.phase3, self.ids.phase3.color, self.phase4, self.ids.phase4.color,\
         self.phase5, self.ids.phase5.color, self.phase6, self.ids.phase6.color,\
         self.phase7, self.ids.phase7.color, self.phase8, self.ids.phase8.color,\
-        self.ids.go.color, self.ids.stop.color, self.ids.pain.color, self.ids.nopain.color, self.ids.enter.color,\
+        self.ids.go.color, self.ids.stop.color, self.ids.pain.color, self.ids.nopain.color,\
+        self.ids.enter.color, self.ids.newpressure.color,\
         self.time_state =\
             kivy_color_adjustment().grey_out(current_counter=self.current_counter, control_args=self.control_args,\
                                              user_args=self.user_args, pressure_parameters=self.pressure_parameters,\
@@ -454,7 +465,7 @@ class ScreenManagementApp(App):
         print ("Screen_manager instance=", self.screen_manager)
         #print ("Screen_manager instance.display_widget=", self.screen_manager.display)
 
-        disp = Display()
+        #disp = Display()
 
         return self.screen_manager
 

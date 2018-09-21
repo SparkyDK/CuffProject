@@ -1,4 +1,4 @@
-from app.constants.CONSTANTS import MAX_NUM_SCHEDULES
+from app.constants.CONSTANTS import MAX_NUM_PHASES
 
 class FSM(object):
     def __init__(self, character):
@@ -38,7 +38,7 @@ class FSM(object):
         # self.user_args['ABORT'] = 0
         self.control_args['PAINL'] = int(pressure_parameters['PAINVALUE'] - pressure_parameters['PAINTOLERANCE'])
         self.control_args['PAINH'] = int(pressure_parameters['PAINVALUE'] + pressure_parameters['PAINTOLERANCE'])
-        for schedule_phase in range(0, MAX_NUM_SCHEDULES):
+        for schedule_phase in range(0, MAX_NUM_PHASES):
             self.current_counter[schedule_phase] = schedule[schedule_phase][1]
             print("Schedule value for phase ", schedule_phase, " reset to: ", schedule[schedule_phase][1])
         self.SetState("ISOLATE_VENT")

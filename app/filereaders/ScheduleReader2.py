@@ -1,11 +1,11 @@
-from app.constants.CONSTANTS import MAX_NUM_SCHEDULES, SCHEDULE_TYPES
+from app.constants.CONSTANTS import MAX_NUM_PHASES, SCHEDULE_TYPES
 
 
 class ScheduleReader2:
     def read(self, filename):
         with open(filename, 'r') as file:
             lines = [line.rstrip() for line in file.readlines()]
-            if (len(lines) > MAX_NUM_SCHEDULES):
+            if (len(lines) > MAX_NUM_PHASES):
                 raise ValueError(self.getErrorMessage(lines))
             else:
                 schedule_list = [line.split("_") for line in lines]

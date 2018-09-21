@@ -3,3 +3,6 @@
 .idea/
 *.pyc
 *.code-workspace
+/app/GUI/Display - Copy.kv
+/app/GUI/Display - Copy (2).kv
+/app/GUI/Display - Copy (3).kv

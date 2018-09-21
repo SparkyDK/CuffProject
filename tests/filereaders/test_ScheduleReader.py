@@ -1,4 +1,4 @@
-from app.constants.CONSTANTS import MAX_NUM_SCHEDULES
+from app.constants.CONSTANTS import MAX_NUM_PHASES
 import unittest
 from app.filereaders.ScheduleReader import ScheduleReader
 
@@ -7,7 +7,7 @@ import os
 class ScheduleReaderTest(unittest.TestCase):
     def test_canReadScheduleFile(self):
         self.import_schedule = []
-        for i in range(0, MAX_NUM_SCHEDULES): self.import_schedule.append([])
+        for i in range(0, MAX_NUM_PHASES): self.import_schedule.append([])
         #print("TEST2:", import_schedule)
         #print ("Here is the input:", import_schedule)
         self.import_schedule = ScheduleReader().read(filename="./tests/input_files/Schedule.txt", file_schedule=self.import_schedule )

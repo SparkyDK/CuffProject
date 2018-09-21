@@ -1,5 +1,6 @@
 import time
 class kivy_color_adjustment:
+    newpressurecolour = 0, 0, 0, 1
     nopaincolour = 0, 0, 0, 1
     paincolour = 0, 0, 0, 1
     gocolour = 0, 0, 0, 1
@@ -97,6 +98,12 @@ class kivy_color_adjustment:
         else:
             self.entercolour = 1, 1, 1, 1
 
+        if ( self.user_args['override_pressure'] != self.pressure_parameters['PAINVALUE'] ):
+            self.newpressurecolour = 0, 0, 0, 0.5
+        else:
+            self.newpressurecolour = 0, 0, 0, 1
+
         return(self.value1, self.colour1, self.value2, self.colour2, self.value3, self.colour3, self.value4, self.colour4,
                self.value5, self.colour5, self.value6, self.colour6, self.value7, self.colour7, self.value8, self.colour8,
-               self.gocolour, self.stopcolour, self.paincolour, self.nopaincolour, self.entercolour, self.time_state)
+               self.gocolour, self.stopcolour, self.paincolour, self.nopaincolour, self.entercolour,
+               self.newpressurecolour, self.time_state)

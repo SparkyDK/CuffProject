@@ -9,7 +9,8 @@ DEBUG = True
 HISTORY_LENGTH = 5
 
 # Parameters
-MAX_NUM_SCHEDULES = 8
+MAX_NUM_PHASES = 8
+MAX_NUM_SCHEDULES = 3
 MAX_NUM_PARAMETERS = 4
 
 refresh_period = 0.1

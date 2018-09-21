@@ -41,7 +41,7 @@ class ControlDecisions:
         # The schedule cannot be restarted just with the GO button alone (this is a feature!)
         if (self.user_args['ABORT'] == 1):      # Highest priority user input
             # "reset" back to a starting state
-            self.current_counter, self.imported_schedule, self.Global_cnt,\
+            self.current_counter, self.all_schedules, self.imported_schedule, self.Global_cnt,\
             self.schedule_finished, self.pressure_parameters = \
                 self.schedule.setup_pain_schedule(self.control_args, self.pressure_parameters)
             self.control_args['STARTED'] = 0
