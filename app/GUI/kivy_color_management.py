@@ -64,17 +64,18 @@ class kivy_color_adjustment:
         else:
             self.colour8 = 0, 0, 0, 1
 
-        # Set colour of GO to grey/50% transparent, if already in a running schedule, else make it black
-        if (self.control_args['STARTED']==1 and self.control_args['PAUSE']==0):
-            self.gocolour = 0, 0, 0, 0.5
-        else:
+        # Set colour of GO to black only if currently paused or in initial state after reset
+        if ( (self.control_args['STARTED']==1 and self.control_args['PAUSE']==1) or\
+                (self.control_args['STARTED']==0 and self.control_args['PAUSE']==1) ):
             self.gocolour = 0, 0, 0, 1
-
-        # Set colour of STOP to grey/50% transparent, if paused in a schedule, else make it black
-        if (self.control_args['STARTED']==1 and self.control_args['PAUSE']==1):
-            self.stopcolour = 0, 0, 0, 0.5
         else:
+            self.gocolour = 0, 0, 0, 0.5
+
+        # Set colour of STOP to black only if already running a pain schedule, else make it grey/50% transparent
+        if ( self.control_args['STARTED']==1 and self.control_args['PAUSE']==0):
             self.stopcolour = 0, 0, 0, 1
+        else:
+            self.stopcolour = 0, 0, 0, 0.5
 
         if (second_tickover == True):
             if (self.control_args['PAIN'] == 0):

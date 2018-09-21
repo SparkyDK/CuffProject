@@ -1,0 +1,488 @@
+#:kivy 1.10.1
+# color = red, blue, green, alpha, where alpha is transparency, all numbers are between 0 and 1
+ScreenManager:
+    id: screen_manager
+    Display:
+        id: display
+        name: 'Display'
+        manager: 'screen_manager'
+    Schedule:
+        id: schedule
+        name: 'Schedule'
+        manager: 'screen_manager'
+<Display>:
+    FloatLayout:
+        Label:
+            Image:
+                source: './app/GUI/Screen.png'
+                pos: root.x, root.y
+                size: root.width, root.height
+                allow_stretch: True
+                keep_ratio: False
+        Button:
+            id: time_state
+            text: root.time_state
+            font_size: 16
+            color: 0,0,0,0.5
+            size_hint: 0.1, 0.1
+            background_color: 0,0,0,0
+            halign: 'left'
+            pos_hint: {'x':0.45, 'y':-0.01}
+        Button:
+            id: abort
+            text: "RELEASE/\n   RESET"
+            pos_hint: {'x':0.04, 'y': 0.07}
+            font_size: 40
+            bold: True
+            color: 1,1,1,1
+            size_hint: 0.295, 0.36
+            background_color: 1,0,0,0
+            on_press:
+                root.abort_ack_function()
+                root.init_system()
+                root.schedule_system()
+            on_release:
+                print ("RELEASE_Button: root=", root)
+                root.abort_function()
+        Button:
+            id: newpressure
+            text: root.new_pressure
+            font_size: 45
+            color: 0,0,0,1
+            pos_hint: {'x':0.31, 'y': 0.07}
+            background_color: 0,0,0,0
+            size_hint: 0.295, 0.36
+        Button:
+            id: up
+            pos_hint: {'x':0.5825, 'y': 0.2825}
+            size_hint: 0.17, 0.15
+            background_color: 1,1,1,0
+            on_release: root.new_pressure_up()
+        Button:
+            id: down
+            pos_hint: {'x':0.5825, 'y': 0.0675}
+            color: 1,1,1,1
+            size_hint: 0.17, 0.15
+            background_color: 1,1,1,0
+            on_release: root.new_pressure_down()
+        Button:
+            id: enter
+            text: "ENTER"
+            pos_hint: {'x':0.79, 'y': 0.0675}
+            font_size: 35
+            bold: True
+            color: 1,1,1,1
+            size_hint: 0.17, 0.36
+            background_color: 1,0,0,0
+            on_press: root.enter_ack_function()
+            on_release: root.enter_function()
+        Button:
+            id: go
+            text: "GO"
+            font_size: 32
+            color: 0,0,0,0.5
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.04, 'y': 0.496}
+            size_hint: 0.1275, 0.2525
+            on_press: root.go_ack_function()
+            on_release: root.go_function()
+        Button:
+            id: stop
+            text: "STOP"
+            font_size: 32
+            color: 0,0,0,0.5
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.2069, 'y': 0.496}
+            size_hint: 0.1275, 0.2525
+            on_press: root.stop_ack_function()
+            on_release: root.stop_function()
+        Button:
+            id: current pressure
+            text: root.current_pressure
+            font_size: 65
+            bold: True
+            color: 0,0,0,1
+            size_hint: 0.5, 0.5
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.5275, 'y':0.375}
+        Button:
+            id: phase1
+            text: root.phase1
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.05, 'y':0.825}
+            on_press:
+                root.stop_function()
+                root.manager.current = 'schedule'
+        Button:
+            id: phase2
+            text: root.phase2
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.1625, 'y':0.825}
+            on_press:
+                root.stop_function()
+                root.manager.current = 'schedule'
+        Button:
+            id: phase3
+            text: root.phase3
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.28, 'y':0.825}
+            on_press:
+                root.stop_function()
+                root.manager.current = 'schedule'
+        Button:
+            id: phase4
+            text: root.phase4
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.3975, 'y':0.825}
+            on_press:
+                root.stop_function()
+                root.manager.current = 'schedule'
+        Button:
+            id: phase5
+            text: root.phase5
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.5075, 'y':0.825}
+            on_press:
+                root.stop_function()
+                root.manager.current = 'schedule'
+        Button:
+            id: phase6
+            text: root.phase6
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.623, 'y':0.825}
+            on_press:
+                root.stop_function()
+                root.manager.current = 'schedule'
+        Button:
+            id: phase7
+            text: root.phase7
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.7375, 'y':0.825}
+            on_press:
+                root.stop_function()
+                root.manager.current = 'schedule'
+        Button:
+            id: phase8
+            text: root.phase8
+            font_size: 24
+            size_hint: 0.1, 0.1
+            background_color: 0,0,0,0
+            color: 0,0,0,1
+            pos_hint: {'x':0.85, 'y':0.825}
+            on_press:
+                root.stop_function()
+                root.manager.current = 'schedule'
+        Button:
+            id: pain
+            text: "PAIN"
+            font_size: 20
+            color: 0,0,0,1
+            size_hint: 0.07, 0.07
+            bold: True
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.4, 'y':0.62}
+        Button:
+            id: nopain
+            text: "  NO\nPAIN"
+            font_size: 18
+            color: 0,0,0,1
+            size_hint: 0.07, 0.09
+            bold: True
+            background_color: 1,0,0,0
+            pos_hint: {'x':0.4, 'y':0.5375}
+<Schedule>:
+    FloatLayout:
+        Label:
+            Image:
+                source: './app/GUI/Screen2.png'
+                pos: root.x, root.y
+                size: root.width, root.height
+                allow_stretch: True
+                keep_ratio: False
+        #Button:
+        #    id: schedule_up
+        #    pos_hint: {'x':0.405, 'y': 0.215}
+        #    size_hint: 0.09, 0.1
+        #    background_color: 1,1,1,0
+        #    on_release: root.new_pressure_up()
+        #Button:
+        #    id: schedule_down
+        #    pos_hint: {'x':0.405, 'y': 0.065}
+        #    color: 1,1,1,1
+        #    size_hint: 0.09, 0.1
+        #    background_color: 1,1,1,0
+        #    on_release: root.new_pressure_down()
+        #Button:
+        #    id: select
+        #    text: "ENTER"
+        #    pos_hint: {'x':0.5375, 'y': 0.0985}
+        #    font_size: 35
+        #    bold: True
+        #    color: 1,1,1,1
+        #    size_hint: 0.19, 0.175
+        #    background_color: 1,0,0,0
+        #    #on_press: root.enter_ack_function()
+        #    on_release: root.manager.current = 'display'
+        #    #on_release: root.switch()
+        Button:
+            id: s1_p1
+            text: root.s1_phase1
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.05, 'y':0.825}
+            on_press:
+                root.sel_schedule(schedule_selection="s1")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s1_p2
+            text: root.s1_phase2
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.1625, 'y':0.825}
+            on_press: root.sel_schedule(schedule_selection="s1")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s1_p3
+            text: root.s1_phase3
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.28, 'y':0.825}
+            on_press: root.sel_schedule(schedule_selection="s1")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s1_p4
+            text: root.s1_phase4
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.3975, 'y':0.825}
+            on_press: root.sel_schedule(schedule_selection="s1")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s1_p5
+            text: root.s1_phase5
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.5075, 'y':0.825}
+            on_press: root.sel_schedule(schedule_selection="s1")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s1_p6
+            text: root.s1_phase6
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.623, 'y':0.825}
+            on_press: root.sel_schedule(schedule_selection="s1")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s1_p7
+            text: root.s1_phase7
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.7375, 'y':0.825}
+            on_press: root.sel_schedule(schedule_selection="s1")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s1_p8
+            text: root.s1_phase8
+            font_size: 24
+            size_hint: 0.1, 0.1
+            background_color: 0,0,0,0
+            color: 0,0,0,1
+            pos_hint: {'x':0.85, 'y':0.825}
+            on_press: root.sel_schedule(schedule_selection="s1")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s2_p1
+            text: root.s2_phase1
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.05, 'y':0.615}
+            on_press: root.sel_schedule(schedule_selection="s2")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s2_p2
+            text: root.s2_phase2
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.1625, 'y':0.615}
+            on_press: root.sel_schedule(schedule_selection="s2")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s2_p3
+            text: root.s2_phase3
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.28, 'y':0.615}
+            on_press: root.sel_schedule(schedule_selection="s2")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s2_p4
+            text: root.s2_phase4
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.3975, 'y':0.615}
+            on_press: root.sel_schedule(schedule_selection="s2")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s2_p5
+            text: root.s2_phase5
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.5075, 'y':0.615}
+            on_press: root.sel_schedule(schedule_selection="s2")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s2_p6
+            text: root.s2_phase6
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.623, 'y':0.615}
+            on_press: root.sel_schedule(schedule_selection="s2")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s2_p7
+            text: root.s2_phase7
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.7375, 'y':0.615}
+            on_press: root.sel_schedule(schedule_selection="s2")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s2_p8
+            text: root.s2_phase8
+            font_size: 24
+            size_hint: 0.1, 0.1
+            background_color: 0,0,0,0
+            color: 0,0,0,1
+            pos_hint: {'x':0.85, 'y':0.615}
+            on_press: root.sel_schedule(schedule_selection="s2")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s3_p1
+            text: root.s3_phase1
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.05, 'y':0.405}
+            on_press: root.sel_schedule(schedule_selection="s3")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s3_p2
+            text: root.s3_phase2
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.1625, 'y':0.405}
+            on_press: root.sel_schedule(schedule_selection="s3")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s3_p3
+            text: root.s3_phase3
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.28, 'y':0.405}
+            on_press: root.sel_schedule(schedule_selection="s3")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s3_p4
+            text: root.s3_phase4
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.3975, 'y':0.405}
+            on_press: root.sel_schedule(schedule_selection="s3")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s3_p5
+            text: root.s3_phase5
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.5075, 'y':0.405}
+            on_press: root.sel_schedule(schedule_selection="s3")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s3_p6
+            text: root.s3_phase6
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.623, 'y':0.405}
+            on_press: root.sel_schedule(schedule_selection="s3")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s3_p7
+            text: root.s3_phase7
+            font_size: 24
+            size_hint: 0.1, 0.1
+            color: 0,0,0,1
+            background_color: 0,0,0,0
+            pos_hint: {'x':0.7375, 'y':0.405}
+            on_press: root.sel_schedule(schedule_selection="s3")
+            on_release: root.manager.current = 'display'
+        Button:
+            id: s3_p8
+            text: root.s3_phase8
+            font_size: 24
+            size_hint: 0.1, 0.1
+            background_color: 0,0,0,0
+            color: 0,0,0,1
+            pos_hint: {'x':0.85, 'y':0.405}
+            on_press: root.sel_schedule(schedule_selection="s3")
+            on_release: root.manager.current = 'display'

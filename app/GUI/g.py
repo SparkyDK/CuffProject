@@ -25,4 +25,6 @@ decision = ControlDecisions()
 airctrl = Setup_FSM_States()  # state machine to control relays
 schedule = pain_schedule()  # manages the NIL/PAIN schedule
 
+already_running = False
+
 digital_pressure_value = 16000000
