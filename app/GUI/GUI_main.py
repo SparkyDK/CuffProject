@@ -51,16 +51,16 @@ class Display(Screen):  # intro <display> and tells actions/functions
             g.control_args, g.user_args, g.pressure_parameters, g.schedule_finished, g.start_time,\
             g.elapsed_time, g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, g.past_states,\
             g.decision, g.airctrl, g.schedule,\
-            g.toggle, g.schedule_selected, g.schedule_changed =\
+            g.toggle, g.schedule_selected, g.schedule_changed, g.already_running =\
                 self.setup_system(g.control_args, g.user_args, g.pressure_parameters,\
                                   g.schedule_finished, g.start_time, g.elapsed_time,
                                   g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt,\
                                   g.past_states, g.decision, g.airctrl, g.schedule,\
-                                  g.toggle, g.schedule_selected, g.schedule_changed)
+                                  g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
 
     def setup_system(self, control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time,
                      current_counter, all_schedules, imported_schedule, Global_cnt, past_states, decision, airctrl,
-                     schedule, toggle, schedule_selected, schedule_changed):
+                     schedule, toggle, schedule_selected, schedule_changed, already_running):
         self.control_args = control_args
         self.user_args = user_args
         self.pressure_parameters = pressure_parameters
@@ -78,12 +78,15 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.toggle = toggle
         self.schedule_selected = schedule_selected
         self.schedule_changed = schedule_changed
+        self.already_running = already_running
 
         # Create a schedule for the administration of pain and set up the indices and pressure parameters
         self.current_counter, self.all_schedules, self.imported_schedule,\
         self.Global_cnt, self.schedule_finished, self.pressure_parameters, self.schedule_selected = \
             schedule.setup_pain_schedule(self.control_args, self.pressure_parameters, self.schedule_selected)
         self.schedule_changed = False
+
+        print ("Setting up system with schedule ", self.schedule_selected)
 
         painl = int(self.pressure_parameters['PAINVALUE']) - int(self.pressure_parameters['PAINTOLERANCE'])
         painh = int(self.pressure_parameters['PAINVALUE']) + int(self.pressure_parameters['PAINTOLERANCE'])
@@ -106,15 +109,17 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time,\
         g.schedule_finished, g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, g.past_states,\
-        g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_changed =\
+        g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed, g.already_running =\
             self.control_args, self.user_args, self.pressure_parameters, self.elapsed_time, self.start_time,\
             self.schedule_finished, self.current_counter, self.all_schedules, self.imported_schedule, self.Global_cnt,\
-            self.past_states, self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_changed
+            self.past_states, self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected,\
+            self.schedule_changed, self.already_running
 
         return(self.control_args, self.user_args, self.pressure_parameters,
                self.elapsed_time, self.start_time, self.schedule_finished,
                self.current_counter, self.all_schedules, self.imported_schedule, self.Global_cnt, self.past_states,
-               self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected, self.schedule_changed)
+               self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected,
+               self.schedule_changed, self.already_running)
 
     def schedule_system(self):
         self.interval = refresh_period
@@ -135,11 +140,11 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         self.control_args, self.user_args, self.pressure_parameters, self.elapsed_time, self.start_time, \
         self.schedule_finished, self.current_counter, self.all_schedules, self.imported_schedule,\
-        self.Global_cnt, self.past_states,\
+        self.Global_cnt, self.past_states, self.already_running,\
         self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected, self.schedule_changed =\
             g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time,\
             g.schedule_finished, g.current_counter, g.all_schedules, g.imported_schedule,\
-            g.Global_cnt, g.past_states,\
+            g.Global_cnt, g.past_states, g.already_running,\
             g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed
 
         #print ("Current gGlobalcnt=", g.Global_cnt, "with selfGlobalcnt=", self.Global_cnt)
@@ -157,6 +162,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
         old_elapsed_time = self.elapsed_time
         self.elapsed_time = time.time() - self.start_time
 
+        #print ("State history:", self.past_states)
+
         # Pain schedule requires a one-second tick, created at the point where the integer truncation
         # of system time seconds ticks over to the next integer value (e.g. 3.99999992 becomes 4.0000245)
 
@@ -173,12 +180,12 @@ class Display(Screen):  # intro <display> and tells actions/functions
             self.schedule_changed = False
             g.control_args, g.user_args, g.pressure_parameters, g.schedule_finished, g.start_time, \
             g.elapsed_time, g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, g.past_states, \
-            g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed =\
+            g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed, g.already_running =\
                 self.setup_system(g.control_args, g.user_args, g.pressure_parameters,\
                                   g.schedule_finished, g.start_time, g.elapsed_time,\
                                   g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt,\
                                   g.past_states, g.decision, g.airctrl, g.schedule,\
-                                  g.toggle, g.schedule_selected, g.schedule_changed)
+                                  g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
 
         # Read the current pressure value
         self.control_args = Read_Cuff_Pressure(self.control_args, self.past_states)
@@ -225,9 +232,10 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time,\
         g.schedule_finished, g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, g.past_states,\
-        g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed =\
+        g.already_running, g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed =\
             self.control_args, self.user_args, self.pressure_parameters, self.elapsed_time, self.start_time,\
-            self.schedule_finished, self.current_counter, self.all_schedules, self.imported_schedule, self.Global_cnt, self.past_states,\
+            self.schedule_finished, self.current_counter, self.all_schedules, self.imported_schedule, self.Global_cnt, \
+            self.past_states, self.already_running,\
             self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected, self.schedule_changed
 
     def on_timeout(self, *args):

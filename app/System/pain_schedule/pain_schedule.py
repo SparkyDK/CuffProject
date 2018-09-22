@@ -26,8 +26,9 @@ class pain_schedule:
                                   all_schedules=self.all_imported_schedules, file_schedule=self.imported_schedule)
         max_num_schedules = len(self.all_imported_schedules)
         #print("All Imported_schedules:", self.all_imported_schedules)
-        if (max_num_schedules > MAX_NUM_SCHEDULES ):
-            print ("The configured number of schedules is greater than the required value of:", MAX_NUM_SCHEDULES)
+        if (max_num_schedules != MAX_NUM_SCHEDULES ):
+            print ("The configured number of schedules in the file is", max_num_schedules)
+            print ("This is not equal to the required number of ", MAX_NUM_SCHEDULES, " schedules")
             exit(1)
         max_num_phases = 0
         for i in range (0, MAX_NUM_SCHEDULES):
@@ -49,11 +50,12 @@ class pain_schedule:
         return (self.current_counter, self.all_imported_schedules, self.first_schedule, self.Global_cnt,
                 self.schedule_finished, self.pressure_parameters, self.schedule_selected)
 
-    def execute_pain_schedule(self, control_args, schedule, schedule_finished, current_counter):
+    def execute_pain_schedule(self, control_args, schedule, schedule_finished, current_counter, imported_schedule):
         self.control_args = control_args
         self.schedule = schedule
         self.schedule_finished = schedule_finished
         self.current_counter = current_counter
+        self.imported_schedule = imported_schedule
 
         pain_phase = self.control_args['SCHEDULE_INDEX']
 
@@ -65,7 +67,7 @@ class pain_schedule:
                 # No pain permitted in Pause mode
                 self.control_args['PAIN'] = 0
             else:
-                if (self.imported_schedule[pain_phase][2] == 'PAIN'):
+                if (self.imported_schedule[pain_phase][1] == 'PAIN'):
                     self.control_args['PAIN'] = 1
                 else:
                     self.control_args['PAIN'] = 0
@@ -75,7 +77,8 @@ class pain_schedule:
                 self.current_counter[pain_phase] -= 1
                 print("\tSchedule Counter adjusted: Schedule:", pain_phase,
                       " with counter value = ", self.current_counter[pain_phase],
-                      " and pain set to ", self.control_args['PAIN'])
+                      " and pain set to ", self.control_args['PAIN'],
+                      "and pressure=", self.control_args['PRESSURE'])
             else:
                 # Current phase is now complete (Current_counter value is zero ... or negative)
                 # Reset the displayed/current value back to the starting value
@@ -94,4 +97,4 @@ class pain_schedule:
             self.control_args['PAUSE'] = 0
             self.schedule_finished = 1
 
-        return (self.control_args, self.schedule_finished, self.current_counter)
+        return (self.control_args, self.schedule_finished, self.current_counter, self.imported_schedule)

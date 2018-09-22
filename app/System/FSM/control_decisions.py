@@ -60,9 +60,10 @@ class ControlDecisions:
                 print("CTRL: Pain schedule being started for the first time; now running the pain schedule")
                 self.control_args['STARTED'] = 1
                 self.control_args['PAUSE'] = 0
-                self.control_args, self.schedule_finished, self.current_counter = \
+                self.control_args, self.schedule_finished, self.current_counter, self.imported_schedule = \
                     self.schedule.execute_pain_schedule(self.control_args, self.schedule,
-                                                        self.schedule_finished, self.current_counter)
+                                                        self.schedule_finished, self.current_counter,
+                                                        self.imported_schedule)
                 self.user_args['GO'] = 0  # Clear the button signal back to the GUI
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 0 and self.user_args['STOP'] == 1):
             # "pause"
@@ -79,18 +80,20 @@ class ControlDecisions:
                 # and wait for the state machine to be settled in the IDLE state
                 print("CTRL: Pain schedule being resumed")
                 self.control_args['PAUSE'] = 0
-                self.control_args, self.schedule_finished, self.current_counter = \
+                self.control_args, self.schedule_finished, self.current_counter, self.imported_schedule = \
                     self.schedule.execute_pain_schedule(self.control_args, self.schedule,
-                                                        self.schedule_finished, self.current_counter)
+                                                        self.schedule_finished, self.current_counter,
+                                                        self.imported_schedule)
                 self.user_args['GO'] = 0  # Clear the button signal back to the GUI
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 0):
             # keep on "running"
             # Continue processing of the the pain schedule
             if (self.second_tickover == True  and self.airctrl.FSM.GetCurState()=="IDLE"):
                 # Execute once each second tickover, provided state machine is settled in the IDLE state
-                self.control_args, self.schedule_finished, self.current_counter = \
+                self.control_args, self.schedule_finished, self.current_counter, self.imported_schedule = \
                     self.schedule.execute_pain_schedule(self.control_args, self.schedule,
-                                                        self.schedule_finished, self.current_counter)
+                                                        self.schedule_finished, self.current_counter,
+                                                        self.imported_schedule)
                 self.user_args['STOP'] = 0  # Clear the button signal back to the GUI (in case of nuisance-pressing)
                 self.user_args['GO'] = 0    # Clear the button signal back to the GUI (in case of nuisance-pressing)
                 # eventually, schedule will be finished, as indicated by boolean schedule_finished
