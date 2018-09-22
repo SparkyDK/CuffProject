@@ -1,6 +1,7 @@
 class ControlDecisions:
-    def respond_to_user_inputs(self, current_counter, imported_schedule, control_args, user_args, pressure_parameters,
-                               second_tickover, schedule_finished, airctrl, schedule, toggle):
+    def respond_to_user_inputs(self, current_counter, all_schedules, imported_schedule, control_args, user_args,
+                               pressure_parameters, second_tickover, schedule_finished, airctrl, schedule,
+                               toggle, schedule_selected):
         # A pain schedule must be initialized or restarted by pressing ABORT, then GO.
         # This is required on power-up and also once the pain schedule has been completed.
         # This extra button press inconvenience is an extra control fail-safe requirement
@@ -12,6 +13,7 @@ class ControlDecisions:
         # OVERRIDE_PRESSURE (sampled from user_args) is used to create new values of PAINH and PAINL, initially
         # derived from PAINVALUE and PAINTOLERANCE data taken from a fixed configuration file
         self.current_counter = current_counter
+        self.all_schedules = all_schedules
         self.imported_schedule = imported_schedule
         self.control_args = control_args
         self.user_args = user_args
@@ -21,6 +23,7 @@ class ControlDecisions:
         self.airctrl = airctrl
         self.schedule = schedule
         self.toggle = toggle
+        self.schedule_selected = schedule_selected
 
         #print ("\nCTRL: User_args:", self.user_args, " state:", self.airctrl.FSM.GetCurState(), " and ctrl:", self.control_args)
 
@@ -42,8 +45,8 @@ class ControlDecisions:
         if (self.user_args['ABORT'] == 1):      # Highest priority user input
             # "reset" back to a starting state
             self.current_counter, self.all_schedules, self.imported_schedule, self.Global_cnt,\
-            self.schedule_finished, self.pressure_parameters = \
-                self.schedule.setup_pain_schedule(self.control_args, self.pressure_parameters)
+            self.schedule_finished, self.pressure_parameters, self.schedule_selected = \
+                self.schedule.setup_pain_schedule(self.control_args, self.pressure_parameters, self.schedule_selected)
             self.control_args['STARTED'] = 0
             self.control_args['PAUSE'] = 1      # Requested feature requires Reset/Abort, before GO button will work
             self.schedule_finished = 0
@@ -140,4 +143,4 @@ class ControlDecisions:
         #print ("CTRL out: schedule_finished=", self.schedule_finished)
 
         return (self.user_args, self.control_args, self.current_counter, self.pressure_parameters,\
-                self.schedule_finished, self.toggle)
+                self.schedule_finished, self.toggle, self.schedule_selected)

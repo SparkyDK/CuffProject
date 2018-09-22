@@ -10,7 +10,8 @@ control_args = {}  # SCHEDULE_INDEX','PAIN','STARTED','PAUSE','PAINH','PAINL','P
 current_pressure = 0
 user_args = {}  # 'GO','STOP','ABORT','UP','DOWN','override_pressure','OVERRIDE'
 pressure_parameters = {}  # 'PAINTOLERANCE', 'PAINVALUE', 'PATM', 'PMAX'
-imported_schedule = []  # MAX_NUM_SCHEDULES tuples of: {NIL|PAIN, seconds_value}
+all_schedules = []  # MAX_NUM_SCHEDULES instances of MAX_NUM_PHASES tuples of: {schedule, NIL|PAIN, seconds_value}
+imported_schedule = []  # MAX_NUM_PHASES tuples of: {schedule, NIL|PAIN, seconds_value}
 schedule_finished = 0  # boolean to indicate pain schedule is complete
 
 past_states = collections.deque([None] * HISTORY_LENGTH)  # queue history of past few states
@@ -26,5 +27,7 @@ airctrl = Setup_FSM_States()  # state machine to control relays
 schedule = pain_schedule()  # manages the NIL/PAIN schedule
 
 already_running = False
+schedule_selected = 0
+schedule_changed = True
 
 digital_pressure_value = 16000000

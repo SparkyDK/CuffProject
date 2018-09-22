@@ -8,38 +8,46 @@ class pain_schedule:
     def __init__(self):
         pass
 
-    def setup_pain_schedule(self, control_args, pressure_parameters):
+    def setup_pain_schedule(self, control_args, pressure_parameters, schedule_selected):
         self.control_args = control_args
         self.pressure_parameters = pressure_parameters
-        imported_schedule = []
+        self.schedule_selected = schedule_selected
+
+        self.imported_schedule = []
+        self.all_imported_schedules = []
 
         # Returns the user-provided pressure parameter values as a dictionary
         # with keys of PMAX, PAINVALUE, PAINTOLERANCE, PATM
         self.pressure_parameters = PressureReader().read(filename="./app/input_files/Pressure_Values.txt")
 
         # Returns an array of tuples, with the desired action of Pain/Nil and the duration of each of those actions
-        self.imported_schedule = ScheduleReader().read(filename="./app/input_files/Schedule.txt",
-                                                  file_schedule=imported_schedule)
-        max_num_schedules = len(imported_schedule)
-        print("main read imported_schedule:", imported_schedule)
+        self.all_imported_schedules, self.imported_schedule  =\
+            ScheduleReader().read(filename="./app/input_files/Schedule.txt",\
+                                  all_schedules=self.all_imported_schedules, file_schedule=self.imported_schedule)
+        max_num_schedules = len(self.all_imported_schedules)
+        #print("All Imported_schedules:", self.all_imported_schedules)
         if (max_num_schedules > MAX_NUM_SCHEDULES ):
             print ("The configured number of schedules is greater than the required value of:", MAX_NUM_SCHEDULES)
             exit(1)
-        max_num_phases = len(imported_schedule[0])
-        if (max_num_phases > MAX_NUM_PHASES ):
-            print ("The configured number of phases is greater than the required value of:", MAX_NUM_PHASES)
-            exit(1)
+        max_num_phases = 0
+        for i in range (0, MAX_NUM_SCHEDULES):
+            max_num_phases = len(self.all_imported_schedules[i])
+            if (max_num_phases > MAX_NUM_PHASES ):
+                print ("\nChecking length of schedule", i+1)
+                print ("The configured number of phases is greater than the required value of:", MAX_NUM_PHASES)
+                exit(1)
+
         self.current_counter = [0] * max_num_phases
 
-        self.first_schedule = imported_schedule[0]
+        self.first_schedule = self.all_imported_schedules[self.schedule_selected-1]
         for phase in range(0, MAX_NUM_PHASES):
             self.current_counter[phase] = int(self.first_schedule[phase][2])
 
         self.Global_cnt = 0
         self.schedule_finished = 0
 
-        return (self.current_counter, self.imported_schedule, self.first_schedule, self.Global_cnt,
-                self.schedule_finished, self.pressure_parameters)
+        return (self.current_counter, self.all_imported_schedules, self.first_schedule, self.Global_cnt,
+                self.schedule_finished, self.pressure_parameters, self.schedule_selected)
 
     def execute_pain_schedule(self, control_args, schedule, schedule_finished, current_counter):
         self.control_args = control_args
