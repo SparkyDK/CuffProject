@@ -1,8 +1,8 @@
 import time
 class kivy_color_adjustment:
     newpressurecolour = 0, 0, 0, 1
-    nopaincolour = 0, 0, 0, 1
-    paincolour = 0, 0, 0, 1
+    nopaincolour = 0, 0, 0, 0
+    paincolour = 0, 0, 0, 0
     gocolour = 0, 0, 0, 1
     stopcolour = 0, 0, 0, 1
     entercolour = 1, 1, 1, 1
