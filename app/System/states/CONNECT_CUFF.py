@@ -23,6 +23,7 @@ class CONNECT_CUFF(State):
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 # In the zone
                 print ("In the zone with P=", self.args['PRESSURE'])
+                self.FSM.set_SYNC()
                 self.FSM.ToTransition("toIDLE")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] > self.args['PAINH']):
                 # Overshot the maximum pain pressure value

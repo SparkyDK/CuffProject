@@ -141,11 +141,12 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.control_args, self.user_args, self.pressure_parameters, self.elapsed_time, self.start_time, \
         self.schedule_finished, self.current_counter, self.all_schedules, self.imported_schedule,\
         self.Global_cnt, self.past_states, self.already_running,\
-        self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected, self.schedule_changed =\
+        self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected,\
+        self.schedule_changed, self.state_machine_ran =\
             g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time,\
             g.schedule_finished, g.current_counter, g.all_schedules, g.imported_schedule,\
             g.Global_cnt, g.past_states, g.already_running,\
-            g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed
+            g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed, g.state_machine_ran
 
         #print ("Current gGlobalcnt=", g.Global_cnt, "with selfGlobalcnt=", self.Global_cnt)
         # Not particularly necessary; mostly for debugging purposes
@@ -169,6 +170,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         if math.floor(self.elapsed_time) != math.floor(old_elapsed_time):
             self.second_tickover = True
+            self.state_machine_ran = True
             #localtime = time.asctime(time.localtime(time.time()))
             #print ("Second tick at", localtime)
         else:
@@ -214,29 +216,32 @@ class Display(Screen):  # intro <display> and tells actions/functions
             # Update 'PAUSE', 'STARTED', PAINH, PAINL, PAINVALUE, as appropriate
 
             self.user_args, self.control_args, self.current_counter, self.pressure_parameters,\
-            self.schedule_finished, self.toggle, self.schedule_selected =\
+            self.schedule_finished, self.toggle, self.schedule_selected, self.state_machine_ran =\
                 self.decision.respond_to_user_inputs(self.current_counter, self.all_schedules, self.imported_schedule,\
                                                      self.control_args,\
-                                                     self.user_args, self.pressure_parameters, self.second_tickover,
-                                                     self.schedule_finished, self.airctrl,
-                                                     self.schedule, self.toggle, self.schedule_selected)
+                                                     self.user_args, self.pressure_parameters, self.second_tickover,\
+                                                     self.schedule_finished, self.airctrl,\
+                                                     self.schedule, self.toggle, self.schedule_selected,\
+                                                     self.state_machine_ran)
             if (self.schedule_finished == 1):
                 # At the end of the pain schedule, turn off pain and keep venting the cuff in IDLE state
                 self.control_args['PAIN'] = 0
 
             # Execute the state machine
             self.airctrl.FSM.Execute(self.control_args)
+            g.state_machine_ran = True
 
         except KeyboardInterrupt:
             print("\nDone")
 
-        g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time,\
-        g.schedule_finished, g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, g.past_states,\
-        g.already_running, g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed =\
+        g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time, g.schedule_finished,\
+        g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, g.past_states, g.already_running,\
+        g.decision, g.airctrl, g.schedule, g.toggle, g.schedule_selected, g.schedule_changed, g.state_machine_ran =\
             self.control_args, self.user_args, self.pressure_parameters, self.elapsed_time, self.start_time,\
             self.schedule_finished, self.current_counter, self.all_schedules, self.imported_schedule, self.Global_cnt, \
             self.past_states, self.already_running,\
-            self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected, self.schedule_changed
+            self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected, self.schedule_changed,\
+            self.state_machine_ran
 
     def on_timeout(self, *args):
         d = datetime.now() - self.start
@@ -248,7 +253,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def abort_function(self):
         print ("Requesting an Abort ...")
         g.user_args['ABORT'] = 1
-        self.ids.abort.text = "RELEASE/\nRESET"
+        self.ids.abort.text = "RELEASE\n   RESET"
 
     def enter_ack_function(self):
         self.ids.enter.text = ""

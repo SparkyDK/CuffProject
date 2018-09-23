@@ -1,7 +1,8 @@
+from app.GUI import g
 class ControlDecisions:
     def respond_to_user_inputs(self, current_counter, all_schedules, imported_schedule, control_args, user_args,
                                pressure_parameters, second_tickover, schedule_finished, airctrl, schedule,
-                               toggle, schedule_selected):
+                               toggle, schedule_selected, state_machine_ran):
         # A pain schedule must be initialized or restarted by pressing ABORT, then GO.
         # This is required on power-up and also once the pain schedule has been completed.
         # This extra button press inconvenience is an extra control fail-safe requirement
@@ -24,6 +25,7 @@ class ControlDecisions:
         self.schedule = schedule
         self.toggle = toggle
         self.schedule_selected = schedule_selected
+        self.state_machine_ran = state_machine_ran
 
         #print ("\nCTRL: User_args:", self.user_args, " state:", self.airctrl.FSM.GetCurState(), " and ctrl:", self.control_args)
 
@@ -54,7 +56,9 @@ class ControlDecisions:
         elif (self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # Initial start of the pain schedule (start "running" for the first time)
             print ("Starting the schedule for the first time")
-            if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE"):
+            if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE" and
+                    g.SYNC==True):
+                #    g.state_machine_ran==True):
                 # Synchronize the pain schedule counting to the seconds tickover points
                 # and wait for state machine to settle in IDLE state
                 print("CTRL: Pain schedule being started for the first time; now running the pain schedule")
@@ -62,9 +66,12 @@ class ControlDecisions:
                 self.control_args['PAUSE'] = 0
                 self.control_args, self.schedule_finished, self.current_counter, self.imported_schedule = \
                     self.schedule.execute_pain_schedule(self.control_args, self.schedule,
-                                                        self.schedule_finished, self.current_counter,
-                                                        self.imported_schedule)
+                                                       self.schedule_finished, self.current_counter,
+                                                       self.imported_schedule, self.schedule_selected)
                 self.user_args['GO'] = 0  # Clear the button signal back to the GUI
+                g.SYNC = False
+                #self.state_machine_ran = False
+
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 0 and self.user_args['STOP'] == 1):
             # "pause"
             # In the "running" state, a STOP button means that a pause is required (STOP ignored otherwise)
@@ -75,7 +82,9 @@ class ControlDecisions:
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # resume "running"
             # In the "paused" state, GO means that the pause is ended and processing resumes (GO ignored otherwise)
-            if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE"):
+            if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE" and
+                    g.SYNC==True):
+                #    self.state_machine_ran==True):
                 # Synchronize the pain schedule counting to the seconds tickover points
                 # and wait for the state machine to be settled in the IDLE state
                 print("CTRL: Pain schedule being resumed")
@@ -83,22 +92,28 @@ class ControlDecisions:
                 self.control_args, self.schedule_finished, self.current_counter, self.imported_schedule = \
                     self.schedule.execute_pain_schedule(self.control_args, self.schedule,
                                                         self.schedule_finished, self.current_counter,
-                                                        self.imported_schedule)
+                                                        self.imported_schedule, self.schedule_selected)
                 self.user_args['GO'] = 0  # Clear the button signal back to the GUI
+                g.SYNC = False
+                #self.state_machine_ran = False
         elif (self.control_args['STARTED'] == 1 and self.control_args['PAUSE'] == 0):
             # keep on "running"
             # Continue processing of the the pain schedule
-            if (self.second_tickover == True  and self.airctrl.FSM.GetCurState()=="IDLE"):
+            if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE" and
+                    g.SYNC==True):
+                #    self.state_machine_ran==True):
                 # Execute once each second tickover, provided state machine is settled in the IDLE state
                 self.control_args, self.schedule_finished, self.current_counter, self.imported_schedule = \
                     self.schedule.execute_pain_schedule(self.control_args, self.schedule,
                                                         self.schedule_finished, self.current_counter,
-                                                        self.imported_schedule)
+                                                        self.imported_schedule, self.schedule_selected)
                 self.user_args['STOP'] = 0  # Clear the button signal back to the GUI (in case of nuisance-pressing)
                 self.user_args['GO'] = 0    # Clear the button signal back to the GUI (in case of nuisance-pressing)
                 # eventually, schedule will be finished, as indicated by boolean schedule_finished
                 if (self.schedule_finished == 1):
                     print ("Schedule now finished")
+                g.SYNC = False
+                #self.state_machine_ran = False
         else:
             # All other cases, do nothing.
             # This includes initial power-up and the final case when the schedule is finished
@@ -146,4 +161,4 @@ class ControlDecisions:
         #print ("CTRL out: schedule_finished=", self.schedule_finished)
 
         return (self.user_args, self.control_args, self.current_counter, self.pressure_parameters,\
-                self.schedule_finished, self.toggle, self.schedule_selected)
+                self.schedule_finished, self.toggle, self.schedule_selected, self.state_machine_ran)

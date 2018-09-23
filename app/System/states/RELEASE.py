@@ -20,6 +20,7 @@ class RELEASE(State):
                 self.FSM.ToTransition("toLOAD_RESERVOIR")
             elif (self.args['PRESSURE'] > self.args['PAINL'] and self.args['PRESSURE'] < self.args['PAINH']):
                 # Pressure in the zone
+                self.FSM.set_SYNC()
                 self.FSM.ToTransition("toIDLE")
             else:
                 # Pressure is greater than Plow, but not in the zone, so it is too high

@@ -34,6 +34,7 @@ class IDLE(State):
                             # otherwise, allow for a more controlled release of air
                             self.FSM.ToTransition("toCONNECT_CUFF")
                     else:
+                        self.FSM.set_SYNC()
                         pass    # No problem with pain air pressure ("in the zone")
             else:
                 # This should not happen (i.e. pain required outside of a schedule, so vent
@@ -47,6 +48,7 @@ class IDLE(State):
             else:
             # Save solenoid wear and tear when idle by leaving them closed and staying in this state
                 pass
+                self.FSM.set_SYNC()
 
 
 def Exit(self):

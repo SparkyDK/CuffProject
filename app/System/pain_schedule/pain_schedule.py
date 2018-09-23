@@ -50,12 +50,14 @@ class pain_schedule:
         return (self.current_counter, self.all_imported_schedules, self.first_schedule, self.Global_cnt,
                 self.schedule_finished, self.pressure_parameters, self.schedule_selected)
 
-    def execute_pain_schedule(self, control_args, schedule, schedule_finished, current_counter, imported_schedule):
+    def execute_pain_schedule(self, control_args, schedule, schedule_finished, current_counter,\
+                              imported_schedule, schedule_selected):
         self.control_args = control_args
         self.schedule = schedule
         self.schedule_finished = schedule_finished
         self.current_counter = current_counter
         self.imported_schedule = imported_schedule
+        self.schedule_selected = schedule_selected
 
         pain_phase = self.control_args['SCHEDULE_INDEX']
 
@@ -75,8 +77,8 @@ class pain_schedule:
             if (self.current_counter[pain_phase] > 1):
                 # Current schedule phase still not complete
                 self.current_counter[pain_phase] -= 1
-                print("\tSchedule Counter adjusted: Schedule:", pain_phase,
-                      " with counter value = ", self.current_counter[pain_phase],
+                print("\tSchedule", self.schedule_selected+1, "Phase Counter phase", pain_phase,
+                      " adjusted with counter value = ", self.current_counter[pain_phase],
                       " and pain set to ", self.control_args['PAIN'],
                       "and pressure=", self.control_args['PRESSURE'])
             else:

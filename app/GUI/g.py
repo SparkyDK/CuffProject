@@ -1,5 +1,5 @@
 # File containing all of the shared global variables
-from app.constants.CONSTANTS import HISTORY_LENGTH
+from app.constants.CONSTANTS import HISTORY_LENGTH, MAX_NUM_PHASES
 import collections
 
 from app.System.pain_schedule.pain_schedule import pain_schedule
@@ -20,14 +20,19 @@ elapsed_time = 0  # program execution time
 
 Global_cnt = 0  # Counter to keep track of number of loops in the while(true): construct
 toggle = 0  # used for keyboard-based debugging
-current_counter = 0  # keeps track of seconds count for current phase of pain schedule
+
+# keeps track of seconds count for current phase of pain schedule
+current_counter = [0] * MAX_NUM_PHASES
+
+state_machine_ran = True
+SYNC = False
 
 decision = ControlDecisions()
 airctrl = Setup_FSM_States()  # state machine to control relays
 schedule = pain_schedule()  # manages the NIL/PAIN schedule
 
 already_running = False
-schedule_selected = 0
+schedule_selected = 1
 schedule_changed = True
 
 digital_pressure_value = 16000000

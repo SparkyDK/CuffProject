@@ -17,6 +17,7 @@ class VENT(State):
             print("Need to vent air, since pressure", self.args['PRESSURE'],\
                   " is greater than atmospheric pressure", self.args['PATM'])
         else:
+            self.FSM.set_SYNC()
             self.FSM.ToTransition("toIDLE")
 
     def Exit(self):

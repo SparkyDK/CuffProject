@@ -1,4 +1,5 @@
 from app.constants.CONSTANTS import MAX_NUM_PHASES
+from app.GUI import g
 
 class FSM(object):
     def __init__(self, character):
@@ -42,6 +43,15 @@ class FSM(object):
             self.current_counter[schedule_phase] = schedule[schedule_phase][1]
             print("Schedule value for phase ", schedule_phase, " reset to: ", schedule[schedule_phase][1])
         self.SetState("ISOLATE_VENT")
+
+    def get_SYNC(self):
+        return(g.SYNC)
+
+    def reset_SYNC(self):
+        g.SYNC = 0
+
+    def set_SYNC(self):
+        g.SYNC = 1
 
     def Execute(self, args):
         self.args = args
