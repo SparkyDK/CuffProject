@@ -19,4 +19,5 @@ class ISOLATE_VENT(State):
         self.FSM.ToTransition("toVENT")
 
     def Exit(self):
-        print("Exiting ISOLATE_VENT")
+        pass
+        #print("Exiting ISOLATE_VENT")

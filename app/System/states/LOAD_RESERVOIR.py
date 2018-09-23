@@ -13,13 +13,12 @@ class LOAD_RESERVOIR(State):
 
     def Execute(self, args):
         self.args = args
-        print ("\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args)
+        #print ("\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args)
         if (self.args['PAIN'] == 1):
             if (int(self.args['PRESSURE']) < self.args['PAINL']):
                 # Still on track to add pain pressure
-                print ("Going to add more air with P=", self.args['PRESSURE'])
-                print ("Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
-                print ("at time: ", time.asctime(time.localtime(time.time())))
+                print ("Going to add more air with P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
+                       " and Pup=", self.args['PAINH'], "at time: ", time.asctime(time.localtime(time.time())))
                 self.FSM.ToTransition("toCONNECT_CUFF")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 print ("Pain pressure looks right, so we are done with P=", self.args['PRESSURE'])
@@ -27,14 +26,13 @@ class LOAD_RESERVOIR(State):
                 self.FSM.ToTransition("toIDLE")
             else:
                 # Pressure is above the min and max pain thresholds
-                print ("Not sure how we got here with P=", self.args['PRESSURE'])
-                print ("but pain pressure is too high")
+                print ("Not sure how we got here with P=", self.args['PRESSURE'], "but pain pressure is too high")
                 if (self.args['PRESSURE'] > self.args['PMAX']):
                     print ("Emergency venting P=", self.args['PRESSURE'])
                     self.FSM.ToTransition("toVENT")
                 else:
-                    print ("Controlled venting P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'])
-                    print (" and Pup=", self.args['PAINH'])
+                    print ("Controlled venting P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
+                           " and Pup=", self.args['PAINH'])
                     self.FSM.ToTransition("toRELEASE")
         else:
             # We should usually never get here, without requiring pain.  This shouldn't happen; get out safely, venting
@@ -49,4 +47,4 @@ class LOAD_RESERVOIR(State):
 
         time.sleep(9.0*refresh_period/10.0)  # Give the relays and solenoids time to actually close
         # need to determine this value, by experiment, but they are specified as having a response time less than 20ms
-        print("Exiting Load Reservoir")
+        #print("Exiting Load Reservoir")

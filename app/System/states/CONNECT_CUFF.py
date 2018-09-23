@@ -13,12 +13,12 @@ class CONNECT_CUFF(State):
 
     def Execute(self, args):
         self.args = args
-        print ("\n* CONNECT_CUFF * \twith args:", self.args)
+        #print ("\n* CONNECT_CUFF * \twith args:", self.args)
         if (self.args['PAIN'] == 1):
             if (self.args['PRESSURE'] < self.args['PAINL']):
                 # Need to add air
-                print ("Still need to add more air with P=", self.args['PRESSURE'])
-                print ("Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
+                print ("Need to add more air P=", self.args['PRESSURE'],\
+                       "Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
                 self.FSM.ToTransition("toLOAD_RESERVOIR")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 # In the zone
@@ -44,5 +44,4 @@ class CONNECT_CUFF(State):
         # S1 Closed, S2 Closed, S3 Closed
         pass
         time.sleep(9.0*refresh_period/10.0)  # Give the relays time to close
-
-        print("Exiting Connect Cuff")
+        #print("Exiting Connect Cuff")

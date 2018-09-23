@@ -253,7 +253,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def abort_function(self):
         print ("Requesting an Abort ...")
         g.user_args['ABORT'] = 1
-        self.ids.abort.text = "RELEASE\n   RESET"
+        self.ids.abort.text = "RELEASE\n  RESET"
 
     def enter_ack_function(self):
         self.ids.enter.text = ""

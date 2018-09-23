@@ -77,7 +77,7 @@ class pain_schedule:
             if (self.current_counter[pain_phase] > 1):
                 # Current schedule phase still not complete
                 self.current_counter[pain_phase] -= 1
-                print("\tSchedule", self.schedule_selected+1, "Phase Counter phase", pain_phase,
+                print("\tSchedule", self.schedule_selected, "Phase Counter phase", pain_phase,
                       " adjusted with counter value = ", self.current_counter[pain_phase],
                       " and pain set to ", self.control_args['PAIN'],
                       "and pressure=", self.control_args['PRESSURE'])
