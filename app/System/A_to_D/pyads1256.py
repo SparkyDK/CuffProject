@@ -1,13 +1,11 @@
 import time
-import wiringpi2 as wp
+import wiringpi as wp
 
 def debug_print(string):
     if True:
         print("DEBUG: " + string)
 
-
 class ADS1256:
-
     from app.System.A_to_D.ADC_CONSTANTS import DRDY_PIN, RESET_PIN,PDWN_PIN, CS_PIN,\
         SPI_CHANNEL, SPI_FREQUENCY, DRDY_TIMEOUT, SCLK_FREQUENCY, DATA_TIMEOUT, CMD_RREG,\
         CMD_WREG, CMD_RDATA, REG_STATUS
