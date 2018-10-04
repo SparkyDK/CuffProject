@@ -194,8 +194,12 @@ class Display(Screen):  # intro <display> and tells actions/functions
         # Read the current pressure value
         self.control_args = Read_Cuff_Pressure(self.control_args, self.past_states)
 
-        self.current_pressure = str(g.control_args['PRESSURE'])
-        self.new_pressure = str(g.user_args['override_pressure'])
+        if (g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] < 0):
+            self.current_pressure = str(0)
+        else:
+            self.current_pressure = str( g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] )
+
+        self.new_pressure = str( g.user_args['override_pressure'] - g.pressure_parameters['PATM'] )
 
         # Dynamic conditional update of display values and colours, such as graying out of inactive button text
         self.phase1, self.ids.phase1.color, self.phase2, self.ids.phase2.color,\
@@ -358,7 +362,8 @@ class Schedule(Screen):
 
 class ScreenManagement(ScreenManager):
     def build(self):
-        print ("Running the instance of ScreenManager")
+        print ("Running the instance of ScreenManager with self=", self)
+        return self
 
 graphics = Builder.load_file('ScreenManagement.kv')
 #class ScreenManagementApp(App):
@@ -371,8 +376,9 @@ class Splat(App):
         self.display_widget = self.screen_manager.add_widget(Display(name='display'))
         self.screen_manager.current = 'display'
 
-        return graphics
-        #return self.screen_manager
+        print ("graphics:", graphics)
+        #return graphics
+        return self.screen_manager
 
 if __name__ == '__main__':
     sm = Splat()
