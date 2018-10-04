@@ -9,6 +9,8 @@ from kivy.clock import Clock
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import ScreenManager, Screen
 
+from kivy.lang import Builder
+
 from app.GUI import g
 from app.constants.CONSTANTS import refresh_period
 from app.GUI.kivy_color_management import kivy_color_adjustment
@@ -358,7 +360,9 @@ class ScreenManagement(ScreenManager):
     def build(self):
         print ("Running the instance of ScreenManager")
 
-class ScreenManagementApp(App):
+graphics = Builder.load_file('ScreenManagement.kv')
+#class ScreenManagementApp(App):
+class Splat(App):
     screen_manager = None
     def build(self):
         # initalise the screen manager, add screens and game widget to game screen then return it
@@ -367,8 +371,9 @@ class ScreenManagementApp(App):
         self.display_widget = self.screen_manager.add_widget(Display(name='display'))
         self.screen_manager.current = 'display'
 
-        return self.screen_manager
+        return graphics
+        #return self.screen_manager
 
 if __name__ == '__main__':
-    sm = ScreenManagementApp()
+    sm = Splat()
     sm.run()
