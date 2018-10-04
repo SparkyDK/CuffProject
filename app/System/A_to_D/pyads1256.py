@@ -1,5 +1,5 @@
 import time
-import wiringpi as wp
+#import wiringpi as wp
 
 def debug_print(string):
     if True:

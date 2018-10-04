@@ -315,6 +315,7 @@ class Schedule(Screen):
     s3_p5= "-"; s3_p6= "-"; s3_p7= "-"; s3_p8= "-"
     s4_p1= "-"; s4_p2= "-"; s4_p3= "-"; s4_p4= "-"
     s4_p5= "-"; s4_p6= "-"; s4_p7= "-"; s4_p8= "-"
+    exit_program_text=""
     def __init__(self, **kwargs):
         super(Schedule, self).__init__(**kwargs)
         localtime = time.asctime(time.localtime(time.time()))
@@ -323,6 +324,9 @@ class Schedule(Screen):
         localtime = time.asctime(time.localtime(time.time()))
         print ("Schedule (build): Started up Schedule Display at:", localtime, "self=", self)
         #Clock.schedule_once(self.run_schedule, 8) # clock callback for the second screen
+
+    def exit_program(self):
+        exit(0)
 
     def sel_schedule(self, schedule_selection):
         self.schedule_selection = schedule_selection

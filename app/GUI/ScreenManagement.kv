@@ -588,3 +588,12 @@ ScreenManagement:
             pos_hint: {'x':0.85, 'y':0.195}
             on_press: root.sel_schedule(schedule_selection="4")
             on_release: root.manager.current = 'display'
+        Button:
+            id: exit_program
+            text: root.exit_program_text
+            font_size: 24
+            size_hint: 0.05, 0.055
+            background_color: 0,0,0,0
+            color: 0,0,0,1
+            pos_hint: {'x':0.935, 'y':0.04}
+            on_release: root.exit_program()
