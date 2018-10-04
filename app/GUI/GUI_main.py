@@ -194,7 +194,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
         # Read the current pressure value
         self.control_args = Read_Cuff_Pressure(self.control_args, self.past_states)
 
-        if (g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] < 0):
+        if ( (g.control_args['PRESSURE'] - g.pressure_parameters['PATM']) < 0):
             self.current_pressure = str(0)
         else:
             self.current_pressure = str( g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] )
@@ -291,6 +291,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def new_pressure_up(self):
         g.user_args['override_pressure'] += 1
         print ("Increasing pressure to", g.user_args['override_pressure'])
+
 
     def switch_function(self):
         self.ids.select.text = "ENTER"
