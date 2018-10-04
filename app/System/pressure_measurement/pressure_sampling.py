@@ -2,7 +2,7 @@ from app.filereaders.A_to_D_lookup_table import A_to_D_lookup
 from app.System.A_to_D.ADC_sampling import ADC_sampling
 
 # Allows interpolation between empirically-determined pressure transducer values and mm_Hg values
-from scipy import interpolate
+# from scipy import interpolate
 import math
 
 def Read_Cuff_Pressure(control_args, past_states):
@@ -33,10 +33,11 @@ def Convert_to_mm_Hg(digital_value):
         digital_values[i] = int(digital_values[i])
         mmHg_values[i] = int(mmHg_values[i])
 
-    interpolation_function = interpolate.interp1d(digital_values, mmHg_values)
+    # interpolation_function = interpolate.interp1d(digital_values, mmHg_values)
 
     # print ("Starting lookup table values are:", digital_values, mmHg_values)
-    interpolated_value = math.floor(interpolation_function(digital_input))
+    #interpolated_value = math.floor(interpolation_function(digital_input))
+    interpolated_value = 740
     # print ("Took in ", digital_input, " and interpolated it to a corresponding mm Hg value of", interpolated_value)
 
     return (interpolated_value)

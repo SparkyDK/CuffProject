@@ -2,6 +2,9 @@ from kivy.config import Config
 Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 #kivy.require("1.10.1")
 
+# import sys
+# sys.path.append("/home/pi/pain_cuff/CuffProject")
+
 from functools import partial
 
 from kivy.app import App
