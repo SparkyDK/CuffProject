@@ -1,4 +1,6 @@
 from app.System.states.State import State
+from app.System.FSM.relay_control import set_relay
+
 
 class IDLE(State):
     def __init__(self, FSM):
@@ -7,6 +9,7 @@ class IDLE(State):
     def Enter(self):
         # Close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
+        set_relay(s1="closed", s2="closed", s3="closed")
         # Don't sleep here, because execution is in this state most of the time
         pass
 
@@ -52,7 +55,7 @@ class IDLE(State):
 
 
 def Exit(self):
-    # close all of the relays
+    # may want to close all of the relays
     # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
     # sleep (9.0*refresh_period/10.0)
     pass

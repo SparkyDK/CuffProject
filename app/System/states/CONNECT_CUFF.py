@@ -1,5 +1,6 @@
 from app.System.states.State import State
 from app.constants.CONSTANTS import refresh_period
+from app.System.FSM.relay_control import set_relay
 import time
 
 class CONNECT_CUFF(State):
@@ -42,6 +43,7 @@ class CONNECT_CUFF(State):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
         # sleep (0.1)
         # S1 Closed, S2 Closed, S3 Closed
+        set_relay(s1="closed", s2="closed", s3="closed")
         pass
         time.sleep(9.0*refresh_period/10.0)  # Give the relays time to close
         #print("Exiting Connect Cuff")

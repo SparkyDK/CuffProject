@@ -1,5 +1,6 @@
 from app.System.states.State import State
 from app.constants.CONSTANTS import refresh_period
+from app.System.FSM.relay_control import set_relay
 import time
 
 class LOAD_RESERVOIR(State):
@@ -9,6 +10,7 @@ class LOAD_RESERVOIR(State):
     def Enter(self):
         # Close the cuff and reservoir relays (keep them closed) and open the tank relay
         # S1 Open, S2 Open, S3 Closed
+        set_relay(s1="open", s2="open", s3="closed")
         pass
 
     def Execute(self, args):
@@ -44,7 +46,7 @@ class LOAD_RESERVOIR(State):
         # May need to sleep here for a bit longer, depending on how long the relay opening and air transfer takes
         # close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
-
+        set_relay(s1="closed", s2="closed", s3="closed")
         time.sleep(9.0*refresh_period/10.0)  # Give the relays and solenoids time to actually close
         # need to determine this value, by experiment, but they are specified as having a response time less than 20ms
         #print("Exiting Load Reservoir")

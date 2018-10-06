@@ -1,5 +1,6 @@
 from app.System.states.State import State
 from app.constants.CONSTANTS import refresh_period
+from app.System.FSM.relay_control import set_relay
 import time
 
 class RELEASE(State):
@@ -9,6 +10,7 @@ class RELEASE(State):
     def Enter(self):
         # Close the relays to the tank and for the reservoir vent, but open the cuff relay
         # S1 Closed, S2 Closed, S3 Open
+        set_relay(s1="closed", s2="closed", s3="open")
         pass
 
     def Execute(self, args):
@@ -33,6 +35,6 @@ class RELEASE(State):
         # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
         # close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
-
+        set_relay(s1="closed", s2="closed", s3="closed")
         time.sleep(9.0*refresh_period/10.0)  # Give the relays time to close
         print("Exiting Vent")

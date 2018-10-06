@@ -1,4 +1,5 @@
 from app.System.states.State import State
+from app.System.FSM.relay_control import set_relay
 import time
 
 class VENT(State):
@@ -8,6 +9,7 @@ class VENT(State):
     def Enter(self):
         # Open the relays to the cuff and from the reservoir, but keep the tank relay closed
         # S1 Closed, S2 Open, S3 Open
+        set_relay(s1="closed", s2="open", s3="open")
         pass
 
     def Execute(self, args):
