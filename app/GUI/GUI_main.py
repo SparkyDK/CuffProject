@@ -158,7 +158,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
             self.old_interval_time = self.interval_time
             self.interval_time = (time.time() - self.start_time)/refresh_period
 
-            if ( math.floor(self.interval_time) != math.floor(old_interval_time):
+            if ( math.floor(self.interval_time) != math.floor(self.old_interval_time):
                 self.control_args, self.user_args, self.pressure_parameters, self.elapsed_time, self.start_time, \
                 self.schedule_finished, self.current_counter, self.all_schedules, self.imported_schedule,\
                 self.Global_cnt, self.past_states, self.already_running,\
