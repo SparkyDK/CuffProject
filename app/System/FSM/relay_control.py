@@ -1,4 +1,6 @@
-import wiringpi as wiringpi
+from app.GUI import g
+if (g.pi_platform == True):
+    import wiringpi as wiringpi
 
 def set_relay(s1, s2, s3):
     setup = wiringpi.wiringPiSetupGpio()

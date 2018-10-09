@@ -1,7 +1,6 @@
 from app.System.states.State import State
 from app.System.FSM.relay_control import set_relay
 
-
 class IDLE(State):
     def __init__(self, FSM):
         super(IDLE, self).__init__(FSM)

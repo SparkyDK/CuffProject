@@ -20,6 +20,7 @@ from app.GUI import g
 from app.constants.CONSTANTS import refresh_period
 from app.GUI.kivy_color_management import kivy_color_adjustment
 from app.GUI.kivy_schedule_update import kivy_schedule_update
+from app.GUI.logger import get_logger
 
 from datetime import datetime
 from app.System.pressure_measurement.pressure_sampling import Read_Cuff_Pressure
@@ -175,11 +176,9 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         # Pain schedule requires a one-second tick, created at the point where the integer truncation
         # of system time seconds ticks over to the next integer value (e.g. 3.99999992 becomes 4.0000245)
-
         if math.floor(self.elapsed_time) != math.floor(old_elapsed_time):
             self.second_tickover = True
             self.state_machine_ran = True
-            #localtime = time.asctime(time.localtime(time.time()))
             #print ("Second tick at", localtime)
         else:
             self.second_tickover = False
@@ -198,7 +197,11 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                   g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
 
         # Read the current pressure value
-        self.control_args = Read_Cuff_Pressure(self.control_args, self.past_states)
+        self.control_args, self.digital_pressure_value = Read_Cuff_Pressure(self.control_args, self.past_states)
+        if (self.second_tickover):
+            localtime = time.asctime(time.localtime(time.time()))
+            my_logger = get_logger("GUI_main")
+            my_logger.debug(localtime, ": ", self.current_pressure, "(", self.digital_pressure_value, ")")
 
         if ( (g.control_args['PRESSURE'] - g.pressure_parameters['PATM']) < 0):
             self.current_pressure = str(0)

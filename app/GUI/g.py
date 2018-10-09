@@ -36,3 +36,5 @@ schedule_selected = 1
 schedule_changed = True
 
 digital_pressure_value = 16000000
+
+pi_platform = False
