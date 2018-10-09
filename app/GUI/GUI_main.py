@@ -146,7 +146,6 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
     def run_system(self, args, dt, *largs):
         #print ("run_system args:", args)
-
         # self.control_args, self.user_args, self.pressure_parameters, self.schedule_finished, self.start_time,\
         # self.elapsed_time, self.current_counter, self.all_schedules, self.imported_schedule, self.Global_cnt,\
         # self.past_states, self.decision, self.airctrl, self.schedule, self.toggle = args
