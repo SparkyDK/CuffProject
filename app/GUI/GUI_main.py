@@ -2,8 +2,10 @@ from kivy.config import Config
 Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 #kivy.require("1.10.1")
 
-# import sys
-# sys.path.append("/home/pi/pain_cuff/CuffProject")
+import sys
+sys.path.append("/home/pi//CuffProject")
+
+from app.System.FSM.relay_control import set_relay
 
 from functools import partial
 
@@ -44,6 +46,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
     def __init__(self, **kwargs):
         super(Display, self).__init__(**kwargs)
+        self.init_system()
         print ("Display: Started up the Display with control_args:", g.control_args, "and self=", self)
 
     def build(self):
@@ -203,6 +206,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
             self.current_pressure = str( g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] )
 
         self.new_pressure = str( g.user_args['override_pressure'] - g.pressure_parameters['PATM'] )
+        #print ("current_pressure=",self.current_pressure)
 
         # Dynamic conditional update of display values and colours, such as graying out of inactive button text
         self.phase1, self.ids.phase1.color, self.phase2, self.ids.phase2.color,\
@@ -218,6 +222,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         # Poll for user input and update the GUI based on the control arguments
         # Then update the user signals: {'GO','STOP','ABORT','override_pressure','OVERRIDE'} appropriately
+
         try:
             # Update or override the control signals: {'PAIN','STARTED','SCHEDULE_INDEX','PAUSE'}
             # Execute the asynchronous part of the state machine that implements the control decisions
@@ -288,10 +293,12 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.ids.stop.text = "STOP"
 
     def new_pressure_down(self):
+        set_relay(s1="open", s2="open", s3="open")
         g.user_args['override_pressure'] -= 1
         print ("Decreasing pressure to", g.user_args['override_pressure'])
 
     def new_pressure_up(self):
+        set_relay(s1="closed", s2="closed", s3="closed")
         g.user_args['override_pressure'] += 1
         print ("Increasing pressure to", g.user_args['override_pressure'])
 
@@ -361,6 +368,8 @@ class Schedule(Screen):
 
     def new_pressure_up(self):
         print ("Schedule: Pressure up")
+	
+
 
     def new_pressure_down(self):
         print ("Schedule: Pressure down")
@@ -386,6 +395,7 @@ class Splat(App):
 
         print ("graphics:", graphics)
         #return graphics
+        #self.screen_manager.display_widget.init_system()
         return self.screen_manager
 
 if __name__ == '__main__':
