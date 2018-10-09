@@ -337,7 +337,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
         if (self.second_tickover):
             localtime = time.asctime(time.localtime(time.time()))
             my_logger = get_logger("GUI_main")
-            my_logger.debug(localtime, ": ", self.current_pressure, "(", self.digital_pressure_value, ")")
+            debug_msg = str(self.current_pressure) + " (" + str(self.digital_pressure_value) + ")"
+            my_logger.debug(debug_msg)
 
         if ( (g.control_args['PRESSURE'] - g.pressure_parameters['PATM']) < 0):
             self.current_pressure = str(0)
