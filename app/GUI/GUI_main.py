@@ -272,6 +272,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
                     self.past_states, self.already_running,\
                     self.decision, self.airctrl, self.schedule, self.toggle, self.schedule_selected, self.schedule_changed,\
                     self.state_machine_ran
+                time.sleep(refresh_period/2)
 
     def on_timeout(self, *args):
         d = datetime.now() - self.start
