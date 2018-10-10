@@ -16,9 +16,9 @@ def Read_Cuff_Pressure(control_args, past_states):
     # Set up the real sampled digital_pressure_value
     # Maybe put this in a non-blocking thread, depending on time required for conversion
     adc = ADC_sampling()
-    digital_pressure_value = adc.get_current_pressure()
+    digital_pressure_value = float(adc.get_current_pressure())
     mycontrol_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
-
+    #print ("pressure_sampling.py: Pressure in control args set to", mycontrol_args['PRESSURE'])
     return (mycontrol_args, digital_pressure_value)
 
 def Convert_to_mm_Hg(digital_value):
@@ -30,14 +30,15 @@ def Convert_to_mm_Hg(digital_value):
     length = len(digital_values)
     for i in range(0, length):
         # convert to integers
-        digital_values[i] = int(digital_values[i])
-        mmHg_values[i] = int(mmHg_values[i])
+        digital_values[i] = float(digital_values[i])
+        mmHg_values[i] = float(mmHg_values[i])
 
     interpolation_function = interpolate.interp1d(digital_values, mmHg_values)
+    #print ("interpolation function:", interpolation_function)
 
     # print ("Starting lookup table values are:", digital_values, mmHg_values)
-    interpolated_value = math.floor(interpolation_function(digital_input))
+    interpolated_value = math.floor(interpolation_function(float(digital_input)))
     #interpolated_value = 740
-    #print ("Took in ", digital_input, " and interpolated it to a corresponding mm Hg value of", interpolated_value)
+    #print ("Took in ", digital_input, " and interpolated it to mm Hg value of", interpolated_value)
 
     return (interpolated_value)

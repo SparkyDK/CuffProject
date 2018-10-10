@@ -6,6 +6,7 @@ import sys
 sys.path.append("/home/pi//CuffProject")
 
 from app.System.FSM.relay_control import set_relay
+from app.GUI.airtank import air_tank
 
 from functools import partial
 
@@ -136,7 +137,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
                 g.schedule_finished, g.start_time, g.elapsed_time, g.current_counter, g.all_schedules,
                 g.imported_schedule, g.Global_cnt, g.past_states, g.decision, g.airctrl, g.schedule, g.toggle,\
                 g.already_running, g.schedule_selected, g.schedule_changed) ), self.interval )
-            print("EVENT: scheduled run_system with event=", event)
+            #print("EVENT: scheduled run_system with event=", event)
             #Clock.schedule_once(partial(self.run_system, (g.control_args, g.user_args, g.pressure_parameters,\
             #    g.schedule_finished, g.start_time, g.elapsed_time, g.current_counter, g.all_schedules,
             #    g.imported_schedule, g.Global_cnt, g.past_states, g.decision, g.airctrl, g.schedule, g.toggle,\
@@ -194,11 +195,12 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                   g.past_states, g.decision, g.airctrl, g.schedule,\
                                   g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
 
+        air_tank()
         # Read the current pressure value
         self.control_args, self.digital_pressure_value = Read_Cuff_Pressure(self.control_args, self.past_states)
         if (self.second_tickover):
             #localtime = time.asctime(time.localtime(time.time()))
-            debug_msg = str("Second tick: " + self.current_pressure) + " (" + str(self.digital_pressure_value) + ")"
+            debug_msg = str("Pressure: " + self.current_pressure) + " (" + str(self.digital_pressure_value) + ")"
             g.my_logger.debug(debug_msg)
 
         # Micro logging
@@ -295,12 +297,12 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.ids.stop.text = "STOP"
 
     def new_pressure_down(self):
-        set_relay(s1="open", s2="open", s3="open")
+        #set_relay(s1="open", s2="open", s3="open")
         g.user_args['override_pressure'] -= 1
         print ("Decreasing pressure to", g.user_args['override_pressure'])
 
     def new_pressure_up(self):
-        set_relay(s1="closed", s2="closed", s3="closed")
+        #set_relay(s1="closed", s2="closed", s3="closed")
         g.user_args['override_pressure'] += 1
         print ("Increasing pressure to", g.user_args['override_pressure'])
 
