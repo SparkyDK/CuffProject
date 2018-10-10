@@ -95,7 +95,9 @@ class kivy_color_adjustment:
             self.time_state = localtime + ": " + self.airctrl.FSM.GetCurState()
 
         if ( self.user_args['override_pressure'] + self.pressure_parameters['PAINTOLERANCE'] >=\
-                self.pressure_parameters['PMAX'] ):
+                self.pressure_parameters['PMAX'] or \
+                self.user_args['override_pressure'] - self.pressure_parameters['PAINTOLERANCE'] <=\
+                self.pressure_parameters['PATM']):
             self.entercolour = 1, 0, 0, 1
         else:
             self.entercolour = 1, 1, 1, 1
