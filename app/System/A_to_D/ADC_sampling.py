@@ -1,4 +1,4 @@
-from app.System.A_to_D.pyads1256 import ADS1256
+# from app.System.A_to_D.pyads1256 import ADS1256
 
 from app.GUI import g
 from app.constants.CONSTANTS import DEBUG
@@ -20,6 +20,6 @@ class ADC_sampling:
         g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
         #g.digital_pressure_value = g.digital_pressure_value - 100000
         #digital_pressure_value = g.digital_pressure_value
-        print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
+        #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
         return (g.digital_pressure_value)
 

@@ -24,6 +24,8 @@ class kivy_color_adjustment:
         self.value7 = str(self.current_counter[6])
         self.value8 = str(self.current_counter[7])
 
+        #print ("color_mgmt: self.current_counter[0]=", self.current_counter[0], "[1]=", self.current_counter[1])
+
         # Set up grey control for pain schedule values, making them grey if negative/50% transparent, else black
         if (self.current_counter[0] < 0):
             self.colour1 = 0, 0, 0, 0.5
@@ -78,13 +80,13 @@ class kivy_color_adjustment:
         else:
             self.stopcolour = 0, 0, 0, 0.5
 
-        if (second_tickover == True):
-            if (self.control_args['PAIN'] == 0):
-                self.nopaincolour = 0, 0, 0, 1
-                self.paincolour = 0, 0, 0, 0
-            else:
-                self.nopaincolour = 0, 0, 0, 0
-                self.paincolour = 0, 0, 0, 1
+        #if (second_tickover == True):
+        if (self.control_args['PAIN'] == 0):
+            self.nopaincolour = 0, 0, 0, 1
+            self.paincolour = 0, 0, 0, 0
+        else:
+            self.nopaincolour = 0, 0, 0, 0
+            self.paincolour = 0, 0, 0, 1
 
         localtime = time.asctime(time.localtime(time.time()))
         if (self.airctrl.FSM.GetCurState() == "IDLE"):
@@ -102,6 +104,9 @@ class kivy_color_adjustment:
             self.newpressurecolour = 0, 0, 0, 0.5
         else:
             self.newpressurecolour = 0, 0, 0, 1
+
+        #print ("kivy_color_mgmg: Pain_colour=", self.paincolour, "NoPain_colour=", self.nopaincolour)
+        #print (control_args)
 
         return(self.value1, self.colour1, self.value2, self.colour2, self.value3, self.colour3,
                self.value4, self.colour4, self.value5, self.colour5, self.value6, self.colour6,

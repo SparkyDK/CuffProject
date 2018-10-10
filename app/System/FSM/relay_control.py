@@ -1,36 +1,70 @@
-import wiringpi as wiringpi
+#import wiringpi as wiringpi
+
+# def set_relay_wiringpi(s1, s2, s3):
+#     setup = wiringpi.wiringPiSetupGpio()
+#     if (setup == -1):
+#         print("setup failed... for wiringpi")
+#         exit(-1)
+#     wiringpi.pinMode(18, 1) # sets GPIO 1 ...urrr... 18 ... to output
+#     wiringpi.pinMode(2, 1) # sets GPIO 2 to output
+#     wiringpi.pinMode(3, 1) # sets GPIO 3 to output
+#     if (s1 == "open" or s1 == "OPEN"):
+#         # Assume normally open relay
+#         wiringpi.digitalWrite(18, 0) # sets port 18 to 0 (0V, off)
+#     elif(s1 == "closed" or s1 == "CLOSED"):
+#         wiringpi.digitalWrite(18, 1) # sets port 18 to 1 (3V3, on)
+#     else:
+#         print("s1 can be either 'open' or 'closed', but it has been set to:", s1)
+#         exit(0)
+#
+#     if (s2 == "open" or s2 == "OPEN"):
+#         # Assume normally open relay
+#         wiringpi.digitalWrite(2, 0) # sets port 2 to 0 (0V, off)
+#     elif(s2 == "closed" or s2 == "CLOSED"):
+#         wiringpi.digitalWrite(2, 1) # sets port 2 to 1 (3V3, on)
+#     else:
+#         print("s2 can be either 'open' or 'closed', but it has been set to:", s2)
+#         exit(0)
+#
+#     if (s3 == "open" or s3 == "OPEN"):
+#         # Assume normally open relay
+#         wiringpi.digitalWrite(3, 0) # sets port 3 to 0 (0V, off)
+#     elif(s3 == "closed" or s3 == "CLOSED"):
+#         wiringpi.digitalWrite(3, 1) # sets port 3 to 1 (3V3, on)
+#     else:
+#         print("s3 can be either 'open' or 'closed', but it has been set to:", s3)
+#         exit(0)
 
 def set_relay(s1, s2, s3):
-    setup = wiringpi.wiringPiSetupGpio()
-    if (setup == -1):
-        print("setup failed... for wiringpi")
-        exit(-1)
-    wiringpi.pinMode(18, 1) # sets GPIO 1 ...urrr... 18 ... to output
-    wiringpi.pinMode(2, 1) # sets GPIO 2 to output
-    wiringpi.pinMode(3, 1) # sets GPIO 3 to output
     if (s1 == "open" or s1 == "OPEN"):
         # Assume normally open relay
-        wiringpi.digitalWrite(18, 0) # sets port 18 to 0 (0V, off)
+        # sets port 18 to 0 (0V, off)
+        print ("Relay S1 now open")
     elif(s1 == "closed" or s1 == "CLOSED"):
-        wiringpi.digitalWrite(18, 1) # sets port 18 to 1 (3V3, on)
+        # sets port 18 to 1 (3V3, on)
+        print ("Relay S1 now closed")
     else:
         print("s1 can be either 'open' or 'closed', but it has been set to:", s1)
         exit(0)
 
     if (s2 == "open" or s2 == "OPEN"):
         # Assume normally open relay
-        wiringpi.digitalWrite(2, 0) # sets port 2 to 0 (0V, off)
+        # sets port 2 to 0 (0V, off)
+        print ("Relay S2 now open")
     elif(s2 == "closed" or s2 == "CLOSED"):
-        wiringpi.digitalWrite(2, 1) # sets port 2 to 1 (3V3, on)
+        # sets port 2 to 1 (3V3, on)
+        print ("Relay S2 now closed")
     else:
         print("s2 can be either 'open' or 'closed', but it has been set to:", s2)
         exit(0)
 
     if (s3 == "open" or s3 == "OPEN"):
         # Assume normally open relay
-        wiringpi.digitalWrite(3, 0) # sets port 3 to 0 (0V, off)
+        # sets port 3 to 0 (0V, off)
+        print ("Relay S3 now open")
     elif(s3 == "closed" or s3 == "CLOSED"):
-        wiringpi.digitalWrite(3, 1) # sets port 3 to 1 (3V3, on)
+        # sets port 3 to 1 (3V3, on)
+        print ("Relay S3 now closed")
     else:
         print("s3 can be either 'open' or 'closed', but it has been set to:", s3)
         exit(0)

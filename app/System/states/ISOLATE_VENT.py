@@ -1,5 +1,5 @@
 from app.System.states.State import State
-from app.constants.CONSTANTS import refresh_period
+from app.constants.CONSTANTS import relay_settling_time
 from app.System.FSM.relay_control import set_relay
 import time
 
@@ -12,7 +12,7 @@ class ISOLATE_VENT(State):
         # close all of the relays, especially the tank relay
         # S1 Closed, S2 Closed, S3 Closed
         set_relay(s1="closed", s2="closed", s3="closed")
-        time.sleep(9.0*refresh_period/10.0)  # Give the relays time to close
+        time.sleep(relay_settling_time)  # Give the relays time to close
         pass
 
     def Execute(self, args):
