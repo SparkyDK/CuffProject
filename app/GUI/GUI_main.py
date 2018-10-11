@@ -301,11 +301,13 @@ class Display(Screen):  # intro <display> and tells actions/functions
         #set_relay(s1="open", s2="open", s3="open")
         g.user_args['override_pressure'] -= 1
         print ("Decreasing pressure to", g.user_args['override_pressure'])
+        set_relay(s1="open", s2="closed", s3="closed")
 
     def new_pressure_up(self):
         #set_relay(s1="closed", s2="closed", s3="closed")
         g.user_args['override_pressure'] += 1
         print ("Increasing pressure to", g.user_args['override_pressure'])
+        set_relay(s1="closed", s2="closed", s3="closed")
 
 
     def switch_function(self):
@@ -369,11 +371,9 @@ class Schedule(Screen):
 
     def new_pressure_up(self):
         print ("Schedule: Pressure up")
-        set_relay(s1="open", s2="closed", s3="closed")
 
     def new_pressure_down(self):
         print ("Schedule: Pressure down")
-        set_relay(s1="closed", s2="closed", s3="closed")
 
     def switch(self):
         print ("Schedule: Switch")
