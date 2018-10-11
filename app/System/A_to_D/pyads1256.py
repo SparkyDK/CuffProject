@@ -38,6 +38,7 @@ class ADS1256:
         # Initialize the wiringpi SPI setup
         spi_success = wp.wiringPiSPISetup(self.SPI_CHANNEL, self.SPI_FREQUENCY)
         debug_print("SPI success " + str(spi_success))
+        print ("pyads1256 6", spi_success)
 
     def chip_select(self):
         wp.digitalWrite(self.CS_PIN, wp.LOW)
@@ -222,6 +223,9 @@ class ADS1256:
         Read the ID from the ADS chip
         :returns: numeric identifier of the ADS chip
         """
+        print ("pyads1256.ReadID 1")
         self.WaitDRDY()
+        print ("pyads1256.ReadID 2")
         myid = self.ReadReg(self.REG_STATUS, 1)
+        print ("pyads1256.ReadID 3")
         return (myid >> 4)
