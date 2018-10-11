@@ -235,7 +235,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
             # Update 'PAUSE', 'STARTED', PAINH, PAINL, PAINVALUE, as appropriate
             self.user_args, self.control_args, self.current_counter, self.pressure_parameters,\
             self.schedule_finished, self.toggle, self.schedule_selected, self.state_machine_ran =\
-                self.decision.respond_to_user_inputs(self.current_counter, self.all_schedules, self.imported_schedule,\
+                self.decision.respo
+            nd_to_user_inputs(self.current_counter, self.all_schedules, self.imported_schedule,\
                                                      self.control_args,\
                                                      self.user_args, self.pressure_parameters, self.second_tickover,\
                                                      self.schedule_finished, self.airctrl,\
@@ -368,11 +369,11 @@ class Schedule(Screen):
 
     def new_pressure_up(self):
         print ("Schedule: Pressure up")
-	
-
+        set_relay(s1="open", s2="closed", s3="closed")
 
     def new_pressure_down(self):
         print ("Schedule: Pressure down")
+        set_relay(s1="closed", s2="closed", s3="closed")
 
     def switch(self):
         print ("Schedule: Switch")
