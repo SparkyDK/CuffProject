@@ -34,7 +34,7 @@
 # ADS1256, the defaults are designed to be compatible with the Waveforms
 # High Precision AD/DA board
 SPI_MODE = 1
-SPI_CHANNEL = 0
+SPI_CHANNEL = 1
 SPI_FREQUENCY = 1000000  # The ADS1256 supports 768kHz to 1.92MHz
 DRDY_TIMEOUT = 0.5  # Seconds to wait for DRDY when communicating
 DATA_TIMEOUT = 0.00001  # 10uS delay for sending data
