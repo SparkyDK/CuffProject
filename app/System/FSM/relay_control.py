@@ -5,32 +5,32 @@ def set_relay(s1, s2, s3):
      if (setup == -1):
          print("setup failed... for wiringpi")
          exit(-1)
-     wiringpi.pinMode(18, 1) # sets GPIO 1 ...urrr... 18 ... to output
-     wiringpi.pinMode(27, 1) # sets GPIO 2 to output
-     wiringpi.pinMode(22, 1) # sets GPIO 3 to output
+     wiringpi.pinMode(2, 1) # sets GPIO 1 ...urrr... 18 ... to output
+     wiringpi.pinMode(3, 1) # sets GPIO 2 to output
+     wiringpi.pinMode(4, 1) # sets GPIO 3 to output
      if (s1 == "open" or s1 == "OPEN"):
          # Assume normally open relay
-         wiringpi.digitalWrite(18, 0) # sets port 18 to 0 (0V, off)
+         wiringpi.digitalWrite(2, 0) # sets port 18 to 0 (0V, off)
      elif(s1 == "closed" or s1 == "CLOSED"):
-         wiringpi.digitalWrite(18, 1) # sets port 18 to 1 (3V3, on)
+         wiringpi.digitalWrite(2, 1) # sets port 18 to 1 (3V3, on)
      else:
          print("s1 can be either 'open' or 'closed', but it has been set to:", s1)
          exit(0)
 
      if (s2 == "open" or s2 == "OPEN"):
          # Assume normally open relay
-         wiringpi.digitalWrite(27, 0) # sets port 2 to 0 (0V, off)
+         wiringpi.digitalWrite(3, 0) # sets port 2 to 0 (0V, off)
      elif(s2 == "closed" or s2 == "CLOSED"):
-         wiringpi.digitalWrite(27, 1) # sets port 2 to 1 (3V3, on)
+         wiringpi.digitalWrite(3, 1) # sets port 2 to 1 (3V3, on)
      else:
          print("s2 can be either 'open' or 'closed', but it has been set to:", s2)
          exit(0)
 
      if (s3 == "open" or s3 == "OPEN"):
          # Assume normally open relay
-         wiringpi.digitalWrite(22, 0) # sets port 3 to 0 (0V, off)
+         wiringpi.digitalWrite(4, 0) # sets port 3 to 0 (0V, off)
      elif(s3 == "closed" or s3 == "CLOSED"):
-         wiringpi.digitalWrite(22, 1) # sets port 3 to 1 (3V3, on)
+         wiringpi.digitalWrite(4, 1) # sets port 3 to 1 (3V3, on)
      else:
          print("s3 can be either 'open' or 'closed', but it has been set to:", s3)
          exit(0)

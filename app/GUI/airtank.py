@@ -15,9 +15,9 @@ def air_tank():
     #wiringpi.pinMode(3, 0) # sets GPIO 3 to input
 
     # Read the states of the relays
-    relay1 = wiringpi.digitalRead(18) 
-    relay2 = wiringpi.digitalRead(27)
-    relay3 = wiringpi.digitalRead(22)
+    relay1 = wiringpi.digitalRead(2)
+    relay2 = wiringpi.digitalRead(3)
+    relay3 = wiringpi.digitalRead(4)
 #    print ("airtank: s1=", relay1, " s2=", relay2, " s3=", relay3)
 
     # Get the current pressure values (stored in files for now)
