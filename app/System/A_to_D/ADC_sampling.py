@@ -7,7 +7,9 @@ from app.filereaders.quick_read_test import quick_read
 class ADC_sampling:
     def get_current_pressure(self):
         # Using code taken from: https://github.com/SeanDHeath/PyADS1256
+        print ("ADC_sampling 1")
         ads = ADS1256()
+        print ("ADC_sampling 2")
         if (DEBUG == True):
             pass
             # Do a test read of the A/D ID register
@@ -16,6 +18,7 @@ class ADC_sampling:
             print("A/D ID is:", myid)
 
         #g.digital_pressure_value = ads.ReadADC()
+        print ("ADC_sampling 4")
         temp = ads.ReadADC()
         print ("Pressure value read at:", localtime, " =", temp)
         #print ("Pressure value read at:", localtime, " =", g.digital_pressure_value)
