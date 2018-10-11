@@ -297,16 +297,14 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.ids.stop.text = "STOP"
 
     def new_pressure_down(self):
-        #set_relay(s1="open", s2="open", s3="open")
         g.user_args['override_pressure'] -= 1
         print ("Decreasing pressure to", g.user_args['override_pressure'])
-        set_relay(s1="closed", s2="open", s3="closed")
+        #set_relay(s1="closed", s2="open", s3="closed")
 
     def new_pressure_up(self):
-        #set_relay(s1="closed", s2="closed", s3="closed")
         g.user_args['override_pressure'] += 1
         print ("Increasing pressure to", g.user_args['override_pressure'])
-        set_relay(s1="closed", s2="closed", s3="closed")
+        #set_relay(s1="closed", s2="closed", s3="closed")
 
 
     def switch_function(self):
