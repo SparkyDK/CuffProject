@@ -36,6 +36,7 @@ class ADS1256:
         print ("pyads1256 5")
 
         # Initialize the wiringpi SPI setup
+        print ("Initializing wiringPiSPISetup with channel=", self.SPI_CHANNEL, "and frequency=", self.SPI_FREQUENCY)
         spi_success = wp.wiringPiSPISetup(self.SPI_CHANNEL, self.SPI_FREQUENCY)
         debug_print("SPI success " + str(spi_success))
         print ("pyads1256 6", spi_success)
