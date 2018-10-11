@@ -299,7 +299,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def new_pressure_down(self):
         g.user_args['override_pressure'] -= 1
         print ("Decreasing pressure to", g.user_args['override_pressure'])
-        set_relay(s1="closed", s2="closed", s3="open")
+        set_relay(s1="open", s2="closed", s3="closed")
 
     def new_pressure_up(self):
         g.user_args['override_pressure'] += 1
