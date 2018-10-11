@@ -11,6 +11,7 @@ class ADC_sampling:
         if (DEBUG == True):
             pass
             # Do a test read of the A/D ID register
+            print("A/D ID now being read")
             myid = ads.ReadID()
             print("A/D ID is:", myid)
 
