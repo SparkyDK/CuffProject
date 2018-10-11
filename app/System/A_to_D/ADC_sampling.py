@@ -6,7 +6,7 @@ from app.filereaders.quick_read_test import quick_read
 
 import numpy as np
 # import itertools
-from app.System.A_to_DADS1256_definitions import *
+from app.System.A_to_D.ADS1256_definitions import *
 from app.System.A_to_D.PiPyADC import ADS1256
 import app.System.A_to_D.ADS1256_default_config as myconfig
 
@@ -90,7 +90,7 @@ class ADC_sampling:
             print("\nRead incorrect chip ID for ADS1256. Is the hardware connected properly?")
             exit(0)
         else:
-            print "Worked!  Let's go on and add/execute the rest of the A/D code..."
+            print ("Worked!  Let's go on and add/execute the rest of the A/D code...")
             exit(0) # For now, remove this later....
 
         # Channel gain must be multiplied by LSB weight in volts per digit to
@@ -112,10 +112,6 @@ class ADC_sampling:
             # The ADS1256 read_sequence() method automatically fills into
             # the buffer specified as the second argument:
             ads2.read_sequence(CH_SEQUENCE, data_row)
-            # Depending on acquisition speed and filter length, this can take a while...
-            sys.stdout.write(
-                "\rProgress: {:3d}%".format(int(100 * (row_number + 1) / FILTER_SIZE)))
-            sys.stdout.flush()
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
@@ -124,7 +120,8 @@ class ADC_sampling:
         #g.digital_pressure_value = ch_unscaled
         #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
 
-        nice_output([int(i) for i in ch_unscaled], ch_volts)
+        print ("raw values:", filter_buffer)
+        print ("averaged values=", ch_unscaled, " and equivalent voltage=", ch_volts)
 
         # # Next, update filter_buffer cyclically with new ADC samples and
         # # calculate the averaged results.
@@ -163,22 +160,3 @@ class ADC_sampling:
         g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
         # print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
         return (g.digital_pressure_value)
-
-    def nice_output(digits, volts):
-        sys.stdout.write(
-            "\0337"  # Store cursor position
-            +
-            """These are the raw sample values for the channels:
-            Poti_CH0,  LDR_CH1,     AIN2,     AIN3,     AIN4,     AIN5,  AIN5,    Poti NEG, 
-            """
-            + ", ".join(["{: 8d}".format(i) for i in digits])
-            +
-            """
-
-            These are the sample values converted to voltage in V for the channels:
-            Poti_CH0,  LDR_CH1,     AIN2,     AIN3,     AIN4,     AIN5,  AIN5,    Poti NEG, 
-            """
-            + ", ".join(["{: 8.3f}".format(i) for i in volts])
-            + "\n\033[J\0338"  # Restore cursor position etc.
-        )
-
