@@ -16,8 +16,8 @@ def air_tank():
 
     # Read the states of the relays
     relay1 = wiringpi.digitalRead(18) 
-    relay2 = wiringpi.digitalRead(2) 
-    relay3 = wiringpi.digitalRead(3) 
+    relay2 = wiringpi.digitalRead(27)
+    relay3 = wiringpi.digitalRead(22)
 #    print ("airtank: s1=", relay1, " s2=", relay2, " s3=", relay3)
 
     # Get the current pressure values (stored in files for now)
