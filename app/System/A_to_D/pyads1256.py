@@ -14,21 +14,26 @@ class ADS1256:
     def __init__(self):
         # Set up the wiringpi object to use physical pin numbers
         wp.wiringPiSetupPhys()
+        print ("pyads1256 1")
 
         # Initialize the DRDY pin
         wp.pinMode(self.DRDY_PIN, wp.INPUT)
+        print ("pyads1256 2")
 
         # Initialize the reset pin
         wp.pinMode(self.RESET_PIN, wp.OUTPUT)
         wp.digitalWrite(self.RESET_PIN, wp.HIGH)
+        print ("pyads1256 3")
 
         # Initialize PDWN pin
         wp.pinMode(self.PDWN_PIN, wp.OUTPUT)
         wp.digitalWrite(self.PDWN_PIN, wp.HIGH)
+        print ("pyads1256 4")
 
         # Initialize CS pin
         wp.pinMode(self.CS_PIN, wp.OUTPUT)
         wp.digitalWrite(self.CS_PIN, wp.HIGH)
+        print ("pyads1256 5")
 
         # Initialize the wiringpi SPI setup
         spi_success = wp.wiringPiSPISetup(self.SPI_CHANNEL, self.SPI_FREQUENCY)
