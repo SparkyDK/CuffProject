@@ -45,6 +45,7 @@ class ADS1256(object):
     Documentation source: Texas Instruments ADS1255/ADS1256
     datasheet SBAS288: http://www.ti.com/lit/ds/sbas288j/sbas288j.pdf
     """
+    print("PiPyADC 1.0")
 
     @property
     def v_ref(self):
@@ -277,6 +278,7 @@ class ADS1256(object):
     # Default config is read from external file (module) import
     def __init__(self, conf=ADS1256_default_config):
         # Set up the wiringpi object to use physical pin numbers
+        print("PiPyADC 1.1")
         wp.wiringPiSetupPhys()
         # Config and initialize the SPI and GPIO pins used by the ADC.
         # The following four entries are actively used by the code:
@@ -286,6 +288,7 @@ class ADS1256(object):
         self.DRDY_TIMEOUT = conf.DRDY_TIMEOUT
         self.DRDY_DELAY = conf.DRDY_DELAY
 
+        print("PiPyADC 1.1")
         # Only one GPIO input:
         if conf.DRDY_PIN is not None:
             self.DRDY_PIN = conf.DRDY_PIN
@@ -293,17 +296,21 @@ class ADS1256(object):
 
         # GPIO Outputs. Only the CS_PIN is currently actively used. ~RESET and
         # ~PDWN must be set to static logic HIGH level if not hardwired:
+        print("PiPyADC 1.2")
         for pin in (conf.CS_PIN,
                     conf.RESET_PIN,
                     conf.PDWN_PIN):
+            print("PiPyADC 1.3 with pin=", pin)
             if pin is not None:
                 wp.pinMode(pin, wp.OUTPUT)
                 wp.digitalWrite(pin, wp.HIGH)
+        print("PiPyADC 1.4")
 
         # Initialize the wiringpi SPI setup. Return value is the Linux file
         # descriptor for the SPI bus device:
         fd = wp.wiringPiSPISetupMode(
             conf.SPI_CHANNEL, conf.SPI_FREQUENCY, conf.SPI_MODE)
+        print("PiPyADC 1.5")
         if fd == -1:
             raise IOError("ERROR: Could not access SPI device file")
             return False
@@ -348,6 +355,7 @@ class ADS1256(object):
         self.drate = conf.drate
         self.gpio = conf.gpio
         self.status = conf.status
+        print("PiPyADC 1.6")
 
     def _chip_select(self):
         # If chip select hardware pin is connected to SPI bus hardware pin or

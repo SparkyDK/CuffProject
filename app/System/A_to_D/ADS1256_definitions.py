@@ -100,3 +100,5 @@ CMD_SYSGCAL = 0xF4 # System gain calibration
 CMD_SYNC    = 0xFC # Synchronize the A/D conversion
 CMD_STANDBY = 0xFD # Begin standby mode
 CMD_RESET = 0xFE # Reset to power-on values
+
+print ("definitions 1.0")
