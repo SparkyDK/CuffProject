@@ -71,6 +71,7 @@ class ADC_sampling:
 
         # Using code taken from: https://github.com/ul-gh/PiPyADC/blob/master/pipyadc.py
         ads2 = ADS1256(myconfig)
+        print ("ADC_sampling 1.1")
         # Change the default sample rate of the ADS1256 to 2000 samples per second
         # Correct value will depend on how long the conversion process takes and the frequency
         # content that we expect, vis a vis aliasing noise... We assume pressure values will be stable
@@ -80,10 +81,13 @@ class ADC_sampling:
         # can be increased up to 30,000 (pick DRATE_30000).  This is fine, according
         # to the TI data sheet for the ADS1256 (http://www.ti.com/product/ADS1256)
         ads2.drate = DRATE_2000
+        print ("ADC_sampling 1.2")
         # Gain and offset self-calibration:
         ads2.cal_self()
+        print ("ADC_sampling 1.2")
         # Get ADC chip ID and check if chip is connected correctly.
         chip_ID = ads2.chip_ID
+        print ("ADC_sampling 1.3")
         print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
         if chip_ID != 3:
             # When the value is not correct, user code should exit here.
@@ -114,6 +118,7 @@ class ADC_sampling:
             ads2.read_sequence(CH_SEQUENCE, data_row)
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
+        print ("ADC_sampling 1.4")
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
         ch_volts = ch_unscaled * CH_GAIN
 
