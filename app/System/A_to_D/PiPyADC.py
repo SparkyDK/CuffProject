@@ -313,6 +313,7 @@ class ADS1256(object):
         print("PiPyADC 1.5")
         if fd == -1:
             raise IOError("ERROR: Could not access SPI device file")
+            print("PiPyADC 1.5x")
             return False
 
         # ADS1255/ADS1256 command timing specifications. Do not change.
@@ -341,8 +342,10 @@ class ADS1256(object):
         # is necessary before doing any register access.
         # This is approx. 30ms, according to the datasheet.
         time.sleep(0.03)
+        print("PiPyADC 1.6")
         self.wait_DRDY()
         # Device reset for defined initial state
+        print("PiPyADC 1.7")
         self.reset()
 
         # Configure ADC registers:
@@ -355,7 +358,7 @@ class ADS1256(object):
         self.drate = conf.drate
         self.gpio = conf.gpio
         self.status = conf.status
-        print("PiPyADC 1.6")
+        print("PiPyADC 1.8")
 
     def _chip_select(self):
         # If chip select hardware pin is connected to SPI bus hardware pin or
