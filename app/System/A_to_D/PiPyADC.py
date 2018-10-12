@@ -533,11 +533,16 @@ class ADS1256(object):
         """Reset all registers except CLK0 and CLK1 bits
         to reset values and Polls for DRDY change / timeout afterwards.
         """
+        print("PiPyADC.reset 1.0")
         self._chip_select()
+        print("PiPyADC.reset 1.1")
         self._send_byte(CMD_RESET)
+        print("PiPyADC.reset 1.2")
         self.wait_DRDY()
+        print("PiPyADC.reset 1.3")
         # Release chip select and implement t_11 timeout
         self._chip_release()
+        print("PiPyADC.reset 1.4")
 
     def sync(self):
         """Restart the ADC conversion cycle with a SYNC + WAKEUP
