@@ -288,11 +288,12 @@ class ADS1256(object):
         self.DRDY_TIMEOUT = conf.DRDY_TIMEOUT
         self.DRDY_DELAY = conf.DRDY_DELAY
 
-        print("PiPyADC 1.1")
+        print("PiPyADC 1.15")
         # Only one GPIO input:
         if conf.DRDY_PIN is not None:
             self.DRDY_PIN = conf.DRDY_PIN
             wp.pinMode(conf.DRDY_PIN, wp.INPUT)
+            print("PiPyADC 1.16, setting up DRDY pin as an input with new value=", self.DRDY_PIN)
 
         # GPIO Outputs. Only the CS_PIN is currently actively used. ~RESET and
         # ~PDWN must be set to static logic HIGH level if not hardwired:
@@ -302,6 +303,7 @@ class ADS1256(object):
                     conf.PDWN_PIN):
             print("PiPyADC 1.3 with pin=", pin)
             if pin is not None:
+                print("PiPyADC 1.31, setting up pin", pin, " as an output with a high value")
                 wp.pinMode(pin, wp.OUTPUT)
                 wp.digitalWrite(pin, wp.HIGH)
         print("PiPyADC 1.4")
