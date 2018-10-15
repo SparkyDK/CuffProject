@@ -386,8 +386,8 @@ class ADS1256(object):
         # descriptor of the SPI device during initialisation.
         print("PiPyADC.send_byte 1.0 with byte =", mybyte)
 #        wp.wiringPiSPIDataRW(self.SPI_CHANNEL, "%s" % chr(mybyte & 0xFF))
-        mybyte = bytes(mybyte)
-        wp.wiringPiSPIDataRW(self.SPI_CHANNEL, mybyte & 0xFF)
+        mybyte = bytes(mybyte & 0xFF)
+        wp.wiringPiSPIDataRW(self.SPI_CHANNEL, mybyte)
         print("PiPyADC.send_byte 1.1")
 
     def _read_byte(self):
