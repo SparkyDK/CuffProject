@@ -293,7 +293,7 @@ class ADS1256(object):
         if conf.DRDY_PIN is not None:
             self.DRDY_PIN = conf.DRDY_PIN
             wp.pinMode(conf.DRDY_PIN, wp.INPUT)
-            print("PiPyADC 1.16, setting up DRDY pin as an input with new value=", self.DRDY_PIN)
+            print("PiPyADC 1.16, setting up DRDY pin as an input with value=", self.DRDY_PIN)
 
         # GPIO Outputs. Only the CS_PIN is currently actively used. ~RESET and
         # ~PDWN must be set to static logic HIGH level if not hardwired:
@@ -385,7 +385,8 @@ class ADS1256(object):
         # We ignore that since we already checked for presence of the file
         # descriptor of the SPI device during initialisation.
         print("PiPyADC.send_byte 1.0 with byte =", mybyte)
-        wp.wiringPiSPIDataRW(self.SPI_CHANNEL, "%s" % chr(mybyte & 0xFF))
+#        wp.wiringPiSPIDataRW(self.SPI_CHANNEL, "%s" % chr(mybyte & 0xFF))
+        wp.wiringPiSPIDataRW(self.SPI_CHANNEL, mybyte & 0xFF)
         print("PiPyADC.send_byte 1.1")
 
     def _read_byte(self):
