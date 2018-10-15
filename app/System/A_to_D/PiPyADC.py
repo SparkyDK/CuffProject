@@ -386,7 +386,7 @@ class ADS1256(object):
         # descriptor of the SPI device during initialisation.
         print("PiPyADC.send_byte 1.0 with byte =", mybyte)
         err_code = wp.wiringPiSPIDataRW(self.SPI_CHANNEL, "%s" % chr(mybyte & 0xFF))
-        print("PiPyADC.send_byte 1.1 with err_code=", err_code)
+        print("PiPyADC.send_byte 1.1 with err_code = ", err_code)
 
     def _read_byte(self):
         # Returns a byte read via the SPI bus
