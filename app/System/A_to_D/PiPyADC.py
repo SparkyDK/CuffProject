@@ -315,6 +315,7 @@ class ADS1256(object):
         )
         print ("Handle: spi_id", self.spi_id, " and pi:", pi)
         exit(0)
+        #
 
         # ADS1255/ADS1256 command timing specifications. Do not change.
         # Delay between requesting data and reading the bus for
