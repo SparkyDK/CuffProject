@@ -15,7 +15,15 @@ from app.System.A_to_D.ADS1256_definitions import *
 # FIXME: Implement hardware chip select as an option.
 SPI_CHANNEL   = 1
 # SPI_MODE specifies clock polarity and phase; MODE=1 <=> CPOL=0, CPHA=1
-SPI_MODE      = 1
+# SPI_MODE      = 1
+# SPI_FLAGS sets MODE=1 <=> CPOL=0, CPHA=1. See pigpio documentation.
+# The waveshare ADC board does not use the SPI peripheral hardware for the chip
+# select lines, but uses the CS_PIN GPIO defined further below. CS disabled:
+#                  bbbbbbRTnnnnWAuuupppmm
+SPI_FLAGS      = 0b0000000000000011100001
+# When using the SPI hardware chip select lines, use the following flags:
+# SPI_FLAGS      = 0b0000000000000000000001
+
 # SPI clock rate in Hz. The ADS1256 supports a minimum of 1/10th of the output
 # sample data rate in Hz to 1/4th of the oscillator CLKIN_FREQUENCY which
 # results in a value of 1920000 Hz for the Waveshare board. However, since

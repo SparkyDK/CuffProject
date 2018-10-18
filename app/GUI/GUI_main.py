@@ -3,7 +3,7 @@ Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 #kivy.require("1.10.1")
 
 import sys
-sys.path.append("/home/pi//CuffProject")
+sys.path.append("/home/pi/CuffProject")
 
 from app.System.FSM.relay_control import set_relay
 from app.GUI.airtank import air_tank
