@@ -354,6 +354,7 @@ class ADS1256(object):
         self.drate = conf.drate
         self.gpio = conf.gpio
         self.status = conf.status
+        return(pi)
 
     def _chip_select(self):
         # If chip select hardware pin is connected to SPI bus hardware pin or
