@@ -313,6 +313,7 @@ class ADS1256(object):
         self.spi_id = pi.spi_open(
             conf.SPI_CHANNEL, conf.SPI_FREQUENCY, conf.SPI_FLAGS
         )
+        print ("Handle: spi_id", self.spi_id, " and pi:", pi)
 
         # ADS1255/ADS1256 command timing specifications. Do not change.
         # Delay between requesting data and reading the bus for
@@ -354,7 +355,6 @@ class ADS1256(object):
         self.drate = conf.drate
         self.gpio = conf.gpio
         self.status = conf.status
-        return(pi)
 
     def _chip_select(self):
         # If chip select hardware pin is connected to SPI bus hardware pin or
