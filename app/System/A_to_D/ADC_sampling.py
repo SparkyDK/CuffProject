@@ -80,7 +80,8 @@ class ADC_sampling:
         # Not sure about the penalty for doing this (power, noise, ...?) but this value
         # can be increased up to 30,000 (pick DRATE_30000).  This is fine, according
         # to the TI data sheet for the ADS1256 (http://www.ti.com/product/ADS1256)
-        ads2.drate = DRATE_2000
+        data_rate = ads2.drate = DRATE_2000
+        print ("Data rate now set to:", data_rate)
         print ("ADC_sampling 1.2")
         # Gain and offset self-calibration:
         ads2.cal_self()
