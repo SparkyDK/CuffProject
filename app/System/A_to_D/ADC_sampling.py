@@ -81,6 +81,8 @@ class ADC_sampling:
         if chip_ID != 0:
             # When the value is not correct, user code should exit here.
             print("\nRead non-zero chip ID of ", chip_ID," for ADS1256")
+            if (chip_ID == 3):
+                print ("chip_ID=3 and Filter buffer:", filter_buffer)
             #g.adc.pi.spi_close(g.adc.spi_id)
             #exit(0)
         else:
@@ -99,7 +101,6 @@ class ADC_sampling:
         rows, columns = FILTER_SIZE, len(CH_SEQUENCE)
         filter_buffer = np.zeros((rows, columns), dtype=np.int)
         #print ("rows=", rows, " and columns=", columns)
-        print ("Filter buffer:", filter_buffer)
 
         # Using code taken from: https://github.com/SeanDHeath/PyADS1256
         # ads = ADS1256()
