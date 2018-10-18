@@ -76,7 +76,7 @@ class ADC_sampling:
         adc.cal_self()
         # Get ADC chip ID and check if chip is connected correctly.
         chip_ID = adc.chip_ID
-        print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
+        #print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
         if chip_ID != 0:
             # When the value is not correct, user code should exit here.
             print("\nRead incorrect chip ID of ", chip_ID," for ADS1256 (non-zero). Is hardware connected properly?")
@@ -131,7 +131,7 @@ class ADC_sampling:
         #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
 
         #print ("raw values:", filter_buffer)
-        print ("averaged values=", ch_unscaled, " and equivalent voltage=", ch_volts)
+        #print ("averaged values=", ch_unscaled, " and equivalent voltage=", ch_volts)
 
         # # Next, update filter_buffer cyclically with new ADC samples and
         # # calculate the averaged results.
@@ -161,5 +161,5 @@ class ADC_sampling:
         # print ("Pressure value read at:", localtime, " =", g.digital_pressure_value)
 
         g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
-        print ("digital_pressure_value read from file is now", g.digital_pressure_value)
+        print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
         return (g.digital_pressure_value)
