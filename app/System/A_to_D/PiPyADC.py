@@ -269,7 +269,7 @@ class ADS1256(object):
         """
         self.wait_DRDY()
         status_register_value = self.read_reg(REG_STATUS)
-        print ("status register: ", status_register_value)
+        #print ("status register: ", status_register_value)
         return status_register_value >> 4
 
     @chip_ID.setter
@@ -523,7 +523,6 @@ class ADS1256(object):
         self.wait_DRDY()
         # Release chip select and implement t_11 timeout
         self._chip_release()
-        print ("status register (right after reset): ", self.read_reg(REG_STATUS))
 
     def sync(self):
         """Restart the ADC conversion cycle with a SYNC + WAKEUP

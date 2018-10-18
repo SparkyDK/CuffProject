@@ -91,9 +91,9 @@ class ADC_sampling:
         chip_ID = ads2.chip_ID
         print ("ADC_sampling 1.3")
         print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
-        if chip_ID != 3:
+        if chip_ID != 0:
             # When the value is not correct, user code should exit here.
-            print("\nRead incorrect chip ID for ADS1256. Is the hardware connected properly?")
+            print("\nRead incorrect chip ID for ADS1256 (assuming should be 0). Is the hardware connected properly?")
             exit(0)
         else:
             print ("Worked!  Let's go on and add/execute the rest of the A/D code...")
