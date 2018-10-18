@@ -95,8 +95,8 @@ class ADC_sampling:
         # the number of FILTER_SIZE samples for each channel.
         rows, columns = FILTER_SIZE, len(CH_SEQUENCE)
         filter_buffer = np.zeros((rows, columns), dtype=np.int)
-        print ("rows=", rows, " and columns=", columns)
-        print ("Filter buffer:", filter_buffer)
+        #print ("rows=", rows, " and columns=", columns)
+        #print ("Filter buffer:", filter_buffer)
 
         # Using code taken from: https://github.com/SeanDHeath/PyADS1256
         # ads = ADS1256()
@@ -121,7 +121,7 @@ class ADC_sampling:
             # The ADS1256 read_sequence() method automatically fills into
             # the buffer specified as the second argument:
             ads2.read_continue(CH_SEQUENCE, data_row)
-            print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
+            #print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
