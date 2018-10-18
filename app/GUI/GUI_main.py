@@ -199,7 +199,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         air_tank()
         # Read the current pressure value
-        self.control_args, self.digital_pressure_value = Read_Cuff_Pressure(self.control_args, self.past_states)
+        self.control_args, self.digital_pressure_value = Read_Cuff_Pressure(self.adc, self.control_args,\
+                                                                            self.past_states)
         if (self.second_tickover):
             #localtime = time.asctime(time.localtime(time.time()))
             debug_msg = str("Pressure: " + self.current_pressure) + " (" + str(self.digital_pressure_value) + ")"
