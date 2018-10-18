@@ -71,6 +71,8 @@ class ADC_sampling:
 
         # Using code taken from: https://github.com/ul-gh/PiPyADC/blob/master/pipyadc.py
         ads2 = ADS1256(myconfig)
+        print (ads2.chip_ID)
+
         print ("ADC_sampling 1.1")
         # Change the default sample rate of the ADS1256 to 2000 samples per second
         # Correct value will depend on how long the conversion process takes and the frequency
