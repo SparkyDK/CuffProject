@@ -130,7 +130,7 @@ class ADC_sampling:
         #g.digital_pressure_value = ch_unscaled
         #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
 
-        print ("raw values:", filter_buffer)
+        #print ("raw values:", filter_buffer)
         print ("averaged values=", ch_unscaled, " and equivalent voltage=", ch_volts)
 
         # # Next, update filter_buffer cyclically with new ADC samples and
