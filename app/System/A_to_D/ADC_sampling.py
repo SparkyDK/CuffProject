@@ -81,7 +81,7 @@ class ADC_sampling:
         if chip_ID != 0:
             # When the value is not correct, user code should exit here.
             print("\nRead non-zero chip ID of ", chip_ID," for ADS1256")
-            g.adc.pi.spi_close(g.adc.spi_id)
+            #g.adc.pi.spi_close(g.adc.spi_id)
             #exit(0)
 
     def get_current_pressure(self, adc):
