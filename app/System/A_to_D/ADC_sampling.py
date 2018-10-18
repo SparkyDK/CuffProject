@@ -76,13 +76,15 @@ class ADC_sampling:
         adc.cal_self()
         # Get ADC chip ID and check if chip is connected correctly.
         chip_ID = adc.chip_ID
-        print ("chip ID=", chip_ID)
+        #print ("chip ID=", chip_ID)
         #print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
         if chip_ID != 0:
             # When the value is not correct, user code should exit here.
             print("\nRead non-zero chip ID of ", chip_ID," for ADS1256")
             g.adc.pi.spi_close(g.adc.spi_id)
             #exit(0)
+        else:
+            print ("0 chip ID")
 
     def get_current_pressure(self, adc):
 
