@@ -27,7 +27,7 @@ PRESSURE = POS_AIN0 | NEG_AINCOM
 # eight-bit code values to scan sequentially from index 0 to last.
 # Eight channels fit on the screen nicely for this example..
 # CH_SEQUENCE = (POTI, LDR, EXT2, EXT3, EXT4, EXT7, POTI_INVERTED, SHORT_CIRCUIT)
-CH_SEQUENCE = (PRESSURE)
+CH_SEQUENCE = (PRESSURE,)
 print("Ch_sequence:", CH_SEQUENCE)
 FILTER_SIZE = 32
 
