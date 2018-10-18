@@ -63,13 +63,13 @@ GAIN_CAL = np.array((1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0), dtype=np.float)
 FILTER_SIZE = 32
 
 class ADC_sampling:
-    def get_current_pressure(self):
+    def get_current_pressure(self, adc):
 
         # Using code taken from: https://github.com/SeanDHeath/PyADS1256
         # ads = ADS1256()
 
         # Using code taken from: https://github.com/ul-gh/PiPyADC/blob/master/pipyadc.py
-        ads2 = ADS1256(myconfig)
+        ads2 = adc
 
         # Change the default sample rate of the ADS1256 to 2000 samples per second
         # Correct value will depend on how long the conversion process takes and the frequency

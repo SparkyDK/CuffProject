@@ -5,6 +5,8 @@ import collections
 from app.System.pain_schedule.pain_schedule import pain_schedule
 from app.System.FSM.setup_FSM_states import Setup_FSM_States
 from app.System.FSM.control_decisions import ControlDecisions
+from app.System.A_to_D.PiPyADC import ADS1256
+import app.System.A_to_D.ADS1256_default_config as myconfig
 
 control_args = {}  # SCHEDULE_INDEX','PAIN','STARTED','PAUSE','PAINH','PAINL','PRESSURE','PATM','PMAX'
 current_pressure = 0
@@ -30,6 +32,7 @@ SYNC = False
 decision = ControlDecisions()
 airctrl = Setup_FSM_States()  # state machine to control relays
 schedule = pain_schedule()  # manages the NIL/PAIN schedule
+adc = ADS1256(myconfig)
 
 already_running = False
 schedule_selected = 1

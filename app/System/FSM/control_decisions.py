@@ -1,7 +1,7 @@
 from app.GUI import g
 class ControlDecisions:
     def respond_to_user_inputs(self, current_counter, all_schedules, imported_schedule, control_args, user_args,
-                               pressure_parameters, second_tickover, schedule_finished, airctrl, schedule,
+                               pressure_parameters, second_tickover, schedule_finished, airctrl, schedule, adc,
                                toggle, schedule_selected, state_machine_ran):
         # A pain schedule must be initialized or restarted by pressing ABORT, then GO.
         # This is required on power-up and also once the pain schedule has been completed.
@@ -23,6 +23,7 @@ class ControlDecisions:
         self.schedule_finished = schedule_finished
         self.airctrl = airctrl
         self.schedule = schedule
+        self.adc = adc
         self.toggle = toggle
         self.schedule_selected = schedule_selected
         self.state_machine_ran = state_machine_ran
