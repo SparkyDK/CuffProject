@@ -97,7 +97,6 @@ class ADC_sampling:
             exit(0)
         else:
             print ("Worked!  Let's go on and add/execute the rest of the A/D code...")
-            exit(0) # For now, remove this later....
 
         # Channel gain must be multiplied by LSB weight in volts per digit to
         # display each channels input voltage. The result is a np.array again here:
