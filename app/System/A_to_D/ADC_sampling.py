@@ -26,20 +26,19 @@ import app.System.A_to_D.ADS1256_default_config as myconfig
 # Input pin from the pressure transducer (jumper should *not* be installed between AD0 and ADJ)
 # Otherwise potentiometer will be connected to AD0... "potentially" damaging pressure transducer :-)
 PRESSURE = POS_AIN0 | NEG_AINCOM
-PRESSURE_INVERTED = POS_AINCOM | NEG_AIN0
-# Light dependant resistor from the Waveshare high-precision A/D board (if jumper installed between AD1 and LDR):
-LDR = POS_AIN1 | NEG_AINCOM
-# The other external input screw terminals of the Waveshare board:
-EXT2, EXT3, EXT4 = POS_AIN2 | NEG_AINCOM, POS_AIN3 | NEG_AINCOM, POS_AIN4 | NEG_AINCOM
-EXT5, EXT6, EXT7 = POS_AIN5 | NEG_AINCOM, POS_AIN6 | NEG_AINCOM, POS_AIN7 | NEG_AINCOM
+# PRESSURE_INVERTED = POS_AINCOM | NEG_AIN0
+# # Light dependant resistor from the Waveshare high-precision A/D board (if jumper installed between AD1 and LDR):
+# LDR = POS_AIN1 | NEG_AINCOM
+# # The other external input screw terminals of the Waveshare board:
+# EXT2, EXT3, EXT4 = POS_AIN2 | NEG_AINCOM, POS_AIN3 | NEG_AINCOM, POS_AIN4 | NEG_AINCOM
+# EXT5, EXT6, EXT7 = POS_AIN5 | NEG_AINCOM, POS_AIN6 | NEG_AINCOM, POS_AIN7 | NEG_AINCOM
 
-# PRESSURE = POS_AIN0 | NEG_AINCOM
 
 # Specify here an arbitrary length list (tuple) of arbitrary input channel pair
 # eight-bit code values to scan sequentially from index 0 to last.
 # Eight channels fit on the screen nicely for this example..
 #CH_SEQUENCE = (POTI, LDR, EXT2, EXT3, EXT4, EXT7, POTI_INVERTED, SHORT_CIRCUIT)
-CH_SEQUENCE = (PRESSURE, LDR, EXT2, EXT3, EXT4, EXT5, EXT6, PRESSURE_INVERTED)
+CH_SEQUENCE = (PRESSURE)
 
 # We only have one input, but we will use the sequential read anyway!
 # CH_SEQUENCE = (PRESSURE)
@@ -49,13 +48,10 @@ CH_SEQUENCE = (PRESSURE, LDR, EXT2, EXT3, EXT4, EXT5, EXT6, PRESSURE_INVERTED)
 # applied to all channels without making any difference.
 # For individual calibration values, e.g. to compensate external
 # circuitry parasitics, we can compensate in software.
-# The following values are dummy ones for now.
-CH_OFFSET = np.array((0, 0, -85, 10, 750, 0, 0, 0), dtype=np.int)
-GAIN_CAL = np.array((1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0), dtype=np.float)
 
 #Even though we only have one input, we still use an array construct
-#CH_OFFSET = np.array( (0), dtype=np.int)
-#GAIN_CAL = np.array( (1.0), dtype=np.float)
+CH_OFFSET = np.array((0), dtype=np.int)
+GAIN_CAL = np.array((1.0), dtype=np.float)
 
 # We will use a simple moving average of 32 samples, as a simple de-noising filter
 # This will represent about 16ms of samples (at 2kHz sampling rate)
@@ -80,7 +76,8 @@ class ADC_sampling:
         print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
         if chip_ID != 0:
             # When the value is not correct, user code should exit here.
-            print("\nRead incorrect chip ID for ADS1256 (assuming should be 0). Is the hardware connected properly?")
+            print("\nRead incorrect chip ID for ADS1256 (assuming proper value is 0). Is hardware connected properly?")
+            adc.close()
             exit(0)
 
     def get_current_pressure(self, adc):
@@ -99,13 +96,26 @@ class ADC_sampling:
         # Using code taken from: https://github.com/SeanDHeath/PyADS1256
         # ads = ADS1256()
 
+        # Argument1:  Tuple (list) of 8-bit code values for differential
+        #             input channel pins to read sequentially in a cycle.
+        #             (See definitions for the REG_MUX register)
+        #
+        #             Example:
+        #             ch_sequence=(POS_AIN0|NEG_AIN1, POS_AIN2|NEG_AINCOM)
+        #
+        # Argument2:  List (array, buffer) of signed integer conversion
+        #             results for the sequence of input channels.
+        #
+        # Returns:    List (array, buffer) of signed integer conversion
+        #             results for the sequence of input channels.
+
         # Using code taken from: https://github.com/ul-gh/PiPyADC/blob/master/pipyadc.py
         # Fill the buffer first once before displaying continuously updated results
         for row_number, data_row in enumerate(filter_buffer):
             # Do the data acquisition of the multiplexed input channels.
             # The ADS1256 read_sequence() method automatically fills into
             # the buffer specified as the second argument:
-            ads2.read_sequence(CH_SEQUENCE, data_row)
+            ads2.read_continue(CH_SEQUENCE, data_row)
             print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
