@@ -253,7 +253,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
             self.state_machine_ran = True
 
         except KeyboardInterrupt:
-            g.adc.spi_id.spi_close()
+            g.adc.pi.spi_close()
             print("\nDone")
             # Enclose more than this in try/except block
 
@@ -339,7 +339,7 @@ class Schedule(Screen):
         #Clock.schedule_once(self.run_schedule, 8) # clock callback for the second screen
 
     def exit_program(self):
-        g.adc.spi_id.spi_close()
+        g.adc.pi.spi_close()
         exit(0)
 
     def sel_schedule(self, schedule_selection):
