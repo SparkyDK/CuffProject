@@ -64,7 +64,6 @@ FILTER_SIZE = 32
 
 class ADC_sampling:
     def get_current_pressure(self):
-        print ("ADC_sampling 1")
 
         # Using code taken from: https://github.com/SeanDHeath/PyADS1256
         # ads = ADS1256()
@@ -72,7 +71,6 @@ class ADC_sampling:
         # Using code taken from: https://github.com/ul-gh/PiPyADC/blob/master/pipyadc.py
         ads2 = ADS1256(myconfig)
 
-        print ("ADC_sampling 1.1")
         # Change the default sample rate of the ADS1256 to 2000 samples per second
         # Correct value will depend on how long the conversion process takes and the frequency
         # content that we expect, vis a vis aliasing noise... We assume pressure values will be stable
@@ -81,12 +79,9 @@ class ADC_sampling:
         # Not sure about the penalty for doing this (power, noise, ...?) but this value
         # can be increased up to 30,000 (pick DRATE_30000).  This is fine, according
         # to the TI data sheet for the ADS1256 (http://www.ti.com/product/ADS1256)
-        data_rate = ads2.drate = DRATE_2000
-        #print ("Data rate now set to:", data_rate)
-        print ("ADC_sampling 1.2")
+        ads2.drate = DRATE_2000
         # Gain and offset self-calibration:
         ads2.cal_self()
-        print ("ADC_sampling 1.2")
         # Get ADC chip ID and check if chip is connected correctly.
         chip_ID = ads2.chip_ID
         print ("ADC_sampling 1.3")
@@ -95,8 +90,6 @@ class ADC_sampling:
             # When the value is not correct, user code should exit here.
             print("\nRead incorrect chip ID for ADS1256 (assuming should be 0). Is the hardware connected properly?")
             exit(0)
-        else:
-            print ("Worked!  Let's go on and add/execute the rest of the A/D code...")
 
         # Channel gain must be multiplied by LSB weight in volts per digit to
         # display each channels input voltage. The result is a np.array again here:
@@ -109,9 +102,6 @@ class ADC_sampling:
         filter_buffer = np.zeros((rows, columns), dtype=np.int)
 
         # Fill the buffer first once before displaying continuously updated results
-        print("Channels configured: {}\n"
-              "Initializing filter (this can take a while)...".format(
-            len(CH_SEQUENCE)))
         for row_number, data_row in enumerate(filter_buffer):
             # Do the data acquisition of the multiplexed input channels.
             # The ADS1256 read_sequence() method automatically fills into
@@ -119,7 +109,6 @@ class ADC_sampling:
             ads2.read_sequence(CH_SEQUENCE, data_row)
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
-        print ("ADC_sampling 1.4")
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
         ch_volts = ch_unscaled * CH_GAIN
 
