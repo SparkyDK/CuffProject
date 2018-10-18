@@ -92,6 +92,8 @@ class ADC_sampling:
         # the number of FILTER_SIZE samples for each channel.
         rows, columns = FILTER_SIZE, len(CH_SEQUENCE)
         filter_buffer = np.zeros((rows, columns), dtype=np.int)
+        print ("rows=", rows, " and columns=", columns)
+        print ("Filter buffer:", filter_buffer)
 
         # Using code taken from: https://github.com/SeanDHeath/PyADS1256
         # ads = ADS1256()
