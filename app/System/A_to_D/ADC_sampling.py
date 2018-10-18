@@ -83,6 +83,8 @@ class ADC_sampling:
             print("\nRead non-zero chip ID of ", chip_ID," for ADS1256")
             #g.adc.pi.spi_close(g.adc.spi_id)
             #exit(0)
+        else:
+            print ("Chip ID=0")
 
     def get_current_pressure(self, adc):
 
@@ -97,7 +99,7 @@ class ADC_sampling:
         rows, columns = FILTER_SIZE, len(CH_SEQUENCE)
         filter_buffer = np.zeros((rows, columns), dtype=np.int)
         #print ("rows=", rows, " and columns=", columns)
-        #print ("Filter buffer:", filter_buffer)
+        print ("Filter buffer:", filter_buffer)
 
         # Using code taken from: https://github.com/SeanDHeath/PyADS1256
         # ads = ADS1256()
