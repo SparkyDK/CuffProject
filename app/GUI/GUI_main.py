@@ -255,6 +255,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
         except KeyboardInterrupt:
             g.adc.spi_id.spi_close()
             print("\nDone")
+            # Enclose more than this in try/except block
 
         g.control_args, g.user_args, g.pressure_parameters, g.elapsed_time, g.start_time, g.schedule_finished,\
         g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt, g.past_states, g.already_running,\
