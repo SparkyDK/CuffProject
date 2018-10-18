@@ -13,7 +13,6 @@ from app.System.A_to_D.ADS1256_definitions import *
 # SPI hardware. For the Waveshare board this pin is not even connected, so this
 # code does not use hardware-controlled CS and this is a don't care value.
 # FIXME: Implement hardware chip select as an option.
-print ("config 1.0")
 SPI_CHANNEL   = 1
 # SPI_MODE specifies clock polarity and phase; MODE=1 <=> CPOL=0, CPHA=1
 SPI_MODE      = 1
@@ -86,7 +85,6 @@ drate  = DRATE_10
 # REG_IO: No GPIOs needed
 gpio = 0x00
 ################################################################################
-print ("config 2.0")
 
 
 """###########  Extended Description: ADS1256 Registers  ###############
