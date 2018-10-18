@@ -10,56 +10,58 @@ from app.System.A_to_D.ADS1256_definitions import *
 from app.System.A_to_D.PiPyADC import ADS1256
 import app.System.A_to_D.ADS1256_default_config as myconfig
 
-#  STEP 0: CONFIGURE CHANNELS AND USE DEFAULT OPTIONS FROM CONFIG FILE:
-# For channel code values (bitmask) definitions, see ADS1256_definitions.py.
-# The values representing the negative and positive input pins connected to
-# the ADS1256 hardware multiplexer must be bitwise OR-ed to form eight-bit
-# values, which will later be sent to the ADS1256 MUX register. The register
-# can be explicitly read and set via ADS1256.mux property, which is probably
-# what we want.  For now, we define a list of differential channels to be input to
-# the ADS1256.read_sequence() method which reads all of them one after another.
-#
-# Single-ended measurement can use AINCOM as the negative input.
-# AINCOM does not have to be connected to AGND (0V), but we assume the jumper
-# on the Waveshare board is set, so it will be.
-
-# Input pin from the pressure transducer (jumper should *not* be installed between AD0 and ADJ)
-# Otherwise potentiometer will be connected to AD0... "potentially" damaging pressure transducer :-)
-PRESSURE = POS_AIN0 | NEG_AINCOM
-# PRESSURE_INVERTED = POS_AINCOM | NEG_AIN0
-# # Light dependant resistor from the Waveshare high-precision A/D board (if jumper installed between AD1 and LDR):
-# LDR = POS_AIN1 | NEG_AINCOM
-# # The other external input screw terminals of the Waveshare board:
-# EXT2, EXT3, EXT4 = POS_AIN2 | NEG_AINCOM, POS_AIN3 | NEG_AINCOM, POS_AIN4 | NEG_AINCOM
-# EXT5, EXT6, EXT7 = POS_AIN5 | NEG_AINCOM, POS_AIN6 | NEG_AINCOM, POS_AIN7 | NEG_AINCOM
-
-
-# Specify here an arbitrary length list (tuple) of arbitrary input channel pair
-# eight-bit code values to scan sequentially from index 0 to last.
-# Eight channels fit on the screen nicely for this example..
-#CH_SEQUENCE = (POTI, LDR, EXT2, EXT3, EXT4, EXT7, POTI_INVERTED, SHORT_CIRCUIT)
-CH_SEQUENCE = (PRESSURE)
-
-# We only have one input, but we will use the sequential read anyway!
-# CH_SEQUENCE = (PRESSURE)
-
-#  CALIBRATION  CONSTANTS
-# The ADS1256 has internal gain and offset calibration registers, but these are
-# applied to all channels without making any difference.
-# For individual calibration values, e.g. to compensate external
-# circuitry parasitics, we can compensate in software.
-
-#Even though we only have one input, we still use an array construct
-CH_OFFSET = np.array((0), dtype=np.int)
-GAIN_CAL = np.array((1.0), dtype=np.float)
-
-# We will use a simple moving average of 32 samples, as a simple de-noising filter
-# This will represent about 16ms of samples (at 2kHz sampling rate)
-# We can reduce this number, later, if there isn't much noise
-FILTER_SIZE = 32
-
 class ADC_sampling:
+
     def __init__(self, adc):
+        #  STEP 0: CONFIGURE CHANNELS AND USE DEFAULT OPTIONS FROM CONFIG FILE:
+        # For channel code values (bitmask) definitions, see ADS1256_definitions.py.
+        # The values representing the negative and positive input pins connected to
+        # the ADS1256 hardware multiplexer must be bitwise OR-ed to form eight-bit
+        # values, which will later be sent to the ADS1256 MUX register. The register
+        # can be explicitly read and set via ADS1256.mux property, which is probably
+        # what we want.  For now, we define a list of differential channels to be input to
+        # the ADS1256.read_sequence() method which reads all of them one after another.
+        #
+        # Single-ended measurement can use AINCOM as the negative input.
+        # AINCOM does not have to be connected to AGND (0V), but we assume the jumper
+        # on the Waveshare board is set, so it will be.
+
+        # Input pin from the pressure transducer (jumper should *not* be installed between AD0 and ADJ)
+        # Otherwise potentiometer will be connected to AD0... "potentially" damaging pressure transducer :-)
+        PRESSURE = POS_AIN0 | NEG_AINCOM
+        # PRESSURE_INVERTED = POS_AINCOM | NEG_AIN0
+        # # Light dependant resistor from the Waveshare high-precision A/D board (if jumper installed between AD1 and LDR):
+        # LDR = POS_AIN1 | NEG_AINCOM
+        # # The other external input screw terminals of the Waveshare board:
+        # EXT2, EXT3, EXT4 = POS_AIN2 | NEG_AINCOM, POS_AIN3 | NEG_AINCOM, POS_AIN4 | NEG_AINCOM
+        # EXT5, EXT6, EXT7 = POS_AIN5 | NEG_AINCOM, POS_AIN6 | NEG_AINCOM, POS_AIN7 | NEG_AINCOM
+
+        # Specify here an arbitrary length list (tuple) of arbitrary input channel pair
+        # eight-bit code values to scan sequentially from index 0 to last.
+        # Eight channels fit on the screen nicely for this example..
+        # CH_SEQUENCE = (POTI, LDR, EXT2, EXT3, EXT4, EXT7, POTI_INVERTED, SHORT_CIRCUIT)
+        CH_SEQUENCE = (PRESSURE)
+        print("Ch_sequence:", CH_SEQUENCE)
+
+        # We only have one input, but we will use the sequential read anyway!
+        # CH_SEQUENCE = (PRESSURE)
+
+        #  CALIBRATION  CONSTANTS
+        # The ADS1256 has internal gain and offset calibration registers, but these are
+        # applied to all channels without making any difference.
+        # For individual calibration values, e.g. to compensate external
+        # circuitry parasitics, we can compensate in software.
+
+        # Even though we only have one input, we still use an array construct
+        CH_OFFSET = np.array((0), dtype=np.int)
+        GAIN_CAL = np.array((1.0), dtype=np.float)
+        print("CH_offset:", CH_OFFSET, "and GAIN_CAL:", GAIN_CAL)
+
+        # We will use a simple moving average of 32 samples, as a simple de-noising filter
+        # This will represent about 16ms of samples (at 2kHz sampling rate)
+        # We can reduce this number, later, if there isn't much noise
+        FILTER_SIZE = 32
+
         # Change the default sample rate of the ADS1256 to 2000 samples per second
         # Correct value will depend on how long the conversion process takes and the frequency
         # content that we expect, vis a vis aliasing noise... We assume pressure values will be stable
