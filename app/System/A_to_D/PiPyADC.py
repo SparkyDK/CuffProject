@@ -268,7 +268,9 @@ class ADS1256(object):
         Value for the ADS1256 on the Waveshare board seems to be a 3.
         """
         self.wait_DRDY()
-        return self.read_reg(REG_STATUS) >> 4
+        status_register_value = self.read_reg(REG_STATUS)
+        print ("status register: ", status_register_value)
+        return status_register_value >> 4
 
     @chip_ID.setter
     def chip_ID(self, value):
