@@ -121,7 +121,7 @@ class ADC_sampling:
             # Do the data acquisition of the multiplexed input channels.
             # The ADS1256 read_sequence() method automatically fills into
             # the buffer specified as the second argument:
-            ads2.read_continue(CH_SEQUENCE, data_row)
+            ads2.read_sequence(CH_SEQUENCE, data_row)
             #print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
