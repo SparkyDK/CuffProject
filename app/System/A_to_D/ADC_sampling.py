@@ -80,7 +80,7 @@ class ADC_sampling:
         # Get ADC chip ID and check if chip is connected correctly.
         chip_ID = adc.chip_ID
         #print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
-        print("\nRead chip ID of ", chip_ID," for ADS1256")
+        #print("\nRead chip ID of ", chip_ID," for ADS1256")
         #if (chip_ID != 3):
         #   print ("\nchip_ID not the expected one)
         #   g.adc.pi.spi_close(g.adc.spi_id)
