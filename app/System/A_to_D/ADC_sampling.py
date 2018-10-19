@@ -78,11 +78,11 @@ class ADC_sampling:
         chip_ID = adc.chip_ID
         #print ("chip ID=", chip_ID)
         #print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
-        if chip_ID != 0:
+        if (chip_ID != 0):
             # When the value is not correct, user code should exit here.
             print("\nRead non-zero chip ID of ", chip_ID," for ADS1256")
             if (chip_ID == 3):
-                print ("chip_ID=3 and Filter buffer:", filter_buffer)
+                print ("\nchip_ID=3 and Filter buffer:\n", filter_buffer)
             #g.adc.pi.spi_close(g.adc.spi_id)
             #exit(0)
         else:
@@ -125,7 +125,7 @@ class ADC_sampling:
             # The ADS1256 read_sequence() method automatically fills into
             # the buffer specified as the second argument:
             ads2.read_sequence(CH_SEQUENCE, data_row)
-            #print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
+            print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
