@@ -122,7 +122,7 @@ class ADC_sampling:
         # Using code taken from: https://github.com/ul-gh/PiPyADC/blob/master/pipyadc.py
         # Fill the buffer first once before displaying continuously updated results
 
-        one_pressure_sample = ads2.read_oneshot(PRESSURE)
+        #one_pressure_sample = ads2.read_oneshot(PRESSURE)
 
         if (one_pressure_sample != 0):
             print ("Read a single pressure value =", one_pressure_sample)
