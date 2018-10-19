@@ -7,6 +7,9 @@ from app.filereaders.quick_read_test import quick_read
 import numpy as np
 # import itertools
 from app.System.A_to_D.ADS1256_definitions import *
+
+import time
+
 from app.System.A_to_D.PiPyADC import ADS1256
 import app.System.A_to_D.ADS1256_default_config as myconfig
 
