@@ -21,7 +21,11 @@ def Read_Cuff_Pressure(adc, control_args, past_states):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     digital_pressure_value = float(a_to_d.get_current_pressure(adc))
+=======
+    digital_pressure_value, averaged_pressure_value = float(a_to_d.get_current_pressure(adc))
+>>>>>>> parent of 9976b14... More
 =======
     digital_pressure_value, averaged_pressure_value = float(a_to_d.get_current_pressure(adc))
 >>>>>>> parent of 9976b14... More
