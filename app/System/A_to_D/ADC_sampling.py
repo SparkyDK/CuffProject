@@ -135,6 +135,7 @@ class ADC_sampling:
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
         ch_volts = ch_unscaled * CH_GAIN
         print ("\nFilter buffer:\n", filter_buffer)
+        print ("\naverage value=",ch_unscaled)
 
         #g.digital_pressure_value = ch_unscaled
         #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
