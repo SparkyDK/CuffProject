@@ -32,7 +32,8 @@ SYNC = False
 decision = ControlDecisions()
 airctrl = Setup_FSM_States()  # state machine to control relays
 schedule = pain_schedule()  # manages the NIL/PAIN schedule
-adc = ADS1256(myconfig)
+adc = ADS1256(myconfig) # A/D handle returned
+
 
 already_running = False
 schedule_selected = 1

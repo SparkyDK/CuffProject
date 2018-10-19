@@ -283,6 +283,7 @@ class ADS1256(object):
     # Default config is read from external file (module) import
     def __init__(self, conf=ADS1256_default_config, pi=None):
         # Set up the pigpio object if not provided as an argument
+        print ("Created an instance of ADS1256 with id:", self)
         if pi is None:
             pi = io.pi()
         self.pi = pi
@@ -313,7 +314,7 @@ class ADS1256(object):
         self.spi_id = pi.spi_open(
             conf.SPI_CHANNEL, conf.SPI_FREQUENCY, conf.SPI_FLAGS
         )
-        print ("Handle: spi_id", self.spi_id, " and pi:", pi)
+        print ("********* Handle: spi_id", self.spi_id, " and pi:", pi)
 
         # ADS1255/ADS1256 command timing specifications. Do not change.
         # Delay between requesting data and reading the bus for
