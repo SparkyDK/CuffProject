@@ -24,6 +24,7 @@ def Read_Cuff_Pressure(adc, control_args, past_states):
 
 def Convert_to_mm_Hg(digital_value):
     digital_input = digital_value
+    print ("Converting a value =", digital_input)
     # Convert to mm of Hg and return the value using an interpolated table of values, determined empirically
     # Assume that we have a 24-bit A/D, which results in values in a range of [0, 16777216]
     digital_values, mmHg_values = A_to_D_lookup().read(filename="./app/input_files/A_to_D_lookup_table.txt")
@@ -40,6 +41,6 @@ def Convert_to_mm_Hg(digital_value):
     # print ("Starting lookup table values are:", digital_values, mmHg_values)
     interpolated_value = math.floor(interpolation_function(float(digital_input)))
     #interpolated_value = 740
-    #print ("Took in ", digital_input, " and interpolated it to mm Hg value of", interpolated_value)
+    print ("Took in ", digital_input, " and interpolated it to mm Hg value of", interpolated_value)
 
     return (interpolated_value)
