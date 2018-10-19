@@ -134,7 +134,7 @@ class ADC_sampling:
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
         ch_volts = ch_unscaled * CH_GAIN
-        print ("\nFilter buffer:\n", filter_buffer)
+        #print ("\nFilter buffer:\n", filter_buffer)
         print ("\naverage value=",ch_unscaled)
 
         #g.digital_pressure_value = ch_unscaled
