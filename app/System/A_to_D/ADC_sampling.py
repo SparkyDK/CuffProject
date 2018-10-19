@@ -120,12 +120,16 @@ class ADC_sampling:
 
         # Using code taken from: https://github.com/ul-gh/PiPyADC/blob/master/pipyadc.py
         # Fill the buffer first once before displaying continuously updated results
+
+        one_pressure_sample = ads2.read_oneshot(PRESSURE)
+        print ("Read a single pressure value =", one_pressure_sample)
+
         for row_number, data_row in enumerate(filter_buffer):
             # Do the data acquisition of the multiplexed input channels.
             # The ADS1256 read_sequence() method automatically fills into
             # the buffer specified as the second argument:
             ads2.read_sequence(CH_SEQUENCE, data_row)
-            print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
+            #print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
