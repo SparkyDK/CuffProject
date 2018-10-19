@@ -124,8 +124,8 @@ class ADC_sampling:
 
         #one_pressure_sample = ads2.read_oneshot(PRESSURE)
 
-        #if (one_pressure_sample != 0):
-        #    print ("Read a single pressure value =", one_pressure_sample)
+        if (one_pressure_sample != 0):
+            print ("Read a single pressure value =", one_pressure_sample)
 
         for row_number, data_row in enumerate(filter_buffer):
             # Do the data acquisition of the multiplexed input channels.
@@ -173,4 +173,4 @@ class ADC_sampling:
 
         g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
         #print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
-        return (g.digital_pressure_value, ch_unscaled)
+        return (g.digital_pressure_value)
