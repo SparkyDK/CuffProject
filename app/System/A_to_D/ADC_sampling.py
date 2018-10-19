@@ -81,6 +81,8 @@ class ADC_sampling:
         while (chip_ID == 0):
             # When the value is not correct, user code should exit here.
             print("\nRead zero chip ID of ", chip_ID," for ADS1256")
+            time.sleep(0.05)
+            adc.cal_self()
             chip_ID = adc.chip_ID
             #if (chip_ID == 3):
             #    print ("\nchip_ID=3 and Filter buffer:\n", filter_buffer)
