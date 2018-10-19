@@ -144,28 +144,6 @@ class ADC_sampling:
         #print ("raw values:", filter_buffer)
         #print ("averaged values=", ch_unscaled, " and equivalent voltage=", ch_volts)
 
-        # # Next, update filter_buffer cyclically with new ADC samples and
-        # # calculate the averaged results.
-        # print("\n\nOutput values averaged over {} ADC samples:".format(FILTER_SIZE))
-        # # The following is an endless loop!
-        # timestamp = time.time()  # Limit output data rate to fixed time interval
-        # for data_row in itertools.cycle(filter_buffer):
-        #     # Do the data acquisition of eight multiplexed input channels
-        #     # The result channel values are directly read into the array specified
-        #     # as the second argument, which must be of a mutable type.
-        #     ads2.read_sequence(CH_SEQUENCE, data_row)
-        #
-        #     elapsed = time.time() - timestamp
-        #     if elapsed > 1:
-        #         timestamp += 1
-        #
-        #         # Calculate moving average of input samples, subtract offset
-        #         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
-        #         ch_volts = ch_unscaled * CH_GAIN
-        #
-        #         nice_output([int(i) for i in ch_unscaled], ch_volts)
-
-
         # g.digital_pressure_value = ads.ReadADC()
         # temp = ads.ReadADC()
         # print ("Pressure value read at:", localtime, " =", temp)
