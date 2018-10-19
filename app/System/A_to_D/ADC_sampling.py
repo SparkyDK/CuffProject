@@ -86,7 +86,8 @@ class ADC_sampling:
             #g.adc.pi.spi_close(g.adc.spi_id)
             #exit(0)
         else:
-            print ("Chip ID=0")
+            pass
+            #print ("Chip ID=0")
 
     def get_current_pressure(self, adc):
 
@@ -170,5 +171,5 @@ class ADC_sampling:
         # print ("Pressure value read at:", localtime, " =", g.digital_pressure_value)
 
         g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
-        print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
+        #print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
         return (g.digital_pressure_value)
