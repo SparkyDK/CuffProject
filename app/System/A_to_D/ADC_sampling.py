@@ -124,8 +124,8 @@ class ADC_sampling:
 
         #one_pressure_sample = ads2.read_oneshot(PRESSURE)
 
-        if (one_pressure_sample != 0):
-            print ("Read a single pressure value =", one_pressure_sample)
+        #if (one_pressure_sample != 0):
+        #    print ("Read a single pressure value =", one_pressure_sample)
 
         for row_number, data_row in enumerate(filter_buffer):
             # Do the data acquisition of the multiplexed input channels.
