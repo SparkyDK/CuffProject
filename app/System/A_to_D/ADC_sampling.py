@@ -147,7 +147,8 @@ class ADC_sampling:
         # temp = ads.ReadADC()
         # print ("Pressure value read at:", localtime, " =", temp)
         # print ("Pressure value read at:", localtime, " =", g.digital_pressure_value)
+        g.digital_pressure_value = ch_unscaled
 
-        g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
+        #g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
         #print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
         return (g.digital_pressure_value)

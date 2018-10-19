@@ -197,7 +197,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                   g.past_states, g.decision, g.airctrl, g.schedule, g.adc,\
                                   g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
 
-        air_tank()
+        #air_tank()
         # Read the current pressure value
         self.control_args, self.digital_pressure_value = Read_Cuff_Pressure(self.adc, self.control_args,\
                                                                             self.past_states)
