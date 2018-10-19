@@ -81,8 +81,8 @@ class ADC_sampling:
         if (chip_ID != 0):
             # When the value is not correct, user code should exit here.
             print("\nRead non-zero chip ID of ", chip_ID," for ADS1256")
-            if (chip_ID == 3):
-                print ("\nchip_ID=3 and Filter buffer:\n", filter_buffer)
+            #if (chip_ID == 3):
+            #    print ("\nchip_ID=3 and Filter buffer:\n", filter_buffer)
             #g.adc.pi.spi_close(g.adc.spi_id)
             #exit(0)
         else:
@@ -137,6 +137,7 @@ class ADC_sampling:
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
         ch_volts = ch_unscaled * CH_GAIN
+        print ("\nFilter buffer:\n", filter_buffer)
 
         #g.digital_pressure_value = ch_unscaled
         #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
