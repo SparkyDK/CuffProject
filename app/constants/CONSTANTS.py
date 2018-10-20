@@ -3,6 +3,8 @@ PRESSURE_READER_FILE_NAME = 'TEST_Pressure_Values.txt'
 PRESSURE_TYPES = ["PMAX", "PAINVALUE", "PAINTOLERANCE", "PATM"]
 SCHEDULE_TYPES = ["PAIN", "NILL"]
 
+# Atmospheric ressure tolerance
+ATM_TOLERANCE = 50
 
 # Debug
 DEBUG = True

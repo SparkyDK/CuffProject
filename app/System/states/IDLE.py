@@ -1,5 +1,6 @@
 from app.System.states.State import State
 from app.System.FSM.relay_control import set_relay
+from app.constants.CONSTANTS import ATM_TOLERANCE
 
 class IDLE(State):
     def __init__(self, FSM):
@@ -44,7 +45,7 @@ class IDLE(State):
                 self.FSM.ToTransition("toVENT")
         else:
             # No pain required
-            if (self.args['PRESSURE'] > self.args['PATM']):
+            if (self.args['PRESSURE'] > (self.args['PATM']+ATM_TOLERANCE) ):
                 # Adjust relays to vent to keep P below Patm
                 self.FSM.ToTransition("toVENT")
             else:

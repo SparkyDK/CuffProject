@@ -1,5 +1,6 @@
 from app.System.states.State import State
 from app.System.FSM.relay_control import set_relay
+from app.constants.CONSTANTS import ATM_TOLERANCE
 import time
 
 class VENT(State):
@@ -14,7 +15,7 @@ class VENT(State):
 
     def Execute(self, args):
         self.args = args
-        if ( int(self.args['PRESSURE']) > int(self.args['PATM']) ):
+        if ( int(self.args['PRESSURE']) > (int(self.args['PATM'])+ ATM_TOLERANCE) ):
             # Stay in the VENT state
             print("Need to vent air, since pressure", self.args['PRESSURE'],\
                   " is greater than atmospheric pressure", self.args['PATM'])
