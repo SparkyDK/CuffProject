@@ -4,7 +4,7 @@ import math
 
 def air_tank():
     atmospheric_pressure = 14000000
-    pressure_increment = 3000000
+    pressure_increment = 2500000
 
     setup = wiringpi.wiringPiSetupGpio()
     if (setup == -1):
@@ -51,7 +51,7 @@ def air_tank():
     # the reservoir is connected to the cuff
     # and the vent relay is closed and the airtank relay is closed
     # so make the cuff pressure the weighted sum of the two
-        new_value = (5*cuff_pressure + reservoir_pressure)/6
+        new_value = (14*cuff_pressure + reservoir_pressure)/15
         cuff_pressure = new_value 
         reservoir_pressure = new_value 
         all_cases_handled=True
