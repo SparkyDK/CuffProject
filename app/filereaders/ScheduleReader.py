@@ -17,6 +17,7 @@ class ScheduleReader:
                 raise ValueError("Only a total of ", MAX_NUM_PHASES*MAX_NUM_SCHEDULES,
                                  " schedule statement lines are allowed in the file [", num_lines,
                                  " lines were detected]")
+                close(filename)
                 sys.exit('Error!: Too many schedules')
 
             for s in range(0, MAX_NUM_SCHEDULES):
@@ -31,6 +32,7 @@ class ScheduleReader:
                     if (schedule != s+1):
                         raise ValueError("Schedule numbers read from the file need to increase monotonically from 1",
                                          "A value of ", schedule, " was read from the file, but", s+1, " was expected")
+                        close(filename)
                         sys.exit("error!: Non-sequential schedule number!")
 
                     #print ("schedule =", schedule, "action =", action, "value =", value)
@@ -58,6 +60,7 @@ class ScheduleReader:
                     else:
                         raise ValueError("Interval values, measured in seconds, in range [0,999], but a value of [",
                                          value, "] was detected")
+                        close(filename)
                         sys.exit('Error!: Interval value not in range [0,999]')
                     phases.append(tuple)
                 self.all_schedules.insert(s,phases)
@@ -66,4 +69,5 @@ class ScheduleReader:
 
         #print ("File schedule: ", self.file_schedule)
         #print ("All schedules: ", self.all_schedules)
+        close(filename)
         return (self.all_schedules, self.file_schedule)
