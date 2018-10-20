@@ -125,6 +125,7 @@ class ADC_sampling:
         #if (one_pressure_sample != 0):
         #    print ("Read a single pressure value =", one_pressure_sample)
 
+        ads2.sync()
         for row_number, data_row in enumerate(filter_buffer):
             # Do the data acquisition of the multiplexed input channels.
             # The ADS1256 read_sequence() method automatically fills into
@@ -136,10 +137,9 @@ class ADC_sampling:
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
         ch_volts = ch_unscaled * CH_GAIN
         #print ("\nFilter buffer:\n", filter_buffer)
-        print ("average value=",ch_unscaled)
+        #print ("average value=",ch_unscaled)
 
-        ads2.sync()
-        print ("Async A/D value =",ads2.read_async() )
+        #print ("Async A/D value =",ads2.read_async() )
 
         #g.digital_pressure_value = ch_unscaled
         #print ("Global_cnt:", g.Global_cnt, "digital_pressure_value now", g.digital_pressure_value)
