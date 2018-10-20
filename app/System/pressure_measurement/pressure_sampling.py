@@ -20,7 +20,7 @@ def Read_Cuff_Pressure(adc, control_args, past_states):
     digital_pressure_value = float(a_to_d.get_current_pressure(adc))
     mycontrol_args['PRESSURE'] = Convert_to_mm_Hg(digital_value=digital_pressure_value)
     #print ("pressure_sampling.py: Pressure in control args set to", mycontrol_args['PRESSURE'])
-    return (mycontrol_args, digital_pressure_value)
+    return (mycontrol_args, digital_pressure_value, a_to_d.average_pressure)
 
 def Convert_to_mm_Hg(digital_value):
     digital_input = digital_value

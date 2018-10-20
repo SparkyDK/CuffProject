@@ -134,6 +134,7 @@ class ADC_sampling:
             #print ("Reading filter buffer row=", data_row, " and row_number=", row_number)
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
+        self.average_pressure = ch_unscaled
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
         ch_volts = ch_unscaled * CH_GAIN
         #print ("\nFilter buffer:\n", filter_buffer)
