@@ -138,6 +138,7 @@ class ADC_sampling:
         #print ("\nFilter buffer:\n", filter_buffer)
         print ("average value=",ch_unscaled)
 
+        ads2.sync()
         print ("Async A/D value =",ads2.read_async() )
 
         #g.digital_pressure_value = ch_unscaled
