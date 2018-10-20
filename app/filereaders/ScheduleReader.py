@@ -7,7 +7,7 @@ class ScheduleReader:
         self.file_schedule = file_schedule
         self.filename = filename
         # print("Attempting to read file ", filename, " with file_schedule=:", self.file_schedule)
-        with open(filename, 'r') as file:
+        with open(filename, mode='r', encoding='utf-8-sig') as file:
             lines = [line.rstrip() for line in file.readlines()]
             num_lines = len(lines)
             # print("File ", filename, " has ", num_lines, "lines:", lines)

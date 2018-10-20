@@ -5,7 +5,7 @@ class quick_read:
         self.filename = filename
         # read the lookup file values
         # print ("Reading file ", filename, " to obtain the A/D lookup values")
-        f = open(filename, 'r')
+        f = open(filename, mode='r', encoding='utf-8-sig')
         pressure = 0
 
         for line in f:
