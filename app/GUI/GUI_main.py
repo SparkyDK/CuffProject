@@ -401,7 +401,10 @@ class Pressure_Control(App):
         # initalise the screen manager, add screens and game widget to game screen then return it
 
         # see if it is running already
-        status, process = commands.getstatusoutput('sudo pidof pigpiod')
+        output = subprocess.check_output(['sudo', 'pigpiod'])
+        print(output)
+        exit(0)
+        #status, process = commands.getstatusoutput('sudo pidof pigpiod')
         if (status):  # it wasn't running, so start it
             print ("pigpiod was not running")
             subprocess.call(['sudo', 'pigpiod'], shell=True)
