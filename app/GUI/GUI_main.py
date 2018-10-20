@@ -2,7 +2,7 @@ from kivy.config import Config
 Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 #kivy.require("1.10.1")
 
-import commands, pigpio
+import subprocess, pigpio
 
 import sys
 sys.path.append("/home/pi/CuffProject")
