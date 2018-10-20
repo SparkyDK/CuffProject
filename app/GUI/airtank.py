@@ -4,7 +4,7 @@ import math
 
 def air_tank():
     atmospheric_pressure = 14000000
-    pressure_increment = 3000000
+    pressure_increment = 4000000
 
     setup = wiringpi.wiringPiSetupGpio()
     if (setup == -1):
