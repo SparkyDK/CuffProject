@@ -14,5 +14,5 @@ class quick_read:
             #print ("quick read of a value of:", pressure)
 
         #print ("quick_read: Read file ", filename, " and got ", pressure)
-        close(filename)
+        f.close()
         return (pressure)

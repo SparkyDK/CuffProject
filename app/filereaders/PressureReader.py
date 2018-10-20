@@ -45,7 +45,7 @@ class PressureReader:
                 else:
                     print("Not sure what happened here, but input file has issues")
                     raise ValueError(self.getErrorMessage(lines))
-            close(filename)
+            file.close()
 
     def getErrorMessage(self, lines):
         return str(
