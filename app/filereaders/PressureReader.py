@@ -2,7 +2,7 @@ from app.constants.CONSTANTS import MAX_NUM_PARAMETERS, PRESSURE_TYPES
 
 class PressureReader:
     def read(self, filename):
-        with open(filename) as file:
+        with open(filename, mode='r', encoding='utf-8-sig') as file:
             lines = [line.rstrip() for line in file.readlines()]
             print ("lines are:",lines)
             if (len(lines) > MAX_NUM_PARAMETERS):
