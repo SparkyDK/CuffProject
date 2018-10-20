@@ -404,10 +404,14 @@ class Pressure_Control(App):
         status, process = commands.getstatusoutput('sudo pidof pigpiod')
         if (status):  # it wasn't running, so start it
             print ("pigpiod was not running")
-            commands.getstatusoutput('sudo pigpiod')  # try to  start it
+            subprocess.call(['sudo', 'pigpiod'], shell=True)
+            #commands.getstatusoutput('sudo pigpiod')  # try to  start it
             time.sleep(0.5)
             # check it again
-            status, process = commands.getstatusoutput('sudo pidof pigpiod')
+            output = subprocess.check_output(['sudo', 'pigpiod'])
+            print (output)
+            exit(0)
+            #status, process = commands.getstatusoutput('sudo pidof pigpiod')
 
         if (not status):  # if it was started successfully (or was already running)...
             pigpiod_process = process
