@@ -23,6 +23,8 @@ from app.GUI.kivy_color_management import kivy_color_adjustment
 from app.GUI.kivy_schedule_update import kivy_schedule_update
 from app.GUI.logger import get_logger
 
+from app.constants.CONSTANTS import airtank_stub
+
 from datetime import datetime
 from app.System.pressure_measurement.pressure_sampling import Read_Cuff_Pressure
 
@@ -200,7 +202,9 @@ class Display(Screen):  # intro <display> and tells actions/functions
         # Read the current pressure value
         self.control_args, self.digital_pressure_value = Read_Cuff_Pressure(self.adc, self.control_args,\
                                                                             self.past_states)
-        air_tank()
+        if (airtank_stub == True):
+            air_tank()
+
         if (self.second_tickover):
             #localtime = time.asctime(time.localtime(time.time()))
             debug_msg = str("Pressure: " + self.current_pressure) + " (" + str(self.digital_pressure_value) + ")"

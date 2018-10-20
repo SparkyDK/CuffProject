@@ -7,6 +7,7 @@ from app.filereaders.quick_read_test import quick_read
 import numpy as np
 # import itertools
 from app.System.A_to_D.ADS1256_definitions import *
+from app.constants.CONSTANTS import airtank_stub
 
 import time
 
@@ -149,6 +150,8 @@ class ADC_sampling:
         # print ("Pressure value read at:", localtime, " =", g.digital_pressure_value)
         g.digital_pressure_value = ch_unscaled
 
-        #g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
-        #print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
+        if (airtank_stub==True):
+            g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
+            print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
+
         return (g.digital_pressure_value)
