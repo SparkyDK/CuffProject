@@ -419,8 +419,8 @@ class Pressure_Control(App):
             except Exception as e:
                 start_pigpiod_exception = str(e)
                 print ("problem instantiating pi: {}",format(start_pigpiod_exception) )
-                else:
-                print ("start pigpiod was unsuccessful.")
+        else:
+            print ("start pigpiod was unsuccessful.")
 
         self.screen_manager = ScreenManagement()
         self.schedule_widget = self.screen_manager.add_widget(Schedule(name='schedule'))
