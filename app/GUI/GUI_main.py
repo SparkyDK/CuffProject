@@ -397,6 +397,8 @@ class Pressure_Control(App):
     screen_manager = None
     def build(self):
         # initalise the screen manager, add screens and game widget to game screen then return it
+        os.system('sudo killall pigpio')
+        os.system('sudo pigpio')
         self.screen_manager = ScreenManagement()
         self.schedule_widget = self.screen_manager.add_widget(Schedule(name='schedule'))
         self.display_widget = self.screen_manager.add_widget(Display(name='display'))
