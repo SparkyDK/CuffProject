@@ -152,6 +152,6 @@ class ADC_sampling:
 
         if (airtank_stub==True):
             g.digital_pressure_value = quick_read().read(filename="./app/input_files/Test_Value.txt")
-            print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
+            #print ("digital_pressure_value read from file is now", g.digital_pressure_value, "sample ave.=",ch_unscaled)
 
         return (g.digital_pressure_value)
