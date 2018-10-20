@@ -18,11 +18,11 @@ class PressureReader:
                 self.invalid_key = False
                 for key, value in actions.items():
                     # Make sure that the actions in the file are exactly the ones expected
-                    key.strip()
-                    value.strip()
+                    key.rstrip()
+                    value.rstrip()
+                    print ("DEBUG: key=", key, " and value=", value)
                     if key in PRESSURE_TYPES:
                         print ("key=", key, "and value=", value)
-                        pass
                     else:
                         print("No pressure type match for: ", key)
                         self.invalid_key = True
