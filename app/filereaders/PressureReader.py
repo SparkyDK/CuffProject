@@ -18,7 +18,7 @@ class PressureReader:
                 for key, value in actions.items():
                     # Make sure that the actions in the file are exactly the ones expected
                     if key in PRESSURE_TYPES:
-                        # print ("key=", key, "and value=", value)
+                        print ("key=", key, "and value=", value)
                         pass
                     else:
                         print("No pressure type match for: ", key)
