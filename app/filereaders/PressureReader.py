@@ -18,8 +18,8 @@ class PressureReader:
                 self.invalid_key = False
                 for key, value in actions.items():
                     # Make sure that the actions in the file are exactly the ones expected
-                    key.rstrip()
-                    value.rstrip()
+                    key = key.replace(u'\ufeff', '')
+                    value = value.replace(u'\ufeff', '')
                     print ("DEBUG: key=", key, " and value=", value)
                     if key in PRESSURE_TYPES:
                         print ("key=", key, "and value=", value)
