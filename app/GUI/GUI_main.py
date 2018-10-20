@@ -402,21 +402,21 @@ class Pressure_Control(App):
 
         # see if it is running already
         status, process = commands.getstatusoutput('sudo pidof pigpiod')
-        if status:  # it wasn't running, so start it
+        if (status):  # it wasn't running, so start it
             print ("pigpiod was not running")
             commands.getstatusoutput('sudo pigpiod')  # try to  start it
             time.sleep(0.5)
             # check it again
             status, process = commands.getstatusoutput('sudo pidof pigpiod')
 
-        if not status:  # if it was started successfully (or was already running)...
+        if (not status):  # if it was started successfully (or was already running)...
             pigpiod_process = process
             print ("pigpiod is running, process ID is {} ".format(pigpiod_process) )
 
             try:
                 self.pi = pigpio.pi()  # local GPIO only
                 self.logger.info("pigpio's pi instantiated")
-            except Exception, e:
+            except Exception as e:
                 start_pigpiod_exception = str(e)
                 print ("problem instantiating pi: {}".format(start_pigpiod_exception)) )
                 else:
