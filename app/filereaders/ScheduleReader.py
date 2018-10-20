@@ -67,7 +67,7 @@ class ScheduleReader:
                 if (s == 0):
                      self.file_schedule = phases
 
+            file.close()
         #print ("File schedule: ", self.file_schedule)
         #print ("All schedules: ", self.all_schedules)
-        close(filename)
         return (self.all_schedules, self.file_schedule)
