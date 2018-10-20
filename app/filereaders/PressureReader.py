@@ -4,6 +4,7 @@ class PressureReader:
     def read(self, filename):
         with open(filename) as file:
             lines = [line.rstrip() for line in file.readlines()]
+            print (lines)
             if (len(lines) > MAX_NUM_PARAMETERS):
                 print("Too many parameters")
                 raise ValueError(self.getErrorMessage(lines))
