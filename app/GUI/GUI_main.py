@@ -411,7 +411,7 @@ class Pressure_Control(App):
 
         if (not status):  # if it was started successfully (or was already running)...
             pigpiod_process = process
-            print ("pigpiod is running, process ID is {} ".format(pigpiod_process) )
+            print ("pigpiod is running, process ID is {} ",format(pigpiod_process) )
 
             try:
                 self.pi = pigpio.pi()  # local GPIO only
