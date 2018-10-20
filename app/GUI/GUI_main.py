@@ -2,7 +2,7 @@ from kivy.config import Config
 Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 #kivy.require("1.10.1")
 
-import subprocess, pigpio
+# import subprocess, pigpio
 
 import sys
 sys.path.append("/home/pi/CuffProject")
@@ -399,35 +399,6 @@ class Pressure_Control(App):
     screen_manager = None
     def build(self):
         # initalise the screen manager, add screens and game widget to game screen then return it
-
-        # see if it is running already
-        output = subprocess.check_output(['sudo', 'pigpiod'])
-        print(output)
-        exit(0)
-        #status, process = commands.getstatusoutput('sudo pidof pigpiod')
-        if (status):  # it wasn't running, so start it
-            print ("pigpiod was not running")
-            subprocess.call(['sudo', 'pigpiod'], shell=True)
-            #commands.getstatusoutput('sudo pigpiod')  # try to  start it
-            time.sleep(0.5)
-            # check it again
-            output = subprocess.check_output(['sudo', 'pigpiod'])
-            print (output)
-            exit(0)
-            #status, process = commands.getstatusoutput('sudo pidof pigpiod')
-
-        if (not status):  # if it was started successfully (or was already running)...
-            pigpiod_process = process
-            print ("pigpiod is running, process ID is {} ",format(pigpiod_process) )
-
-            try:
-                self.pi = pigpio.pi()  # local GPIO only
-                self.logger.info("pigpio's pi instantiated")
-            except Exception as e:
-                start_pigpiod_exception = str(e)
-                print ("problem instantiating pi: {}",format(start_pigpiod_exception) )
-        else:
-            print ("start pigpiod was unsuccessful.")
 
         self.screen_manager = ScreenManagement()
         self.schedule_widget = self.screen_manager.add_widget(Schedule(name='schedule'))
