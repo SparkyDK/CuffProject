@@ -51,7 +51,7 @@ def air_tank():
     # the reservoir is connected to the cuff
     # and the vent relay is closed and the airtank relay is closed
     # so make the cuff pressure the weighted sum of the two
-        new_value = (10*cuff_pressure + reservoir_pressure)/11
+        new_value = (5*cuff_pressure + reservoir_pressure)/6
         cuff_pressure = new_value 
         reservoir_pressure = new_value 
         all_cases_handled=True

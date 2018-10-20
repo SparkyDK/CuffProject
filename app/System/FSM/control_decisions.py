@@ -62,7 +62,7 @@ class ControlDecisions:
                 #    g.state_machine_ran==True):
                 # Synchronize the pain schedule counting to the seconds tickover points
                 # and wait for state machine to settle in IDLE state
-                print("CTRL: Pain schedule being started for the first time; now running the pain schedule")
+                print("CTRL: Pain schedule being started for the first time; now running the pain schedule in self", self)
                 self.control_args['STARTED'] = 1
                 self.control_args['PAUSE'] = 0
                 self.control_args, self.schedule_finished, self.current_counter, self.imported_schedule = \
