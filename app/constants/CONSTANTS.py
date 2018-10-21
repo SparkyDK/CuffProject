@@ -9,7 +9,7 @@ ATM_TOLERANCE = 50
 # Debug
 DEBUG = True
 HISTORY_LENGTH = 5
-airtank_stub = True
+airtank_stub = False
 
 # Parameters
 MAX_NUM_PHASES = 8
