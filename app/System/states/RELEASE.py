@@ -15,7 +15,7 @@ class RELEASE(State):
 
     def Execute(self, args):
         self.args = args
-        print ("\n* RELEASE * \t with args:", self.args)
+        #print ("\n* RELEASE * \t with args:", self.args)
         if (self.args['PAIN'] == 1):
             if (self.args['PRESSURE'] < self.args['PAINL']):
                 # Need to top up pressure again
