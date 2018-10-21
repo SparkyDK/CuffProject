@@ -10,6 +10,7 @@ class ScheduleReader:
         with open(filename, mode='r', encoding='utf-8-sig') as file:
             lines = [line.rstrip() for line in file.readlines()]
             print ("lines:\n", lines)
+            exit(0)
             num_lines = len(lines)
             # print("File ", filename, " has ", num_lines, "lines:", lines)
             if (num_lines > MAX_NUM_PHASES*MAX_NUM_SCHEDULES):
