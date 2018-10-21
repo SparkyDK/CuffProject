@@ -35,7 +35,7 @@ class LOAD_RESERVOIR(State):
                     self.FSM.ToTransition("toVENT")
                 else:
                     #print ("Controlled venting P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
-                           " and Pup=", self.args['PAINH'])
+                    #       " and Pup=", self.args['PAINH'])
                     self.FSM.ToTransition("toRELEASE")
         else:
             # We should usually never get here, without requiring pain.  This shouldn't happen; get out safely, venting
