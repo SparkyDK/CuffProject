@@ -280,6 +280,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
     def abort_ack_function(self):
         self.ids.abort.text = ""
+        set_relay(s1="open", s2="open", s3="closed")
+        time.sleep (2)
 
     def abort_function(self):
         print ("Requesting an Abort ...")
