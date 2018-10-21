@@ -19,6 +19,10 @@ class LOAD_RESERVOIR(State):
 
     def Execute(self, args):
         self.args = args
+        self.control_args = {
+            'PRESSURE': 0,
+        }
+
         self.control_args['PRESSURE'] = int(self.args['PRESSURE'])
         #print ("\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args)
         if (self.args['PAIN'] == 1):
