@@ -1,5 +1,5 @@
 from app.System.states.State import State
-from app.constants.CONSTANTS import relay_settling_time
+from app.constants.CONSTANTS import relay_settling_time, cuff_charging_time
 from app.System.FSM.relay_control import set_relay
 import time
 
@@ -50,3 +50,4 @@ class LOAD_RESERVOIR(State):
         time.sleep(relay_settling_time)  # Give the relays and solenoids time to actually close
         # need to determine this value, by experiment, but they are specified as having a response time less than 20ms
         #print("Exiting Load Reservoir")
+        time.sleep(cuff_charging_time)
