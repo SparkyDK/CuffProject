@@ -292,6 +292,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def enter_function(self):
         self.ids.enter.text = "ENTER"
         g.user_args['OVERRIDE'] = 1
+        set_relay(s1="open", s2="closed", s3="closed")
+        time.sleep (5)
 
     def go_ack_function(self):
         self.ids.go.text = ""
@@ -308,6 +310,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
         g.user_args['STOP'] = 1
         print ("Requesting the Stopping/pausing of a schedule")
         self.ids.stop.text = "STOP"
+        set_relay(s1="closed", s2="closed", s3="closed")
+        time.sleep (5)
 
     def new_pressure_down(self):
         g.user_args['override_pressure'] -= 1
