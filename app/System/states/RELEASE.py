@@ -37,4 +37,4 @@ class RELEASE(State):
         # S1 Closed, S2 Closed, S3 Closed
         set_relay(s1="closed", s2="closed", s3="closed")
         time.sleep(relay_settling_time)  # Give the relays time to close
-        print("Exiting Vent")
+        #print("Exiting Release")
