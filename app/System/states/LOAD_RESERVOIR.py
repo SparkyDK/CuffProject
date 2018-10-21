@@ -22,6 +22,7 @@ class LOAD_RESERVOIR(State):
         #print ("\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args)
         if (self.args['PAIN'] == 1):
             if (int(self.args['PRESSURE']) < self.args['PAINL']):
+                self.control_args['PRESSURE'] = self.args['PRESSURE']
                 while (int(self.control_args['PRESSURE']) < self.args['PAINL']):
                     # Still on track to add pain pressure
                     #print ("Going to add more air with P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
