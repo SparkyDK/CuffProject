@@ -67,6 +67,11 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                   g.past_states, g.decision, g.airctrl, g.schedule, g.adc,\
                                   g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
 
+            self.control_args, self.digital_pressure_value, self.raw_average = \
+                Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
+            print ("\n***** Reading pressure in cuff to have a digital value of ", self.raw_average, " *****")
+
+
     def setup_system(self, control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time,
                      current_counter, all_schedules, imported_schedule, Global_cnt, past_states, decision, airctrl,
                      schedule, adc, toggle, schedule_selected, schedule_changed, already_running):
@@ -204,8 +209,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
         # Read the current pressure value
         self.control_args, self.digital_pressure_value, raw_average =\
             Read_Cuff_Pressure(self.adc, self.control_args, self.past_states)
-        if (airtank_stub == True):
-            air_tank()
+        #if (airtank_stub == True):
+        #    air_tank()
 
         if (self.second_tickover):
             #localtime = time.asctime(time.localtime(time.time()))
