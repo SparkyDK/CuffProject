@@ -10,20 +10,20 @@ def set_relay(s1, s2, s3):
      wiringpi.pinMode(4, 1) # sets GPIO 3 to output
      # Solenoid connecting to the air tank
      if (s1 == "open" or s1 == "OPEN"):
-         # Assume normally closed relay
-         wiringpi.digitalWrite(2, 1) # sets port 18 to 1 (3V3, on)
-     elif(s1 == "closed" or s1 == "CLOSED"):
+         # Assume normally open relay
          wiringpi.digitalWrite(2, 0) # sets port 18 to 0 (0V, off)
+     elif(s1 == "closed" or s1 == "CLOSED"):
+         wiringpi.digitalWrite(2, 1) # sets port 18 to 1 (3V3, on)
      else:
          print("s1 can be either 'open' or 'closed', but it has been set to:", s1)
          exit(0)
 
      # Solenoid that vents the "reservoir" section of tubing in the box
      if (s2 == "open" or s2 == "OPEN"):
-         # Assume normally open relay
-         wiringpi.digitalWrite(3, 0) # sets port 2 to 0 (0V, off)
-     elif(s2 == "closed" or s2 == "CLOSED"):
+         # Assume normally closed relay
          wiringpi.digitalWrite(3, 1) # sets port 2 to 1 (3V3, on)
+     elif(s2 == "closed" or s2 == "CLOSED"):
+         wiringpi.digitalWrite(3, 0) # sets port 2 to 0 (0V, off)
      else:
          print("s2 can be either 'open' or 'closed', but it has been set to:", s2)
          exit(0)
