@@ -9,6 +9,9 @@ import numpy as np
 from app.System.A_to_D.ADS1256_definitions import *
 from app.constants.CONSTANTS import airtank_stub
 
+from app.System.FSM.relay_control import set_relay
+
+
 import time
 
 from app.System.A_to_D.PiPyADC import ADS1256
@@ -135,6 +138,10 @@ class ADC_sampling:
 
         # Calculate moving average of all (axis defines the starting point) input samples, subtracting the offset
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
+        if ( int(ch_unscaled) == 0 ):
+            set_relay(s1="closed", s2="closed", s3="closed")
+            print ("Need to restart pigpiod")
+            exit(-1)
         self.average_pressure = ch_unscaled
         ch_volts = ch_unscaled * CH_GAIN
         #print ("\nFilter buffer:\n", filter_buffer)
