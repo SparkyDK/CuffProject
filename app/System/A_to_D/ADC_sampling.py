@@ -140,7 +140,7 @@ class ADC_sampling:
         ch_unscaled = np.average(filter_buffer, axis=0) - CH_OFFSET
         if ( int(ch_unscaled) == 0 ):
             set_relay(s1="closed", s2="closed", s3="closed")
-            print ("Need to restart pigpiod")
+            print ("\n\n************ Need to restart pigpiod\n\n")
             exit(-1)
         self.average_pressure = ch_unscaled
         ch_volts = ch_unscaled * CH_GAIN
