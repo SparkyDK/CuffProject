@@ -1,5 +1,7 @@
 from app.System.states.State import State
 from app.constants.CONSTANTS import relay_settling_time, cuff_charging_time
+from app.System.pressure_measurement.pressure_sampling import Read_Cuff_Pressure
+
 from app.System.FSM.relay_control import set_relay
 import time
 
@@ -18,11 +20,16 @@ class LOAD_RESERVOIR(State):
         self.args = args
         #print ("\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args)
         if (self.args['PAIN'] == 1):
-            if (int(self.args['PRESSURE']) < self.args['PAINL']):
+            #if (int(self.args['PRESSURE']) < self.args['PAINL']):
+            while (int(self.control_args['PRESSURE']) < self.args['PAINL']):
                 # Still on track to add pain pressure
                 #print ("Going to add more air with P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
                 #       " and Pup=", self.args['PAINH'], "at time: ", time.asctime(time.localtime(time.time())))
-                self.FSM.ToTransition("toCONNECT_CUFF")
+                #self.FSM.ToTransition("toCONNECT_CUFF")
+                self.control_args, self.digital_pressure_value, self.raw_average = \
+                    Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
+                time.sleep(cuff_charging_time)
+
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 print ("Pain pressure looks right, so we are done with P=", self.args['PRESSURE'])
                 self.FSM.set_SYNC()
@@ -51,4 +58,4 @@ class LOAD_RESERVOIR(State):
         time.sleep(relay_settling_time)  # Give the relays and solenoids time to actually close
         # need to determine this value, by experiment, but they are specified as having a response time less than 20ms
         #print("Exiting Load Reservoir")
-        time.sleep(cuff_charging_time)
+        #time.sleep(cuff_charging_time)
