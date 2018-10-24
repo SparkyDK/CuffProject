@@ -240,6 +240,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
         localtime = time.asctime(time.localtime(time.time()))
         print ("MAIN: Read pressure as:", self.digital_pressure_value,\
                "[abs:", self.control_args['PRESSURE'], " rel:", self.current_pressure, " (mm Hg)] at: ", localtime)
+        print ("STARTED:",self.control_args['STARTED'], "PAUSE:", self.control_args['PAUSE'], "GO:", self.user_args['GO'])
 
         # Dynamic conditional update of display values and colours, such as graying out of inactive button text
         self.phase1, self.ids.phase1.color, self.phase2, self.ids.phase2.color,\
