@@ -213,7 +213,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         localtime = time.asctime(time.localtime(time.time()))
         print ("MAIN: Read pressure as:", self.digital_pressure_value,\
-               "(", self.control_args['PRESSURE'], "mm Hg) at: ", localtime)
+               "[abs:", self.control_args['PRESSURE'], " rel:", self.new_pressure, " (mm Hg)] at: ", localtime)
 
         #if (airtank_stub == True):
         #    air_tank()
