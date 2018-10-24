@@ -20,7 +20,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 
 from app.GUI import g
-from app.constants.CONSTANTS import refresh_period
+from app.constants.CONSTANTS import refresh_period, pressure_settling_time
 from app.GUI.kivy_color_management import kivy_color_adjustment
 from app.GUI.kivy_schedule_update import kivy_schedule_update
 from app.GUI.logger import get_logger
@@ -206,7 +206,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                   g.past_states, g.decision, g.airctrl, g.schedule, g.adc,\
                                   g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
 
-        # Read the current pressure value
+        # Read the current pressure value after waiting a short settling time
+        time.sleep(pressure_settling_time)
         self.control_args, self.digital_pressure_value, raw_average =\
             Read_Cuff_Pressure(self.adc, self.control_args, self.past_states)
         localtime = time.asctime(time.localtime(time.time()))
