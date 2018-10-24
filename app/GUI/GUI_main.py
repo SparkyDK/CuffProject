@@ -211,10 +211,6 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.control_args, self.digital_pressure_value, raw_average =\
             Read_Cuff_Pressure(self.adc, self.control_args, self.past_states)
 
-        localtime = time.asctime(time.localtime(time.time()))
-        print ("MAIN: Read pressure as:", self.digital_pressure_value,\
-               "[abs:", self.control_args['PRESSURE'], " rel:", self.new_pressure, " (mm Hg)] at: ", localtime)
-
         #if (airtank_stub == True):
         #    air_tank()
 
@@ -233,6 +229,10 @@ class Display(Screen):  # intro <display> and tells actions/functions
         else:
             self.current_pressure = str( g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] )
         self.new_pressure = str( g.user_args['override_pressure'] - g.pressure_parameters['PATM'] )
+
+        localtime = time.asctime(time.localtime(time.time()))
+        print ("MAIN: Read pressure as:", self.digital_pressure_value,\
+               "[abs:", self.control_args['PRESSURE'], " rel:", self.current_pressure, " (mm Hg)] at: ", localtime)
 
         # Dynamic conditional update of display values and colours, such as graying out of inactive button text
         self.phase1, self.ids.phase1.color, self.phase2, self.ids.phase2.color,\
