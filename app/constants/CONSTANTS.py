@@ -17,5 +17,5 @@ MAX_NUM_SCHEDULES = 4
 MAX_NUM_PARAMETERS = 4
 
 refresh_period = 0.1
-relay_settling_time = 0.02
+relay_settling_time = 0.04
 cuff_charging_time = 0.005
