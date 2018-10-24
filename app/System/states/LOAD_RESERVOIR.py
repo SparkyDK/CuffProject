@@ -27,16 +27,10 @@ class LOAD_RESERVOIR(State):
         #print ("\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args)
         if (self.args['PAIN'] == 1):
             if (int(self.args['PRESSURE']) < self.args['PAINL']):
-                self.control_args['PRESSURE'] = int(self.args['PRESSURE'])
-                while (int(self.control_args['PRESSURE']) < self.args['PAINL']):
-                    # Still on track to add pain pressure
-                    #print ("Going to add more air with P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
-                    #       " and Pup=", self.args['PAINH'], "at time: ", time.asctime(time.localtime(time.time())))
-                    #self.FSM.ToTransition("toCONNECT_CUFF")
-                    self.control_args, self.digital_pressure_value, self.raw_average = \
-                        Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
-                    time.sleep(cuff_charging_time)
-
+                # Still on track to add pain pressure
+                #print ("Going to add more air with P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
+                #       " and Pup=", self.args['PAINH'], "at time: ", time.asctime(time.localtime(time.time())))
+                self.FSM.ToTransition("toCONNECT_CUFF")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 print ("Pain pressure looks right, so we are done with P=", self.args['PRESSURE'])
                 self.FSM.set_SYNC()
