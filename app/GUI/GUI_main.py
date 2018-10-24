@@ -240,7 +240,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
         localtime = time.asctime(time.localtime(time.time()))
         print ("MAIN: Read pressure as:", self.digital_pressure_value,\
                "[abs:", self.control_args['PRESSURE'], " rel:", self.current_pressure, " (mm Hg)] at: ", localtime)
-        print ("STARTED:",self.control_args['STARTED'], "PAUSE:", self.control_args['PAUSE'], "GO:", self.user_args['GO'])
+        print ("[A] STARTED:",self.control_args['STARTED'], "PAUSE:", self.control_args['PAUSE'], "GO:", self.user_args['GO'])
 
         # Dynamic conditional update of display values and colours, such as graying out of inactive button text
         self.phase1, self.ids.phase1.color, self.phase2, self.ids.phase2.color,\
@@ -269,6 +269,9 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                                      self.schedule_finished, self.airctrl,\
                                                      self.schedule, self.adc, self.toggle, self.schedule_selected,\
                                                      self.state_machine_ran)
+            print("[B] STARTED:", self.control_args['STARTED'], "PAUSE:", self.control_args['PAUSE'], "GO:",
+                  self.user_args['GO'])
+
             if (self.schedule_finished == 1):
                 # At the end of the pain schedule, turn off pain and keep venting the cuff in IDLE state
                 self.control_args['PAIN'] = 0
@@ -297,6 +300,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                                       g.imported_schedule, g.Global_cnt, g.past_states, g.decision,
                                                       g.airctrl, g.schedule, g.adc, g.toggle, \
                                                       g.already_running, g.schedule_selected, g.schedule_changed)))
+        print ("[C globals] STARTED:",g.control_args['STARTED'], "PAUSE:", g.control_args['PAUSE'], "GO:", g.user_args['GO'])
+
 
     def on_timeout(self, *args):
         d = datetime.now() - self.start
