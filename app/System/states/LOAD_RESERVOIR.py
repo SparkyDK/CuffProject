@@ -14,7 +14,7 @@ class LOAD_RESERVOIR(State):
         # Close the cuff and reservoir relays (keep them closed) and open the tank relay
         # S1 Open, S2 Closed , S3 Closed
         set_relay(s1="open", s2="closed", s3="closed")   # Assumes a sizeable reservoir
-        time.sleep(relay_settling_time+0.1)  # Give the relays and solenoids time to actually close
+        time.sleep(relay_settling_time)  # Give the relays and solenoids time to actually close
         #time_locally = time.asctime(time.localtime(time.time()))
         #print (time_locally,": s1(air tank)=open s2(cuff)=closed s3(vent)=closed")
         #set_relay(s1="open", s2="open", s3="closed")   # Assumes a direct connection to cuff... no reservoir
@@ -25,10 +25,11 @@ class LOAD_RESERVOIR(State):
         self.control_args = {
             'PRESSURE': 0,
         }
-
         self.control_args['PRESSURE'] = int(self.args['PRESSURE'])
         #print ("\n*LOAD_RESERVOIR \twith self.args:", self.args, " and args:", args)
         if (self.args['PAIN'] == 1):
+            print ("LOAD_RESERVOIR: pressure=", self.args['PRESSURE'], "PainL=", self.args['PAINL'], " PainH=", \
+                   self.args['PAINH'], " Pmax=", self.args['PMAX'])
             if (int(self.args['PRESSURE']) < self.args['PAINL']):
                 # Still on track to add pain pressure
                 print ("Going to add more air with P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
@@ -59,7 +60,9 @@ class LOAD_RESERVOIR(State):
         # close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
         set_relay(s1="closed", s2="closed", s3="closed")
-        time.sleep(relay_settling_time)  # Give the relays and solenoids time to actually close
+        time.sleep(relay_settling_time+0.1)  # Give the relays and solenoids time to actually close
+        # and add a bit more time to allow burst of pressure to normalize
+
         #time_locally = time.asctime(time.localtime(time.time()))
         #print (time_locally,": s1(air tank)=closed s2(cuff)=closed s3(vent)=closed")
         # need to determine this value, by experiment, but they are specified as having a response time less than 20ms
