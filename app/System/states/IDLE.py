@@ -59,3 +59,4 @@ def Exit(self):
     # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
     # sleep (9.0*refresh_period/10.0)
     pass
+    print ("Leaving IDLE")

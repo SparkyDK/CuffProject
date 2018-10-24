@@ -24,5 +24,5 @@ class VENT(State):
             self.FSM.ToTransition("toIDLE")
 
     def Exit(self):
-        #print ("Venting complete with pressure ", self.args['PRESSURE'])
+        print ("Venting complete with pressure ", self.args['PRESSURE'])
         pass
