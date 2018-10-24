@@ -139,20 +139,20 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def schedule_system(self):
         self.interval = refresh_period
         if (g.already_running == False):
-            print ("Scheduling the system to execute every", self.interval,"seconds")
+            #print ("Scheduling the system to execute every", self.interval,"seconds")
             g.already_running = True
             g.my_logger = get_logger("Pressure log")
 
-            event = Clock.schedule_interval(partial(self.run_system, (g.control_args, g.user_args,\
-                                                                      g.pressure_parameters,\
+            #event = Clock.schedule_interval(partial(self.run_system, (g.control_args, g.user_args,\
+            #                                                          g.pressure_parameters,\
+            #    g.schedule_finished, g.start_time, g.elapsed_time, g.current_counter, g.all_schedules,
+            #    g.imported_schedule, g.Global_cnt, g.past_states, g.decision, g.airctrl, g.schedule, g.adc, g.toggle,\
+            #    g.already_running, g.schedule_selected, g.schedule_changed) ), self.interval )
+            #print("EVENT: scheduled run_system with event=", event)
+            Clock.schedule_once(partial(self.run_system, (g.control_args, g.user_args, g.pressure_parameters,\
                 g.schedule_finished, g.start_time, g.elapsed_time, g.current_counter, g.all_schedules,
                 g.imported_schedule, g.Global_cnt, g.past_states, g.decision, g.airctrl, g.schedule, g.adc, g.toggle,\
-                g.already_running, g.schedule_selected, g.schedule_changed) ), self.interval )
-            #print("EVENT: scheduled run_system with event=", event)
-            #Clock.schedule_once(partial(self.run_system, (g.control_args, g.user_args, g.pressure_parameters,\
-            #    g.schedule_finished, g.start_time, g.elapsed_time, g.current_counter, g.all_schedules,
-            #    g.imported_schedule, g.Global_cnt, g.past_states, g.decision, g.airctrl, g.schedule, g.toggle,\
-            #    g.already_running, g.schedule_selected, g.schedule_changed) ) )
+                g.already_running, g.schedule_selected, g.schedule_changed) ) )
 
     def run_system(self, args, dt, *largs):
         #time_locally = time.asctime(time.localtime(time.time()))
@@ -278,6 +278,12 @@ class Display(Screen):  # intro <display> and tells actions/functions
             self.past_states, self.already_running, self.decision,\
             self.airctrl, self.schedule, self.adc, self.toggle, self.schedule_selected, self.schedule_changed,\
             self.state_machine_ran
+        Clock.schedule_once(partial(self.run_system, (g.control_args, g.user_args, g.pressure_parameters, \
+                                                      g.schedule_finished, g.start_time, g.elapsed_time,
+                                                      g.current_counter, g.all_schedules,
+                                                      g.imported_schedule, g.Global_cnt, g.past_states, g.decision,
+                                                      g.airctrl, g.schedule, g.adc, g.toggle, \
+                                                      g.already_running, g.schedule_selected, g.schedule_changed)))
 
     def on_timeout(self, *args):
         d = datetime.now() - self.start
