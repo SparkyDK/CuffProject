@@ -45,8 +45,8 @@ class IDLE(State):
                 self.FSM.ToTransition("toVENT")
         else:
             # No pain required
-            #if (self.args['PRESSURE'] > (self.args['PATM']+ATM_TOLERANCE) ):
-            if (self.args['PRESSURE'] > self.args['PATM'] ):
+            if (self.args['PRESSURE'] > (self.args['PATM']+ATM_TOLERANCE) ):
+            #if (self.args['PRESSURE'] > self.args['PATM'] ):
                 # Adjust relays to vent to keep P below Patm
                 self.FSM.ToTransition("toVENT")
             else:
