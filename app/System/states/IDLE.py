@@ -1,6 +1,6 @@
 from app.System.states.State import State
 from app.System.FSM.relay_control import set_relay
-from app.constants.CONSTANTS import ATM_TOLERANCE
+from app.constants.CONSTANTS import ATM_TOLERANCE, relay_settling_time
 
 class IDLE(State):
     def __init__(self, FSM):
@@ -9,7 +9,7 @@ class IDLE(State):
     def Enter(self):
         # Close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
-        set_relay(s1="closed", s2="closed", s3="closed")
+        set_relay(s1="closed", s2="open", s3="open")
         # Don't sleep here, because execution is in this state most of the time
         print ("Entering IDLE state")
 
@@ -56,7 +56,9 @@ class IDLE(State):
 
 
 def Exit(self):
-    # may want to close all of the relays
+    # close all of the relays
+    set_relay(s1="closed", s2="closed", s3="closed")
+    time.sleep(relay_settling_time)
     # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
     # sleep (9.0*refresh_period/10.0)
     pass
