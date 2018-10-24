@@ -14,7 +14,8 @@ class VENT(State):
 
     def Execute(self, args):
         self.args = args
-        if ( int(self.args['PRESSURE']) > (int(self.args['PATM'])+ ATM_TOLERANCE) ):
+        #if ( int(self.args['PRESSURE']) > (int(self.args['PATM'])+ ATM_TOLERANCE) ):
+        if ( int(self.args['PRESSURE']) > int(self.args['PATM']) ):
             pass
             # Stay in the VENT state
             #print("Need to vent air, since pressure", self.args['PRESSURE'],\
