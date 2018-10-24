@@ -329,14 +329,14 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def new_pressure_down(self):
         g.user_args['override_pressure'] -= 1
         print ("Decreasing pressure to", g.user_args['override_pressure'])
-        #set_relay(s1="closed", s2="open", s3="closed")
-        #time.sleep (2)
+        set_relay(s1="closed", s2="closed", s3="closed")
+        time.sleep (30)
 
     def new_pressure_up(self):
         g.user_args['override_pressure'] += 1
         print ("Increasing pressure to", g.user_args['override_pressure'])
-        #set_relay(s1="closed", s2="open", s3="open")
-        #time.sleep (2)
+        set_relay(s1="open", s2="closed", s3="closed")
+        time.sleep (30)
 
     def switch_function(self):
         self.ids.select.text = "ENTER"
