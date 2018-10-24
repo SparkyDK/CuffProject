@@ -11,7 +11,6 @@ class VENT(State):
         # Open the relays to the cuff and from the reservoir, but keep the tank relay closed
         # S1 Closed, S2 Open, S3 Open
         set_relay(s1="closed", s2="open", s3="open")
-        pass
 
     def Execute(self, args):
         self.args = args
