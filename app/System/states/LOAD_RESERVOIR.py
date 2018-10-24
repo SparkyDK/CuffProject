@@ -41,7 +41,8 @@ class LOAD_RESERVOIR(State):
                 self.FSM.ToTransition("toIDLE")
             else:
                 # Pressure is above the min and max pain thresholds
-                print ("Not sure how we got here with P=", self.args['PRESSURE'], "but pain pressure is too high")
+                print ("LOAD_RESERVOIR: Not sure how we got here (overshoot?) with P=", self.args['PRESSURE'],\
+                       "but pain pressure is too high")
                 if (self.args['PRESSURE'] > self.args['PMAX']):
                     print ("Emergency venting P=", self.args['PRESSURE'])
                     self.FSM.ToTransition("toVENT")
