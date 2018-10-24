@@ -35,7 +35,7 @@ class IDLE(State):
                             self.FSM.ToTransition("toVENT")
                         else:
                             # otherwise, allow for a more controlled release of air
-                            self.FSM.ToTransition("toCONNECT_CUFF")
+                            self.FSM.ToTransition("toRELEASE")
                     else:
                         self.FSM.set_SYNC()
                         pass    # No problem with pain air pressure ("in the zone")
