@@ -4,7 +4,7 @@ PRESSURE_TYPES = ["PMAX", "PAINVALUE", "PAINTOLERANCE", "PATM"]
 SCHEDULE_TYPES = ["PAIN", "NILL"]
 
 # Atmospheric ressure tolerance
-ATM_TOLERANCE = 50
+ATM_TOLERANCE = 30
 
 # Debug
 DEBUG = True
