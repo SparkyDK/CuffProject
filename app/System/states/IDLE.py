@@ -7,9 +7,9 @@ class IDLE(State):
         super(IDLE, self).__init__(FSM)
 
     def Enter(self):
-        # Close all of the relays
+        # Close all of the relays, except the vent
         # S1 Closed, S2 Closed, S3 Closed
-        set_relay(s1="closed", s2="open", s3="open")
+        set_relay(s1="closed", s2="closed", s3="open")
         # Don't sleep here, because execution is in this state most of the time
         print ("Entering IDLE state")
 
