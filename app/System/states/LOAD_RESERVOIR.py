@@ -58,9 +58,9 @@ class LOAD_RESERVOIR(State):
         # close all of the relays
         # S1 Closed, S2 Closed, S3 Closed
         set_relay(s1="closed", s2="closed", s3="closed")
-        #time.sleep(relay_settling_time)  # Give the relays and solenoids time to actually close
+        time.sleep(relay_settling_time)  # Give the relays and solenoids time to actually close
         #time_locally = time.asctime(time.localtime(time.time()))
-        print (time_locally,": s1(air tank)=closed s2(cuff)=closed s3(vent)=closed")
+        #print (time_locally,": s1(air tank)=closed s2(cuff)=closed s3(vent)=closed")
         # need to determine this value, by experiment, but they are specified as having a response time less than 20ms
         #print("Exiting Load Reservoir")
         #time.sleep(cuff_charging_time)
