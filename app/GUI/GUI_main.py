@@ -120,7 +120,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         # Create the system state machine that implements the pain control decision and times the relay opening/closing
         # Vent the cuff first
-        airctrl.FSM.SetState("ISOLATE_VENT")
+        airctrl.FSM.SetState("IDLE")
         airctrl.Execute(control_args)
 
         # Initialize the timers
