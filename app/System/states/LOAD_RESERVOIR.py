@@ -14,6 +14,7 @@ class LOAD_RESERVOIR(State):
         # Close the cuff and reservoir relays (keep them closed) and open the tank relay
         # S1 Open, S2 Closed , S3 Closed
         set_relay(s1="open", s2="closed", s3="closed")   # Assumes a sizeable reservoir
+        time.sleep(relay_settling_time+0.1)  # Give the relays and solenoids time to actually close
         #time_locally = time.asctime(time.localtime(time.time()))
         #print (time_locally,": s1(air tank)=open s2(cuff)=closed s3(vent)=closed")
         #set_relay(s1="open", s2="open", s3="closed")   # Assumes a direct connection to cuff... no reservoir
@@ -30,8 +31,8 @@ class LOAD_RESERVOIR(State):
         if (self.args['PAIN'] == 1):
             if (int(self.args['PRESSURE']) < self.args['PAINL']):
                 # Still on track to add pain pressure
-                #print ("Going to add more air with P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
-                #       " and Pup=", self.args['PAINH'], "at time: ", time.asctime(time.localtime(time.time())))
+                print ("Going to add more air with P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
+                       " and Pup=", self.args['PAINH'], "at time: ", time.asctime(time.localtime(time.time())))
                 self.FSM.ToTransition("toCONNECT_CUFF")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 print ("Pain pressure looks right, so we are done with P=", self.args['PRESSURE'])
@@ -44,8 +45,8 @@ class LOAD_RESERVOIR(State):
                     print ("Emergency venting P=", self.args['PRESSURE'])
                     self.FSM.ToTransition("toVENT")
                 else:
-                    #print ("Controlled venting P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
-                    #       " and Pup=", self.args['PAINH'])
+                    print ("Controlled venting P=", self.args['PRESSURE'], "Plow=", self.args['PAINL'],\
+                           " and Pup=", self.args['PAINH'])
                     self.FSM.ToTransition("toRELEASE")
         else:
             # We should usually never get here, without requiring pain.  This shouldn't happen; get out safely, venting
