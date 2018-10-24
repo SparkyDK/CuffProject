@@ -14,6 +14,8 @@ class LOAD_RESERVOIR(State):
         # Close the cuff and reservoir relays (keep them closed) and open the tank relay
         # S1 Open, S2 Closed , S3 Closed
         set_relay(s1="open", s2="closed", s3="closed")   # Assumes a sizeable reservoir
+        time_locally = time.asctime(time.localtime(time.time()))
+        print (time_locally,": s1(air tank)=open s2(cuff)=closed s3(vent)=closed")
         #set_relay(s1="open", s2="open", s3="closed")   # Assumes a direct connection to cuff... no reservoir
         #print ("LOAD_RESERVOIR entered")
 
@@ -57,6 +59,8 @@ class LOAD_RESERVOIR(State):
         # S1 Closed, S2 Closed, S3 Closed
         set_relay(s1="closed", s2="closed", s3="closed")
         time.sleep(relay_settling_time+0.5)  # Give the relays and solenoids time to actually close
+        time_locally = time.asctime(time.localtime(time.time()))
+        print (time_locally,": s1(air tank)=closed s2(cuff)=closed s3(vent)=closed")
         # need to determine this value, by experiment, but they are specified as having a response time less than 20ms
         #print("Exiting Load Reservoir")
         #time.sleep(cuff_charging_time)
