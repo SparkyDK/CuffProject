@@ -56,6 +56,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
     def init_system(self):
         # Initialize the system global variables.... maybe there is a better way to do this without globals
         set_relay(s1="closed", s2="closed", s3="closed")
+        print ("Closing all relays at initialization time")
 
         if (g.already_running == False):
             print ("Initializing system")
@@ -105,6 +106,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         print ("Setting up system with schedule ", self.schedule_selected)
         set_relay(s1="closed", s2="closed", s3="closed")
+        print ("Closing all relays during setup too")
 
         painl = int(self.pressure_parameters['PAINVALUE']) - int(self.pressure_parameters['PAINTOLERANCE'])
         painh = int(self.pressure_parameters['PAINVALUE']) + int(self.pressure_parameters['PAINTOLERANCE'])
@@ -146,6 +148,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
             g.already_running = True
             g.my_logger = get_logger("Pressure log")
             set_relay(s1="closed", s2="closed", s3="closed")
+            print("Closing all relays, since not already running yet")
 
             #event = Clock.schedule_interval(partial(self.run_system, (g.control_args, g.user_args,\
             #                                                          g.pressure_parameters,\
