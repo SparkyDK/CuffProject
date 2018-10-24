@@ -13,8 +13,8 @@ class LOAD_RESERVOIR(State):
     def Enter(self):
         # Close the cuff and reservoir relays (keep them closed) and open the tank relay
         # S1 Open, S2 Closed , S3 Closed
-        #set_relay(s1="open", s2="closed", s3="closed")   # Assumes a sizeable reservoir
-        set_relay(s1="open", s2="open", s3="closed")   # Assumes a direct connection to cuff... no reservoir
+        set_relay(s1="open", s2="closed", s3="closed")   # Assumes a sizeable reservoir
+        #set_relay(s1="open", s2="open", s3="closed")   # Assumes a direct connection to cuff... no reservoir
         #print ("LOAD_RESERVOIR entered")
 
     def Execute(self, args):
