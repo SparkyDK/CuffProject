@@ -210,9 +210,11 @@ class Display(Screen):  # intro <display> and tells actions/functions
         time.sleep(pressure_settling_time)
         self.control_args, self.digital_pressure_value, raw_average =\
             Read_Cuff_Pressure(self.adc, self.control_args, self.past_states)
+
         localtime = time.asctime(time.localtime(time.time()))
         print ("MAIN: Read pressure as:", self.digital_pressure_value,\
                "(", self.control_args['PRESSURE'], "mm Hg) at: ", localtime)
+
         #if (airtank_stub == True):
         #    air_tank()
 
