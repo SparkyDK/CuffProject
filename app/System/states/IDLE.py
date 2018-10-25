@@ -17,6 +17,7 @@ class IDLE(State):
         # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0,
         #                'PAINH': painh, 'PAINL': painl, 'PRESSURE': 0,
         #                'PATM': pressure_parameters['PATM'], 'PMAX': pressure_parameters['PMAX']}
+        set_relay(s1="closed", s2="open", s3="open")
         self.args = args
         # print "\n* IDLE * \twith args=",  self.args
         if (self.args['PAIN'] == 1):
@@ -57,8 +58,8 @@ class IDLE(State):
 
 def Exit(self):
     # close all of the relays
-    set_relay(s1="closed", s2="closed", s3="closed")
-    time.sleep(relay_settling_time)
+    #set_relay(s1="closed", s2="closed", s3="closed")
+    #time.sleep(relay_settling_time)
     # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
     # sleep (9.0*refresh_period/10.0)
     pass
