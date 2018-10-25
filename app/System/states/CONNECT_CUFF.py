@@ -22,19 +22,28 @@ class CONNECT_CUFF(State):
         if (self.args['PAIN'] == 1):
             if (self.args['PRESSURE'] < self.args['PAINL']):
                 # Need to add air
-                print ("Need to add more air P=", self.args['PRESSURE'],\
-                       "Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
+                #print ("Need to add more air P=", self.args['PRESSURE'],\
+                #       "Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
+                print ("+")
                 self.FSM.ToTransition("toLOAD_RESERVOIR")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 # In the zone
                 print ("In the zone with P=", self.args['PRESSURE'])
+                print (".")
                 self.FSM.set_SYNC()
                 self.FSM.ToTransition("toIDLE")
-            elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] > self.args['PAINH']):
-                # Overshot the maximum pain pressure value
-                print ("Overshot pressure maximum with P=", self.args['PRESSURE'])
-                print ("Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
+            elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] > self.args['PAINH'] \
+                    and self.args['PRESSURE'] <= self.args['PMAX']):
+                # Overshot the maximum pain pressure value but not all the way past the maximum tolerated value
+                #print ("Overshot pressure maximum with P=", self.args['PRESSURE'])
+                #print ("Plow=", self.args['PAINL'], " and Pup=", self.args['PAINH'])
+                print ("-")
                 self.FSM.ToTransition("toRELEASE")
+            elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] > self.args['PAINH'] \
+                    and self.args['PRESSURE'] >= self.args['PMAX']):
+                # Overshot past all thresholds, max too, so we vent emergency-style
+                print ("--")
+                self.FSM.ToTransition("toVENT")
             else:
                 print("Error!  Something strange going on with the pressure thresholds")
                 print("Current Pressure=", self.args['PRESSURE'])
