@@ -18,6 +18,7 @@ class VENT(State):
         #if ( int(self.args['PRESSURE']) > (int(self.args['PATM'])+ ATM_TOLERANCE) ):
         if ( int(self.args['PRESSURE']) > (int(self.args['PATM'] + ATM_TOLERANCE)) ):
             pass
+            set_relay(s1="closed", s2="open", s3="open")
             # Stay in the VENT state
             #print("Need to vent air, since pressure", self.args['PRESSURE'],\
             #      " is greater than atmospheric pressure", self.args['PATM'])
@@ -27,4 +28,5 @@ class VENT(State):
 
     def Exit(self):
         #print ("Venting complete with pressure ", self.args['PRESSURE'])
+        set_relay(s1="closed", s2="open", s3="open")
         pass
