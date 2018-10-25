@@ -11,7 +11,7 @@ class RELEASE(State):
         # Close the relays to the tank and for the reservoir vent, but open the cuff relay
         # S1 Closed, S2 Closed, S3 Open
         set_relay(s1="closed", s2="closed", s3="open")
-        print ("RELEASE entered")
+        #print ("RELEASE entered")
 
     def Execute(self, args):
         self.args = args

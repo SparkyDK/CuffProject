@@ -14,7 +14,7 @@ class CONNECT_CUFF(State):
         time.sleep(relay_settling_time)  # Give the relays time to close
         #time_locally = time.asctime(time.localtime(time.time()))
         #print (time_locally,": s1(air tank)=closed s2(cuff)=open s3(vent)=closed")
-        print ("CONNECT_CUFF entered")
+        #print ("CONNECT_CUFF entered")
 
     def Execute(self, args):
         self.args = args

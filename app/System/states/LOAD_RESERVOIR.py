@@ -18,7 +18,7 @@ class LOAD_RESERVOIR(State):
         #time_locally = time.asctime(time.localtime(time.time()))
         #print (time_locally,": s1(air tank)=open s2(cuff)=closed s3(vent)=closed")
         #set_relay(s1="open", s2="open", s3="closed")   # Assumes a direct connection to cuff... no reservoir
-        print ("LOAD_RESERVOIR entered")
+        #print ("LOAD_RESERVOIR entered")
 
     def Execute(self, args):
         self.args = args

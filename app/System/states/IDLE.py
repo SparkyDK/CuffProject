@@ -11,7 +11,7 @@ class IDLE(State):
         # S1 Closed, S2 Closed, S3 Closed
         set_relay(s1="closed", s2="closed", s3="closed")
         # Don't sleep here, because execution is in this state most of the time
-        print ("Entering IDLE state")
+        #print ("Entering IDLE state")
 
     def Execute(self, args):
         # control_args = {'SCHEDULE_INDEX': 0, 'PAIN': 0, 'STARTED': 0, 'PAUSE': 0,
@@ -62,4 +62,4 @@ def Exit(self):
     # May need to sleep here for a bit depending on how long the relay opening and air transfer takes
     # sleep (9.0*refresh_period/10.0)
     pass
-    print ("Leaving IDLE")
+    #print ("Leaving IDLE")
