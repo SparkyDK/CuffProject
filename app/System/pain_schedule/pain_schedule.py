@@ -86,7 +86,7 @@ class pain_schedule:
                 # Reset the displayed/current value back to the starting value
                 # Leave it negative to indicate overall progress (and simplify graphics processing)
                 # and then go to the next phase of the schedule
-                print("Finished schedule phase ", pain_phase, "\n")
+                print("\nFinished schedule phase ", pain_phase, "\n")
                 self.current_counter[pain_phase] = \
                     -1 * self.imported_schedule[pain_phase][2]
                 self.control_args['SCHEDULE_INDEX'] += 1
