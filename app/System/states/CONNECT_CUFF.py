@@ -28,7 +28,7 @@ class CONNECT_CUFF(State):
                 self.FSM.ToTransition("toLOAD_RESERVOIR")
             elif (self.args['PRESSURE'] >= self.args['PAINL'] and self.args['PRESSURE'] <= self.args['PAINH']):
                 # In the zone
-                print ("In the zone with P=", self.args['PRESSURE'])
+                #print ("In the zone with P=", self.args['PRESSURE'])
                 print (".")
                 self.FSM.set_SYNC()
                 self.FSM.ToTransition("toIDLE")
