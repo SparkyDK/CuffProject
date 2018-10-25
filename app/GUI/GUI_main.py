@@ -2,6 +2,9 @@ from kivy.config import Config
 Config.set('kivy', 'keyboard_mode', 'systemandmulti')
 #kivy.require("1.10.1")
 
+import rpi_backlight as bl
+bl.set_brightness(128)
+
 # import subprocess, pigpio
 
 import sys
