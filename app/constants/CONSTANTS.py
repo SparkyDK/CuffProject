@@ -20,3 +20,5 @@ refresh_period = 0.1
 relay_settling_time = 0.04
 pressure_settling_time = 0.45
 cuff_charging_time = 0.005
+
+transparency_level = 0.25

@@ -1,4 +1,6 @@
 import time
+from app.constants.CONSTANTS import transparency_level
+
 class kivy_color_adjustment:
     newpressurecolour = 0, 0, 0, 1
     nopaincolour = 0, 0, 0, 0
@@ -26,44 +28,44 @@ class kivy_color_adjustment:
 
         #print ("color_mgmt: self.current_counter[0]=", self.current_counter[0], "[1]=", self.current_counter[1])
 
-        # Set up grey control for pain schedule values, making them grey if negative/50% transparent, else black
+        # Set up grey control for pain schedule values, making them grey if negative/ partially transparent, else black
         if (self.current_counter[0] < 0):
-            self.colour1 = 0, 0, 0, 0.5
+            self.colour1 = 0, 0, 0, transparency_level
         else:
             self.colour1 = 0, 0, 0, 1
 
         if (self.current_counter[1] < 0):
-            self.colour2 = 0, 0, 0, 0.5
+            self.colour2 = 0, 0, 0, transparency_level
         else:
             self.colour2 = 0, 0, 0, 1
 
         if (self.current_counter[2] < 0):
-            self.colour3 = 0, 0, 0, 0.5
+            self.colour3 = 0, 0, 0, transparency_level
         else:
             self.colour3 = 0, 0, 0, 1
 
         if (self.current_counter[3] < 0):
-            self.colour4 = 0, 0, 0, 0.5
+            self.colour4 = 0, 0, 0, transparency_level
         else:
             self.colour4 = 0, 0, 0, 1
 
         if (self.current_counter[4] < 0):
-            self.colour5 = 0, 0, 0, 0.5
+            self.colour5 = 0, 0, 0, transparency_level
         else:
             self.colour5 = 0, 0, 0, 1
 
         if (self.current_counter[5] < 0):
-            self.colour6 = 0, 0, 0, 0.5
+            self.colour6 = 0, 0, 0, transparency_level
         else:
             self.colour6 = 0, 0, 0, 1
 
         if (self.current_counter[6] < 0):
-            self.colour7 = 0, 0, 0, 0.5
+            self.colour7 = 0, 0, 0, transparency_level
         else:
             self.colour7 = 0, 0, 0, 1
 
         if (self.current_counter[7] < 0):
-            self.colour8 = 0, 0, 0, 0.5
+            self.colour8 = 0, 0, 0, transparency_level
         else:
             self.colour8 = 0, 0, 0, 1
 
@@ -72,13 +74,13 @@ class kivy_color_adjustment:
                 (self.control_args['STARTED']==0 and self.control_args['PAUSE']==1) ):
             self.gocolour = 0, 0, 0, 1
         else:
-            self.gocolour = 0, 0, 0, 0.5
+            self.gocolour = 0, 0, 0, transparency_level
 
         # Set colour of STOP to black only if already running a pain schedule, else make it grey/50% transparent
         if ( self.control_args['STARTED']==1 and self.control_args['PAUSE']==0):
             self.stopcolour = 0, 0, 0, 1
         else:
-            self.stopcolour = 0, 0, 0, 0.5
+            self.stopcolour = 0, 0, 0, transparency_level
 
         #if (second_tickover == True):
         if (self.control_args['PAIN'] == 0):
@@ -103,7 +105,7 @@ class kivy_color_adjustment:
             self.entercolour = 1, 1, 1, 1
 
         if ( self.user_args['override_pressure'] != self.pressure_parameters['PAINVALUE'] ):
-            self.newpressurecolour = 0, 0, 0, 0.5
+            self.newpressurecolour = 0, 0, 0, transparency_level
         else:
             self.newpressurecolour = 0, 0, 0, 1
 
