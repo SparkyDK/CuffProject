@@ -112,14 +112,19 @@ class ControlDecisions:
                 self.user_args['GO'] = 0    # Clear the button signal back to the GUI (in case of nuisance-pressing)
                 # eventually, schedule will be finished, as indicated by boolean schedule_finished
                 if (self.schedule_finished == 1):
-                    print ("Schedule now finished")
+                    pass
+                    #print ("Schedule now finished")
                 g.SYNC = False
                 #self.state_machine_ran = False
         else:
+            pass
             # All other cases, do nothing.
             # This includes initial power-up and the final case when the schedule is finished
             # Also includes cases where GO and STOP buttons are ignored appropriately
-           if (self.second_tickover == True):
+            print ("Not doing anything with STARTED=",self.control_args['STARTED'], "PAUSE=",\
+                   self.control_args['PAUSE'], "STOP=", self.user_args['STOP'], "GO=", self.user_args['GO'],\
+                   "ABORT=", self.user_args['ABORT'])
+            if (self.second_tickover == True):
                 self.user_args['GO'] = 0
                 self.user_args['STOP'] = 0
 
