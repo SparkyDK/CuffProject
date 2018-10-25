@@ -52,8 +52,8 @@ class LOAD_RESERVOIR(State):
                     self.FSM.ToTransition("toRELEASE")
         else:
             # We should usually never get here, without requiring pain.  This shouldn't happen; get out safely, venting
-            print ("This usually doesn't happen with P=", self.args['PRESSURE'])
-            print (" and Pain=", self.args['PAIN'])
+            print ("LOAD_RESERVOIR with P=", self.args['PRESSURE'])
+            print (" and yet PAIN=", self.args['PAIN'], "!!!")
             self.FSM.ToTransition("toISOLATE_VENT")
 
     def Exit(self):
