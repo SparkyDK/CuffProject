@@ -58,8 +58,12 @@ class ControlDecisions:
         elif (self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # Initial start of the pain schedule (start "running" for the first time)
             print ("Starting the schedule for the first time in self=", self)
-            if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE" and
-                    g.SYNC==True):
+            if (self.second_tickover == True and g.SYNC==True):
+
+            # WHY DID I DO THIS?  WHY DO WE WAIT FOR FSM to be in IDLE?
+            #if (self.second_tickover == True and self.airctrl.FSM.GetCurState()=="IDLE" and
+            #        g.SYNC==True):
+
                 #    g.state_machine_ran==True):
                 # Synchronize the pain schedule counting to the seconds tickover points
                 # and wait for state machine to settle in IDLE state
