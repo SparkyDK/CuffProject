@@ -60,9 +60,6 @@ class Display(Screen):  # intro <display> and tells actions/functions
         # Initialize the system global variables.... maybe there is a better way to do this without globals
         set_relay(s1="closed", s2="closed", s3="closed")
         print ("Closing all relays at initialization time")
-        localtime = time.asctime(time.localtime(time.time()))
-        debug_msg = str(localtime + ": Initializing system")
-        g.my_logger.debug(debug_msg)
 
         if (g.already_running == False):
             print ("Initializing system")
@@ -75,18 +72,6 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                   g.current_counter, g.all_schedules, g.imported_schedule, g.Global_cnt,\
                                   g.past_states, g.decision, g.airctrl, g.schedule, g.adc,\
                                   g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
-
-        set_relay(s1="closed", s2="open", s3="open")
-        time.sleep(1)
-        self.control_args, self.digital_pressure_value, self.raw_average = \
-                Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
-        set_relay(s1="closed", s2="closed", s3="closed")
-        self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
-        print ("\n***** Reading pressure in cuff to have a digital value of ", self.raw_average, " *****")
-        debug_msg = str(localtime + ": Measured atmospheric digital value=" + self.raw_average +\
-                        ", displayed as: " + self.displayed_pressure + " mm Hg (atm=" + \
-                        g.pressure_parameters['PATM'] + ")" )
-        g.my_logger.debug(debug_msg)
 
     def setup_system(self, control_args, user_args, pressure_parameters, schedule_finished, start_time, elapsed_time,
                      current_counter, all_schedules, imported_schedule, Global_cnt, past_states, decision, airctrl,
@@ -162,6 +147,19 @@ class Display(Screen):  # intro <display> and tells actions/functions
             g.my_logger = get_logger("Pressure log")
             set_relay(s1="closed", s2="closed", s3="closed")
             print("Closing all relays, since not already running yet")
+
+            localtime = time.asctime(time.localtime(time.time()))
+            set_relay(s1="closed", s2="open", s3="open")
+            time.sleep(1)
+            self.control_args, self.digital_pressure_value, self.raw_average = \
+                Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
+            set_relay(s1="closed", s2="closed", s3="closed")
+            self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
+            print("\n***** Reading pressure in cuff to have a digital value of ", self.raw_average, " *****")
+            debug_msg = str(localtime + ": Measured atmospheric digital value=" + self.raw_average + \
+                            ", displayed as: " + self.displayed_pressure + " mm Hg (atm=" + \
+                            g.pressure_parameters['PATM'] + ")")
+            g.my_logger.debug(debug_msg)
 
             #event = Clock.schedule_interval(partial(self.run_system, (g.control_args, g.user_args,\
             #                                                          g.pressure_parameters,\
