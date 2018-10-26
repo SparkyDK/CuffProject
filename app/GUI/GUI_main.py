@@ -58,8 +58,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
     def init_system(self):
         # Initialize the system global variables.... maybe there is a better way to do this without globals
-        set_relay(s1="closed", s2="closed", s3="closed")
-        print ("Closing all relays at initialization time")
+        set_relay(s1="closed", s2="open", s3="open")
+        print ("Closing tank relay and venting at initialization time")
 
         if (g.already_running == False):
             print ("Initializing system")
@@ -103,8 +103,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.schedule_changed = False
 
         print ("Setting up system with schedule ", self.schedule_selected)
-        set_relay(s1="closed", s2="closed", s3="closed")
-        print ("Closing all relays during setup too")
+        set_relay(s1="closed", s2="open", s3="open")
+        print ("Closing tank relay and venting during setup too")
 
         painl = int(self.pressure_parameters['PAINVALUE']) - int(self.pressure_parameters['PAINTOLERANCE'])
         painh = int(self.pressure_parameters['PAINVALUE']) + int(self.pressure_parameters['PAINTOLERANCE'])
@@ -145,15 +145,12 @@ class Display(Screen):  # intro <display> and tells actions/functions
             #print ("Scheduling the system to execute every", self.interval,"seconds")
             g.already_running = True
             g.my_logger = get_logger("Pressure log")
-            set_relay(s1="closed", s2="closed", s3="closed")
-            print("Closing all relays, since not already running yet")
 
             localtime = time.asctime(time.localtime(time.time()))
             set_relay(s1="closed", s2="open", s3="open")
-            time.sleep(1)
+            time.sleep(0.5)
             self.control_args, self.digital_pressure_value, raw_average = \
                 Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
-            set_relay(s1="closed", s2="closed", s3="closed")
             self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
             print("\n***** Reading pressure in cuff to have a digital value of ", raw_average, " *****")
             self.atmospheric_pressure = str(g.pressure_parameters['PATM'])
