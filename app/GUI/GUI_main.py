@@ -156,9 +156,10 @@ class Display(Screen):  # intro <display> and tells actions/functions
             set_relay(s1="closed", s2="closed", s3="closed")
             self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
             print("\n***** Reading pressure in cuff to have a digital value of ", self.raw_average, " *****")
-            debug_msg = str(localtime + ": Measured atmospheric digital value=" + self.raw_average + \
+            print ("\nATM=", g.pressure_parameters['PATM'])
+            debug_msg = str( localtime + ": Measured atmospheric digital value=" + self.raw_average + \
                             ", displayed as: " + self.displayed_pressure + " mm Hg (atm=" + \
-                            g.pressure_parameters['PATM'] + ")")
+                            g.pressure_parameters['PATM'] + ")" )
             g.my_logger.debug(debug_msg)
 
             #event = Clock.schedule_interval(partial(self.run_system, (g.control_args, g.user_args,\
