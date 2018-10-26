@@ -157,8 +157,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
             self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
             print("\n***** Reading pressure in cuff to have a digital value of ", self.raw_average, " *****")
             self.atmospheric_pressure = str(g.pressure_parameters['PATM'])
-            debug_msg = str( localtime + ": Measured atmospheric digital value=" + self.raw_average + \
-                            ", displayed as: " + self.displayed_pressure + " mm Hg (atm=" + \
+            debug_msg = str( localtime + ": Measured atmospheric digital value=" + self.raw_average +\
+                             ", displayed as: " + self.displayed_pressure + " mm Hg (atm=" +\
                              self.atmospheric_pressure + ")" )
             g.my_logger.debug(debug_msg)
 
