@@ -146,7 +146,6 @@ class Display(Screen):  # intro <display> and tells actions/functions
             g.already_running = True
             g.my_logger = get_logger("Pressure log")
 
-            localtime = time.asctime(time.localtime(time.time()))
             set_relay(s1="closed", s2="open", s3="open")
             time.sleep(0.5)
             self.control_args, self.digital_pressure_value, raw_average = \
