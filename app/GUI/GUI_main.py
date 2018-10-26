@@ -155,7 +155,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
                 Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
             set_relay(s1="closed", s2="closed", s3="closed")
             self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
-            print("\n***** Reading pressure in cuff to have a digital value of ", self.raw_average, " *****")
+            print("\n***** Reading pressure in cuff to have a digital value of ", raw_average, " *****")
             self.atmospheric_pressure = str(g.pressure_parameters['PATM'])
             debug_msg = str( localtime + ": Measured atm. digital value=" + str(raw_average))
             g.my_logger.debug(debug_msg)
