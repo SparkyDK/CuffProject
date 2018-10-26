@@ -226,7 +226,8 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         if (self.second_tickover):
             #localtime = time.asctime(time.localtime(time.time()))
-            debug_msg = str("Pressure: " + self.current_pressure) + " (" + str(self.digital_pressure_value) + ")"
+            debug_msg = str("Pressure: " + self.current_pressure) + " mm_Hg (digital value=" +\
+                        str(self.digital_pressure_value) + ")"
             g.my_logger.debug(debug_msg)
 
         # Micro logging
