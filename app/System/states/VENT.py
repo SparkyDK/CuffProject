@@ -20,8 +20,9 @@ class VENT(State):
             pass
             #set_relay(s1="closed", s2="open", s3="open")
             # Stay in the VENT state
-            print("Stay in vent because pressure=", self.args['PRESSURE'],\
-                  " is greater than atmospheric pressure", self.args['PATM'], "+ tolerance=", ATM_TOLERANCE)
+            set_relay(s1="closed", s2="open", s3="open")
+            #print("Stay in vent because pressure=", self.args['PRESSURE'],\
+            #      " is greater than atmospheric pressure", self.args['PATM'], "+ tolerance=", ATM_TOLERANCE)
         else:
             self.FSM.set_SYNC()
             self.FSM.ToTransition("toIDLE")
