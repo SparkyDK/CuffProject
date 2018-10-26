@@ -53,6 +53,7 @@ class ControlDecisions:
             self.control_args['STARTED'] = 0
             self.control_args['PAUSE'] = 1      # Requested feature requires Reset/Abort, before GO button will work
             self.schedule_finished = 0
+            self.control_args['SCHEDULE_INDEX'] = 0 # Abort also means we start back at the beginning
             self.user_args['ABORT'] = 0        # Clear the button signal back to the GUI
         elif (self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 1 and self.user_args['GO'] == 1):
             # Initial start of the pain schedule (start "running" for the first time)
