@@ -1,5 +1,5 @@
 from app.System.states.State import State
-from app.constants.CONSTANTS import relay_settling_time
+from app.constants.CONSTANTS import relay_settling_time, pressure_settling_time
 from app.System.FSM.relay_control import set_relay
 import time
 
@@ -12,6 +12,7 @@ class CONNECT_CUFF(State):
         # S1 Closed, S2 Open, S3 Closed
         set_relay(s1="closed", s2="open", s3="closed")
         time.sleep(relay_settling_time)  # Give the relays time to close
+        time.sleep(pressure_settling_time) # Allow the air to come to rest before moving on (and measuring pressure)
         #time_locally = time.asctime(time.localtime(time.time()))
         #print (time_locally,": s1(air tank)=closed s2(cuff)=open s3(vent)=closed")
         #print ("CONNECT_CUFF entered")

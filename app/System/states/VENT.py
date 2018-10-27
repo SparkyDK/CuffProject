@@ -1,6 +1,8 @@
 from app.System.states.State import State
 from app.System.FSM.relay_control import set_relay
 from app.constants.CONSTANTS import ATM_TOLERANCE
+from app.constants.CONSTANTS import pressure_settling_time
+
 import time
 
 class VENT(State):
@@ -11,6 +13,8 @@ class VENT(State):
         # Open the relays to the cuff and from the reservoir, but keep the tank relay closed
         # S1 Closed, S2 Open, S3 Open
         set_relay(s1="closed", s2="open", s3="open")
+        time.sleep(pressure_settling_time) # Allow air to come to rest before allowing execution to go on
+
         #print ("Entering VENT state")
 
     def Execute(self, args):
@@ -20,7 +24,6 @@ class VENT(State):
             pass
             #set_relay(s1="closed", s2="open", s3="open")
             # Stay in the VENT state
-            set_relay(s1="closed", s2="open", s3="open")
             #print("Stay in vent because pressure=", self.args['PRESSURE'],\
             #      " is greater than atmospheric pressure", self.args['PATM'], "+ tolerance=", ATM_TOLERANCE)
         else:
@@ -30,4 +33,4 @@ class VENT(State):
     def Exit(self):
         #print ("Venting complete with pressure ", self.args['PRESSURE'])
         set_relay(s1="closed", s2="open", s3="open")
-        pass
+        #pass

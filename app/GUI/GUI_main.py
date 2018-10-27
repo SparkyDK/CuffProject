@@ -221,7 +221,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
                                   g.toggle, g.schedule_selected, g.schedule_changed, g.already_running)
 
         # Read the current pressure value after waiting a short settling time
-        time.sleep(pressure_settling_time)
+        #time.sleep(pressure_settling_time)
         self.control_args, self.digital_pressure_value, raw_average =\
             Read_Cuff_Pressure(self.adc, self.control_args, self.past_states)
 
