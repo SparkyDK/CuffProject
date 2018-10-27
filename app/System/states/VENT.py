@@ -35,6 +35,7 @@ class VENT(State):
             #print("Stay in vent because pressure=", self.args['PRESSURE'],\
             #      " is greater than atmospheric pressure", self.args['PATM'], "+ tolerance=", ATM_TOLERANCE)
         else:
+            time.sleep(2)
             self.FSM.set_SYNC()
             self.FSM.ToTransition("toIDLE")
 
