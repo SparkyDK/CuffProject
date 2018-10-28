@@ -31,7 +31,7 @@ from app.GUI.logger import get_logger
 from app.constants.CONSTANTS import airtank_stub
 
 from datetime import datetime
-from app.System.pressure_measurement.pressure_sampling import Read_Cuff_Pressure
+from app.System.pressure_measurement.pressure_sampling import Read_Cuff_Pressure, Convert_to_mm_Hg
 
 import math
 import time
@@ -150,10 +150,13 @@ class Display(Screen):  # intro <display> and tells actions/functions
             time.sleep(0.5)
             self.control_args, self.digital_pressure_value, raw_average = \
                 Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
+            self.converted_pressure = Convert_to_mm_Hg(float(raw_average))
             self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
-            print("\n***** Reading pressure in cuff to have a digital value of ", raw_average, " *****")
+            print("\n***** Reading pressure in vented cuff to have a digital value of ", raw_average, " *****")
             self.atmospheric_pressure = str(g.pressure_parameters['PATM'])
-            debug_msg = str(": Measured atm. value=" + str(raw_average) + " displayed as: " +\
+            debug_msg = str(": Measured atm. value=" + str(raw_average) +\
+                            " which is " + self.converted_pressure + " mm Hg (absolute pressure) "
+                            + " displayed to the user as: " +\
                             self.displayed_pressure + " mm_Hg (with prov. atm=" + self.atmospheric_pressure + ")")
             g.my_logger.debug(debug_msg)
 
