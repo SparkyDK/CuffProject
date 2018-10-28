@@ -150,7 +150,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
             time.sleep(0.5)
             self.control_args, self.digital_pressure_value, raw_average = \
                 Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
-            self.converted_pressure = Convert_to_mm_Hg(float(raw_average))
+            self.converted_pressure = str(Convert_to_mm_Hg(float(raw_average)))
             self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
             print("\n***** Reading pressure in vented cuff to have a digital value of ", raw_average, " *****")
             self.atmospheric_pressure = str(g.pressure_parameters['PATM'])
