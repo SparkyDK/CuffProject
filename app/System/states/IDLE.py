@@ -53,7 +53,7 @@ class IDLE(State):
             else:
             # Save solenoid wear and tear when idle by leaving the air tank one closed (normally closed relay)
             # and the ones to the vent and cuff open (there are normally open relays) .... staying in this state
-                set_relay(s1="closed", s2="open", s3="open")
+                set_relay(s1="closed", s2="closed", s3="closed")
                 self.FSM.set_SYNC()
 
 def Exit(self):
