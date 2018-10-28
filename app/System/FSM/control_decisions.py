@@ -120,11 +120,14 @@ class ControlDecisions:
                     #print ("Schedule now finished")
                 g.SYNC = False
                 #self.state_machine_ran = False
+        elif (self.control_args['STARTED'] == 0 and self.control_args['PAUSE'] == 0):
+        # initial and final state
+        # Stay in the vent state, to reduce heating and allow more comfortable patient cuff wearing
+            pass
         else:
             pass
             # All other cases, do nothing.
-            # This includes initial power-up and the final case when the schedule is finished
-            # Also includes cases where GO and STOP buttons are ignored appropriately
+            # Includes cases where GO and STOP buttons are ignored appropriately
             #print ("Not doing anything with STARTED=",self.control_args['STARTED'], "PAUSE=",\
             #       self.control_args['PAUSE'], "STOP=", self.user_args['STOP'], "GO=", self.user_args['GO'],\
             #       "ABORT=", self.user_args['ABORT'])

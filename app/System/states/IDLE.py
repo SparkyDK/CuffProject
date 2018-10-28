@@ -37,8 +37,9 @@ class IDLE(State):
                             # otherwise, allow for a more controlled release of air
                             self.FSM.ToTransition("toRELEASE")
                     else:
+                        # No problem with pain air pressure ("in the zone")
                         self.FSM.set_SYNC()
-                        pass    # No problem with pain air pressure ("in the zone")
+
             else:
                 # This should not happen (i.e. pain required outside of a schedule, so vent
                 print ("Error!  Something weird happened and pain was requested outside of a schedule... venting")
@@ -50,10 +51,10 @@ class IDLE(State):
                 # Adjust relays to vent to keep P below Patm
                 self.FSM.ToTransition("toVENT")
             else:
-            # Save solenoid wear and tear when idle by leaving them closed and staying in this state
-                pass
+            # Save solenoid wear and tear when idle by leaving the air tank one closed
+            # and the ones to the vent and cuff open .... staying in this state
+                set_relay(s1="closed", s2="open", s3="open")
                 self.FSM.set_SYNC()
-
 
 def Exit(self):
     # close all of the relays
