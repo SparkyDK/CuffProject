@@ -23,7 +23,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.lang import Builder
 
 from app.GUI import g
-from app.constants.CONSTANTS import refresh_period, pressure_settling_time
+from app.constants.CONSTANTS import refresh_period, pressure_settling_time, DEBUG
 from app.GUI.kivy_color_management import kivy_color_adjustment
 from app.GUI.kivy_schedule_update import kivy_schedule_update
 from app.GUI.logger import get_logger
