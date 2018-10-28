@@ -85,8 +85,8 @@ class ADC_sampling:
         chip_ID = adc.chip_ID
         #print("\nADC reported a numeric ID value of: {}.".format(chip_ID))
         #print("\nRead chip ID of ", chip_ID," for ADS1256")
-        #if (chip_ID != 3):
-        #   print ("\nchip_ID not the expected one)
+        if (chip_ID != 3):
+           print ("\nA/D chip_ID not the expected one... read a value of:", chip_ID)
         #   g.adc.pi.spi_close(g.adc.spi_id)
         #   exit(0)
 
