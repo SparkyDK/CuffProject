@@ -249,8 +249,9 @@ class Display(Screen):  # intro <display> and tells actions/functions
         self.new_pressure = str( g.user_args['override_pressure'] - g.pressure_parameters['PATM'] )
 
         localtime = time.asctime(time.localtime(time.time()))
-        print (localtime, "- Pressure=", self.current_pressure, "mm Hg / ",\
-               self.control_args['PRESSURE'], "mm Hg <digital:", self.digital_pressure_value, ">" )
+        if (DEBUG == True):
+            print (localtime, "- Pressure=", self.current_pressure, "mm Hg / ",\
+                   self.control_args['PRESSURE'], "mm Hg <digital:", self.digital_pressure_value, ">" )
         #print ("[A] STARTED:",self.control_args['STARTED'], "PAUSE:", self.control_args['PAUSE'],\
         #  "GO:", self.user_args['GO'])
 

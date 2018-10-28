@@ -8,7 +8,8 @@ SCHEDULE_TYPES = ["PAIN", "NILL"]
 ATM_TOLERANCE_LOW = 30
 
 # Debug
-DEBUG = True
+#DEBUG = True
+DEBUG = False
 HISTORY_LENGTH = 5
 airtank_stub = False
 
