@@ -5,7 +5,6 @@ SCHEDULE_TYPES = ["PAIN", "NILL"]
 
 # Atmospheric ressure tolerance
 #ATM_TOLERANCE = 10
-ATM_TOLERANCE_HIGH = 10
 ATM_TOLERANCE_LOW = 30
 
 # Debug
