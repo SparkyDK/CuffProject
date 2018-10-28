@@ -51,8 +51,8 @@ class IDLE(State):
                 # Adjust relays to vent to keep P below Patm
                 self.FSM.ToTransition("toVENT")
             else:
-            # Save solenoid wear and tear when idle by leaving the air tank one closed
-            # and the ones to the vent and cuff open .... staying in this state
+            # Save solenoid wear and tear when idle by leaving the air tank one closed (normally closed relay)
+            # and the ones to the vent and cuff open (there are normally open relays) .... staying in this state
                 set_relay(s1="closed", s2="open", s3="open")
                 self.FSM.set_SYNC()
 
