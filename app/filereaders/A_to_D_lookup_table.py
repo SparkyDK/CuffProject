@@ -8,8 +8,7 @@ class A_to_D_lookup:
 
         for line in f:
             print ("<1> line is:", line)
-            exit(0)
-            columns = line.split()
+            columns = line.split(' ')
             print ("<2>line is:", line, "and columns=", columns)
             digital_value.append(columns[0])
             mm_Hg.append(columns[1])
