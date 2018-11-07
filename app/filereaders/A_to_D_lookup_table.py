@@ -7,9 +7,9 @@ class A_to_D_lookup:
         mm_Hg = []
 
         for line in f:
-            print ("<1> line is:", line)
-            columns = line.split(' ')
-            print ("<2>line is:", line, "and columns=", columns)
+            #print ("<1> line is:", line)
+            columns = line.split(' ') # Assume space delimiter is used
+            #print ("<2>line is:", line, "and columns=", columns)
             digital_value.append(columns[0])
             mm_Hg.append(columns[1])
 
