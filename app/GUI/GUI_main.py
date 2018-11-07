@@ -243,7 +243,7 @@ class Display(Screen):  # intro <display> and tells actions/functions
 
         # Fix up display of pressure values to be relative to atmospheric pressure, rather than being absolute
         #if ( (g.control_args['PRESSURE'] - g.pressure_parameters['PATM']) < 0):
-        if ( (g.control_args['PRESSURE'] < 0):
+        if ( g.control_args['PRESSURE'] < 0):
             self.current_pressure = str(0)
         else:
             #self.current_pressure = str( g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] )
