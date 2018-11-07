@@ -43,7 +43,7 @@ def Convert_to_mm_Hg(digital_value):
     #interpolated_value = 740
     #print ("Took in ", digital_input, " and interpolated it to mm Hg value of", interpolated_value)
 
-    calculated_value = 0.00012159*digital_value + 687.19
+    #calculated_value = 0.00012159*digital_value + 687.19
     #print ("********** Interpolated value: ", interpolated_value, "calculated value: ", calculated_value)
 
     return (interpolated_value)

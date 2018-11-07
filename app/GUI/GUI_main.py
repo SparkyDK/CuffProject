@@ -151,13 +151,13 @@ class Display(Screen):  # intro <display> and tells actions/functions
             self.control_args, self.digital_pressure_value, raw_average = \
                 Read_Cuff_Pressure(g.adc, g.control_args, g.past_states)
             self.converted_pressure = str(Convert_to_mm_Hg(float(raw_average)))
-            self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
+            #self.displayed_pressure = str(self.control_args['PRESSURE'] - g.pressure_parameters['PATM'])
+            self.displayed_pressure = str(self.control_args['PRESSURE'])
             print("\n***** Reading pressure in vented cuff to have a digital value of ", raw_average, " *****")
             self.atmospheric_pressure = str(g.pressure_parameters['PATM'])
             debug_msg = str(": Measured atm. value=" + str(raw_average) +\
-                            " which is " + self.converted_pressure + " mm Hg (absolute pressure) "
-                            + " displayed to the user as: " +\
-                            self.displayed_pressure + " mm_Hg (with prov. atm=" + self.atmospheric_pressure + ")")
+                            " which is " + self.converted_pressure + " mm Hg" +\
+                            " (with prov. atm=" + self.atmospheric_pressure + ")")
             g.my_logger.debug(debug_msg)
 
             #event = Clock.schedule_interval(partial(self.run_system, (g.control_args, g.user_args,\
@@ -242,11 +242,14 @@ class Display(Screen):  # intro <display> and tells actions/functions
         #g.my_logger.debug(debug_msg)
 
         # Fix up display of pressure values to be relative to atmospheric pressure, rather than being absolute
-        if ( (g.control_args['PRESSURE'] - g.pressure_parameters['PATM']) < 0):
+        #if ( (g.control_args['PRESSURE'] - g.pressure_parameters['PATM']) < 0):
+        if ( (g.control_args['PRESSURE'] < 0):
             self.current_pressure = str(0)
         else:
-            self.current_pressure = str( g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] )
-        self.new_pressure = str( g.user_args['override_pressure'] - g.pressure_parameters['PATM'] )
+            #self.current_pressure = str( g.control_args['PRESSURE'] - g.pressure_parameters['PATM'] )
+            self.current_pressure = str( g.control_args['PRESSURE'] )
+        #self.new_pressure = str( g.user_args['override_pressure'] - g.pressure_parameters['PATM'] )
+        self.new_pressure = str( g.user_args['override_pressure'] )
 
         localtime = time.asctime(time.localtime(time.time()))
         if (DEBUG == True):
